@@ -142,19 +142,29 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-var MATCHES = [
+vvar MATCHES = [
+  // Dimanche 29 mars — Amicaux
   { id: 1, day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 } },
+  // Mardi 31 mars — Amicaux
   { id: 2, day: 'Mardi 31 mars', league: 'Amical International', home: 'Algerie', hf: '🇩🇿', away: 'Uruguay', af: '🇺🇾', time: '20:30', odds: { h: 2.40, n: 3.10, a: 2.90 } },
   { id: 3, day: 'Mardi 31 mars', league: 'Amical International', home: 'Angleterre', hf: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', away: 'Japon', af: '🇯🇵', time: '20:45', odds: { h: 1.75, n: 3.50, a: 4.20 } },
   { id: 4, day: 'Mardi 31 mars', league: 'Amical International', home: 'Maroc', hf: '🇲🇦', away: 'Paraguay', af: '🇵🇾', time: '20:00', odds: { h: 1.85, n: 3.20, a: 4.00 } },
   { id: 5, day: 'Mardi 31 mars', league: 'Amical International', home: 'Senegal', hf: '🇸🇳', away: 'Gambie', af: '🇬🇲', time: '21:00', odds: { h: 1.70, n: 3.40, a: 4.80 } },
   { id: 6, day: 'Mardi 31 mars', league: 'Amical International', home: 'Pays-Bas', hf: '🇳🇱', away: 'Equateur', af: '🇪🇨', time: '20:45', odds: { h: 1.80, n: 3.30, a: 4.20 } },
   { id: 7, day: 'Mardi 31 mars', league: 'Amical International', home: 'Ecosse', hf: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', away: 'Cote Ivoire', af: '🇨🇮', time: '20:30', odds: { h: 2.60, n: 3.20, a: 2.70 } },
-  { id: 8, day: 'Mardi 31 mars', league: 'Amical International', home: 'Norvege', hf: '🇳🇴', away: 'Suisse', af: '🇨🇭', time: '18:00', odds: { h: 2.50, n: 3.10, a: 2.80 } },
-  { id: 9, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Monaco', hf: '🇲🇨', away: 'Brest', af: '⚽', time: '15:00', odds: { h: 1.70, n: 3.50, a: 4.50 } },
-  { id: 10, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Strasbourg', hf: '⚽', away: 'Marseille', af: '⚽', time: '17:15', odds: { h: 3.20, n: 3.10, a: 2.20 } },
-  { id: 11, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Lille', hf: '⚽', away: 'Lens', af: '⚽', time: '20:45', odds: { h: 1.90, n: 3.40, a: 3.80 } },
-  { id: 12, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '⚽', away: 'Lyon', af: '⚽', time: '20:45', odds: { h: 2.30, n: 3.20, a: 3.00 } }
+  // Vendredi 3 avril — PSG
+  { id: 8, day: 'Vendredi 3 avril', league: 'Ligue 1 - J27', home: 'PSG', hf: '🔵', away: 'Nantes', af: '🟡', time: '20:45', odds: { h: 1.25, n: 5.50, a: 10.0 } },
+  // Samedi 4 avril — Premier League
+  { id: 9, day: 'Samedi 4 avril', league: 'Premier League', home: 'Arsenal', hf: '🔴', away: 'Fulham', af: '⚪', time: '13:30', odds: { h: 1.55, n: 4.00, a: 5.50 } },
+  { id: 10, day: 'Samedi 4 avril', league: 'Premier League', home: 'Liverpool', hf: '🔴', away: 'Everton', af: '🔵', time: '16:00', odds: { h: 1.50, n: 4.20, a: 6.00 } },
+  { id: 11, day: 'Samedi 4 avril', league: 'Premier League', home: 'Chelsea', hf: '🔵', away: 'Manchester Utd', af: '🔴', time: '16:00', odds: { h: 1.80, n: 3.50, a: 4.20 } },
+  { id: 12, day: 'Samedi 4 avril', league: 'Premier League', home: 'Tottenham', hf: '⚪', away: 'Newcastle', af: '⚫', time: '18:30', odds: { h: 2.10, n: 3.30, a: 3.40 } },
+  // Dimanche 5 avril — Ligue 1 + Premier League
+  { id: 13, day: 'Dimanche 5 avril', league: 'Premier League', home: 'Manchester City', hf: '🔵', away: 'Aston Villa', af: '🟣', time: '15:00', odds: { h: 1.60, n: 3.80, a: 5.00 } },
+  { id: 14, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Monaco', hf: '🔴', away: 'Brest', af: '⚽', time: '15:00', odds: { h: 1.70, n: 3.50, a: 4.50 } },
+  { id: 15, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Strasbourg', hf: '🔵', away: 'Marseille', af: '🔵', time: '17:15', odds: { h: 3.20, n: 3.10, a: 2.20 } },
+  { id: 16, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Lille', hf: '🔴', away: 'Lens', af: '🟡', time: '20:45', odds: { h: 1.90, n: 3.40, a: 3.80 } },
+  { id: 17, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '🔴', away: 'Lyon', af: '🔴', time: '20:45', odds: { h: 2.30, n: 3.20, a: 3.00 } }
 ];
 
 app.listen(PORT, function() {
