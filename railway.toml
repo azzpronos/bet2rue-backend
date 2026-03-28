@@ -1,0 +1,9 @@
+# BetZone — Déploiement Railway
+
+[build]
+  builder = "NIXPACKS"
+
+[deploy]
+  startCommand = "node server.js"
+  healthcheckPath = "/api/matches"
+  restartPolicyType = "ON_FAILURE"
