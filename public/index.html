@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BetZone — Paris Virtuels</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e1a;--bg2:#111827;--bg3:#1a2235;--bg4:#1e2d45;--accent:#f59e0b;--green:#10b981;--red:#ef4444;--text:#f1f5f9;--muted:#64748b;--border:#2a3a55}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;font-size:14px}
+
+/* HEADER */
+header{background:var(--bg2);border-bottom:2px solid var(--accent);padding:0 16px}
+.hi{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:10px}
+.logo{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:var(--accent);line-height:1.1}
+.logo span{color:var(--text)}
+.logo small{font-size:10px;color:var(--muted);font-weight:400;display:block}
+.ub{display:flex;align-items:center;gap:10px}
+.bal-box{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:12px;white-space:nowrap}
+.bal-box b{color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700}
+.user-info{display:flex;align-items:center;gap:8px}
+.user-avatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--accent)}
+.user-name{font-size:12px;color:var(--muted)}
+.btn-discord{background:#5865F2;color:#fff;border:none;padding:7px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px}
+.btn-discord:hover{background:#4752c4}
+.btn-logout{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:6px;font-size:12px;cursor:pointer}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+/* DISCORD ICON SVG */
+.discord-icon{width:16px;height:16px;fill:#fff}
+
+/* NAV */
+nav{background:var(--bg3);border-bottom:1px solid var(--border);overflow-x:auto}
+.ni{max-width:1100px;margin:0 auto;display:flex;white-space:nowrap;padding:0 16px}
+.nb{background:none;border:none;color:var(--muted);padding:11px 14px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.5px;border-bottom:2px solid transparent;transition:all .2s}
+.nb.active,.nb:hover{color:var(--text);border-bottom-color:var(--accent)}
+.nb.active{color:var(--accent)}
+
+/* MAIN */
+main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 295px;gap:16px}
+@media(max-width:760px){main{grid-template-columns:1fr}}
+
+/* TABS */
+.tab{display:none}.tab.active{display:block}
+
+/* DAY GROUPS */
+.day-group{margin-bottom:6px}
+.day-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.day-count{background:var(--bg3);border-radius:10px;padding:1px 7px;font-size:10px;color:var(--muted)}
+
+/* MATCH CARD */
+.mc{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-bottom:8px;transition:border-color .2s}
+.mc:hover{border-color:#3a4f70}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.league-tag{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.time-tag{font-size:11px;color:var(--accent);font-weight:600}
+.mteams{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.team{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;flex:1;display:flex;align-items:center;gap:5px}
+.team.r{flex-direction:row-reverse}
+.flag{font-size:17px;flex-shrink:0}
+.vsbox{background:var(--bg3);border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--muted);min-width:42px;text-align:center;padding:3px 8px;flex-shrink:0}
+.odds-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.ob{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 4px;cursor:pointer;text-align:center;transition:all .15s}
+.ob:hover{background:var(--bg4);border-color:var(--accent)}
+.ob.sel{background:var(--accent);border-color:var(--accent)}
+.ob.sel .ol,.ob.sel .ov{color:#000}
+.ol{font-size:9px;color:var(--muted);display:block;margin-bottom:2px;text-transform:uppercase}
+.ov{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--text)}
+
+/* COUPON */
+.coupon{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:14px;position:sticky;top:16px}
+.ct{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.cbadge{background:var(--accent);color:#000;border-radius:12px;padding:1px 8px;font-size:12px;font-weight:700}
+.cempty{text-align:center;padding:22px 0;color:var(--muted);font-size:13px;line-height:1.7}
+.ci{background:var(--bg3);border-radius:7px;padding:9px;margin-bottom:7px;border-left:3px solid var(--accent)}
+.cm{font-size:11px;color:var(--muted)}
+.cp{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;margin:2px 0}
+.co{color:var(--accent);font-size:12px;font-weight:600}
+.cr-btn{float:right;background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;line-height:1}
+.cr-btn:hover{color:var(--red)}
+.divider{border:none;border-top:1px solid var(--border);margin:12px 0}
+.stake-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.stake-lbl{font-size:12px;color:var(--muted);white-space:nowrap}
+.stake-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--text);font-size:14px;font-family:'Barlow Condensed',sans-serif;font-weight:600;width:100%}
+.stake-inp:focus{outline:none;border-color:var(--accent)}
+.quick-row{display:flex;gap:5px;margin-bottom:10px}
+.qb{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:5px 2px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;font-family:'Barlow Condensed',sans-serif}
+.qb:hover{background:var(--bg4);color:var(--text)}
+.gain-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.gain-val{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--green)}
+.btn-bet{width:100%;background:var(--green);border:none;color:#fff;padding:11px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:6px}
+.btn-bet:hover{background:#059669}
+.btn-clear{width:100%;background:none;border:1px solid var(--border);color:var(--muted);padding:7px;border-radius:7px;font-size:11px;cursor:pointer;margin-top:6px}
+.btn-clear:hover{border-color:var(--red);color:var(--red)}
+
+/* LEADERBOARD */
+.lb-row{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:7px;display:flex;align-items:center;gap:12px}
+.lb-rank{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;width:28px;text-align:center;color:var(--muted)}
+.lb-avatar{width:34px;height:34px;border-radius:50%;border:2px solid var(--border)}
+.lb-name{flex:1;font-weight:600}
+.lb-sub{font-size:11px;color:var(--muted)}
+.lb-bal{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--accent)}
+
+/* BETS */
+.bet-row{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bet-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase;white-space:nowrap}
+.win{background:#064e3b;color:#34d399}.loss{background:#450a0a;color:#f87171}.pending{background:#1c1400;color:#fbbf24}
+
+/* PROFILE */
+.profile-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;max-width:400px}
+.profile-avatar{width:64px;height:64px;border-radius:50%;border:3px solid var(--accent);margin-bottom:12px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.stat-cell{background:var(--bg3);border-radius:7px;padding:10px;text-align:center}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--accent)}
+.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+
+/* SECTION TITLE */
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:36px 0;color:var(--muted);font-size:13px;line-height:1.7}
+
+/* TOAST */
+.toast{position:fixed;bottom:16px;right:16px;background:var(--bg2);border:1px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:200;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;max-width:280px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.err{border-color:var(--red)}
+
+/* LOADING */
+.loading{text-align:center;padding:40px;color:var(--muted)}
+
+/* LOGIN WALL */
+.login-wall{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:36px;text-align:center;max-width:420px;margin:40px auto}
+.login-wall h2{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;margin-bottom:8px}
+.login-wall p{color:var(--muted);font-size:13px;margin-bottom:24px;line-height:1.6}
+.btn-discord-big{background:#5865F2;color:#fff;border:none;padding:13px 28px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.btn-discord-big:hover{background:#4752c4}
+.free-badge{display:inline-block;background:#064e3b;color:#34d399;font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px;margin-bottom:16px;text-transform:uppercase;letter-spacing:.4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hi">
+    <div class="logo">BET<span>ZONE</span><small>Communauté — Paris 100% virtuels</small></div>
+    <div class="ub" id="user-bar">
+      <div class="loading" style="padding:0;font-size:12px">Chargement...</div>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="ni">
+    <button class="nb active" onclick="switchTab('matches',this)">⚽ Paris à venir</button>
+    <button class="nb" onclick="switchTab('leaderboard',this)">🏆 Classement</button>
+    <button class="nb" onclick="switchTab('mybets',this)">📋 Mes Paris</button>
+    <button class="nb" onclick="switchTab('profile',this)">👤 Profil</button>
+  </div>
+</nav>
+
+<main>
+  <div>
+    <!-- TAB MATCHES -->
+    <div id="tab-matches" class="tab active">
+      <div id="matches-container"><div class="loading">Chargement des matchs...</div></div>
+    </div>
+
+    <!-- TAB LEADERBOARD -->
+    <div id="tab-leaderboard" class="tab">
+      <div class="section-title">🏆 Classement communauté</div>
+      <div id="lb-container"><div class="loading">Chargement...</div></div>
+    </div>
+
+    <!-- TAB MY BETS -->
+    <div id="tab-mybets" class="tab">
+      <div class="section-title">📋 Mon historique</div>
+      <div id="bets-container"><div class="empty-state">Connecte-toi pour voir tes paris</div></div>
+    </div>
+
+    <!-- TAB PROFILE -->
+    <div id="tab-profile" class="tab">
+      <div class="section-title">👤 Mon profil</div>
+      <div id="profile-container"><div class="empty-state">Connecte-toi pour voir ton profil</div></div>
+    </div>
+  </div>
+
+  <!-- COUPON -->
+  <div>
+    <div class="coupon">
+      <div class="ct">🎟️ Coupon <span class="cbadge" id="coupon-count">0</span></div>
+      <div id="coupon-body"><div class="cempty">Connecte-toi avec Discord<br>puis clique sur une cote !</div></div>
+      <div id="coupon-footer" style="display:none">
+        <hr class="divider">
+        <div class="stake-row">
+          <span class="stake-lbl">Mise</span>
+          <input class="stake-inp" type="number" id="stake" value="10" min="1" max="1000" oninput="updateGain()">
+          <span style="font-size:11px;color:var(--muted)">€V</span>
+        </div>
+        <div class="quick-row">
+          <button class="qb" onclick="setStake(5)">5</button>
+          <button class="qb" onclick="setStake(10)">10</button>
+          <button class="qb" onclick="setStake(25)">25</button>
+          <button class="qb" onclick="setStake(50)">50</button>
+        </div>
+        <div class="gain-row"><span style="color:var(--muted)">Cote totale</span><span id="total-odd" style="font-weight:700;font-family:'Barlow Condensed',sans-serif">—</span></div>
+        <div class="gain-row"><span style="color:var(--muted)">Gain potentiel</span><span class="gain-val" id="pot-gain">—</span></div>
+        <button class="btn-bet" onclick="placeBet()">✅ Valider mon pari</button>
+        <button class="btn-clear" onclick="clearCoupon()">Vider le coupon</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Config ────────────────────────────────────────────────
+// const REDIRECT_AFTER_LOGIN = window.location.href;
+const API = '';
+
+// ─── État global ───────────────────────────────────────────
+let currentUser = null;
+let coupon = [];
+let matchesData = [];
+
+// ─── Init ──────────────────────────────────────────────────
+async function init() {
+  // Vérifie si connecté via session
+  try {
+    const res = await fetch(`${API}/api/me`, { credentials: 'include' });
+    if (res.ok) {
+      currentUser = await res.json();
+      renderUserBar();
+    } else {
+      renderUserBar();
+    }
+  } catch {
+    renderUserBar();
+  }
+
+  // Charge les matchs
+  try {
+    const res = await fetch(`${API}/api/matches`);
+    matchesData = await res.json();
+    renderMatches();
+  } catch {
+    document.getElementById('matches-container').innerHTML =
+      '<div class="empty-state">Impossible de charger les matchs.</div>';
+  }
+
+  // Vérifie login=success dans l'URL
+  if (new URLSearchParams(location.search).get('login') === 'success') {
+    showToast('🎉 Connecté avec Discord ! 1 000 €V offerts !');
+    history.replaceState({}, '', '/');
+  }
+}
+
+// ─── UI Utilisateur ────────────────────────────────────────
+function renderUserBar() {
+  const bar = document.getElementById('user-bar');
+  if (currentUser) {
+    bar.innerHTML = `
+      <div class="user-info">
+        <img class="user-avatar" src="${currentUser.avatar}" alt="${currentUser.username}">
+        <span class="user-name">${currentUser.username}</span>
+      </div>
+      <div class="bal-box">Solde : <b>${currentUser.balance.toLocaleString()} €V</b></div>
+      <button class="btn-logout" onclick="logout()">Déconnexion</button>`;
+  } else {
+    bar.innerHTML = `
+      <a class="btn-discord" href="${API}/auth/discord">
+        <svg class="discord-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.013.04.03.052a19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.1 13.1 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+        Se connecter avec Discord
+      </a>`;
+  }
+}
+
+// ─── Matchs ────────────────────────────────────────────────
+function renderMatches() {
+  if (!matchesData.length) return;
+  const groups = {};
+  matchesData.forEach(m => {
+    if (!groups[m.day]) groups[m.day] = [];
+    groups[m.day].push(m);
+  });
+
+  let html = '';
+  for (const [day, matches] of Object.entries(groups)) {
+    html += `<div class="day-group">
+      <div class="day-label">📅 ${day} <span class="day-count">${matches.length} match${matches.length > 1 ? 's' : ''}</span></div>`;
+    matches.forEach(m => {
+      const s1 = coupon.find(c => c.mid === m.id && c.k === 'h');
+      const sN = coupon.find(c => c.mid === m.id && c.k === 'n');
+      const s2 = coupon.find(c => c.mid === m.id && c.k === 'a');
+      html += `<div class="mc">
+        <div class="mh">
+          <span class="league-tag">${m.league}</span>
+          <span class="time-tag">🕐 ${m.time}</span>
+        </div>
+        <div class="mteams">
+          <span class="team"><span class="flag">${m.hf}</span>${m.home}</span>
+          <span class="vsbox">vs</span>
+          <span class="team r"><span class="flag">${m.af}</span>${m.away}</span>
+        </div>
+        <div class="odds-row">
+          <button class="ob${s1?' sel':''}" onclick="toggleOdd(${m.id},'h','${m.home}',${m.odds.h},'${m.home} vs ${m.away}')">
+            <span class="ol">1</span><span class="ov">${m.odds.h.toFixed(2)}</span>
+          </button>
+          <button class="ob${sN?' sel':''}" onclick="toggleOdd(${m.id},'n','Nul',${m.odds.n},'${m.home} vs ${m.away}')">
+            <span class="ol">N</span><span class="ov">${m.odds.n.toFixed(2)}</span>
+          </button>
+          <button class="ob${s2?' sel':''}" onclick="toggleOdd(${m.id},'a','${m.away}',${m.odds.a},'${m.home} vs ${m.away}')">
+            <span class="ol">2</span><span class="ov">${m.odds.a.toFixed(2)}</span>
+          </button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+  document.getElementById('matches-container').innerHTML = html;
+}
+
+// ─── Coupon ────────────────────────────────────────────────
+function toggleOdd(mid, k, pick, odd, matchStr) {
+  if (!currentUser) {
+    showLoginWall();
+    return;
+  }
+  const idx = coupon.findIndex(c => c.mid === mid);
+  if (idx > -1) {
+    if (coupon[idx].k === k) coupon.splice(idx, 1);
+    else coupon[idx] = { mid, k, pick, odd, match: matchStr };
+  } else {
+    if (coupon.length >= 8) { showToast('Maximum 8 sélections', 'err'); return; }
+    coupon.push({ mid, k, pick, odd, match: matchStr });
+  }
+  refreshCoupon();
+  renderMatches();
+}
+
+function refreshCoupon() {
+  document.getElementById('coupon-count').textContent = coupon.length;
+  const body = document.getElementById('coupon-body');
+  const footer = document.getElementById('coupon-footer');
+  if (!coupon.length) {
+    body.innerHTML = '<div class="cempty">Clique sur une cote<br>pour l\'ajouter !</div>';
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = 'block';
+  body.innerHTML = coupon.map((c, i) => `
+    <div class="ci">
+      <button class="cr-btn" onclick="removePick(${i})">✕</button>
+      <div class="cm">${c.match}</div>
+      <div class="cp">${c.pick}</div>
+      <div class="co">Cote : ${c.odd.toFixed(2)}</div>
+    </div>`).join('');
+  updateGain();
+}
+
+function removePick(i) { coupon.splice(i, 1); refreshCoupon(); renderMatches(); }
+function clearCoupon() { coupon = []; refreshCoupon(); renderMatches(); }
+function setStake(v) { document.getElementById('stake').value = v; updateGain(); }
+
+function updateGain() {
+  if (!coupon.length) return;
+  const stake = parseFloat(document.getElementById('stake').value) || 0;
+  const tot = coupon.reduce((a, c) => a * c.odd, 1);
+  document.getElementById('total-odd').textContent = tot.toFixed(2);
+  document.getElementById('pot-gain').textContent = (stake * tot).toFixed(2) + ' €V';
+}
+
+async function placeBet() {
+  if (!currentUser) { showLoginWall(); return; }
+  const stake = parseFloat(document.getElementById('stake').value) || 0;
+  if (stake < 1) { showToast('Mise minimale : 1 €V', 'err'); return; }
+  if (stake > currentUser.balance) { showToast('Solde insuffisant !', 'err'); return; }
+
+  const btn = document.querySelector('.btn-bet');
+  btn.textContent = '⏳ Validation...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/api/bet`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ picks: coupon, stake })
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Erreur', 'err'); return; }
+
+    currentUser.balance = data.newBalance;
+    renderUserBar();
+    coupon = [];
+    refreshCoupon();
+    renderMatches();
+
+    const s = data.bet.status;
+    const msg = s === 'win'
+      ? `✅ Gagné ! +${data.bet.potentialGain} €V !`
+      : s === 'loss' ? '❌ Pari perdu.'
+      : '⏳ Pari en attente de résultat.';
+    showToast(msg, s === 'win' ? '' : 'err');
+  } catch {
+    showToast('Erreur de connexion', 'err');
+  } finally {
+    btn.textContent = '✅ Valider mon pari';
+    btn.disabled = false;
+  }
+}
+
+// ─── Leaderboard ───────────────────────────────────────────
+async function loadLeaderboard() {
+  try {
+    const res = await fetch(`${API}/api/leaderboard`);
+    const data = await res.json();
+    const medals = ['🥇', '🥈', '🥉'];
+    document.getElementById('lb-container').innerHTML = data.map((p, i) => `
+      <div class="lb-row">
+        <div class="lb-rank">${medals[i] || i + 1}</div>
+        <img class="lb-avatar" src="${p.avatar}" alt="${p.username}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+        <div>
+          <div class="lb-name">${p.username} ${currentUser && p.id === currentUser.id ? '<span style="color:var(--accent);font-size:10px">(vous)</span>' : ''}</div>
+          <div class="lb-sub">${p.betsCount} paris • ${p.wins} victoires</div>
+        </div>
+        <div class="lb-bal">${p.balance.toLocaleString()} €V</div>
+      </div>`).join('') || '<div class="empty-state">Aucun membre pour l\'instant</div>';
+  } catch {
+    document.getElementById('lb-container').innerHTML = '<div class="empty-state">Impossible de charger le classement.</div>';
+  }
+}
+
+// ─── Mes paris ─────────────────────────────────────────────
+function renderBets() {
+  const el = document.getElementById('bets-container');
+  if (!currentUser) { el.innerHTML = '<div class="empty-state">Connecte-toi pour voir tes paris</div>'; return; }
+  if (!currentUser.bets || !currentUser.bets.length) {
+    el.innerHTML = '<div class="empty-state">Aucun pari pour l\'instant.<br>Va sur "Paris à venir" pour commencer !</div>';
+    return;
+  }
+  el.innerHTML = currentUser.bets.map(b => `
+    <div class="bet-row">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:500;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+          ${b.picks.map(p => p.pick).join(' + ')}
+        </div>
+        <div style="font-size:11px;color:var(--muted)">
+          Mise ${b.stake} €V • ×${b.totalOdd} • Gain ${b.potentialGain} €V
+        </div>
+      </div>
+      <span class="bet-status ${b.status}">${b.status === 'win' ? 'Gagné' : b.status === 'loss' ? 'Perdu' : 'En cours'}</span>
+    </div>`).join('');
+}
+
+// ─── Profil ────────────────────────────────────────────────
+function renderProfile() {
+  const el = document.getElementById('profile-container');
+  if (!currentUser) { el.innerHTML = '<div class="empty-state">Connecte-toi avec Discord</div>'; return; }
+  const wins = currentUser.bets?.filter(b => b.status === 'win').length || 0;
+  const losses = currentUser.bets?.filter(b => b.status === 'loss').length || 0;
+  const total = currentUser.bets?.length || 0;
+  const winrate = total ? Math.round((wins / total) * 100) : 0;
+  el.innerHTML = `
+    <div class="profile-card">
+      <img class="profile-avatar" src="${currentUser.avatar}" alt="${currentUser.username}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800">${currentUser.username}</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:3px">Membre BetZone Community · Discord</div>
+      <div class="stat-grid">
+        <div class="stat-cell"><div class="stat-num">${currentUser.balance.toLocaleString()}</div><div class="stat-lbl">Solde €V</div></div>
+        <div class="stat-cell"><div class="stat-num">${total}</div><div class="stat-lbl">Paris placés</div></div>
+        <div class="stat-cell"><div class="stat-num" style="color:#34d399">${wins}</div><div class="stat-lbl">Victoires</div></div>
+        <div class="stat-cell"><div class="stat-num">${winrate}%</div><div class="stat-lbl">Taux de réussite</div></div>
+      </div>
+    </div>`;
+}
+
+// ─── Navigation ────────────────────────────────────────────
+function switchTab(tab, btn) {
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'leaderboard') loadLeaderboard();
+  if (tab === 'mybets') renderBets();
+  if (tab === 'profile') renderProfile();
+}
+
+// ─── Login Wall ────────────────────────────────────────────
+function showLoginWall() {
+  showToast('Connecte-toi avec Discord pour parier !', 'err');
+}
+
+// ─── Logout ────────────────────────────────────────────────
+async function logout() {
+  await fetch(`${API}/auth/logout`, { method: 'POST', credentials: 'include' });
+  currentUser = null;
+  coupon = [];
+  refreshCoupon();
+  renderUserBar();
+  renderMatches();
+  showToast('Déconnecté');
+}
+
+// ─── Toast ────────────────────────────────────────────────
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type === 'err' ? 'err' : '');
+  setTimeout(() => { t.className = 'toast'; }, 3500);
+}
+
+// ─── Start ─────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
