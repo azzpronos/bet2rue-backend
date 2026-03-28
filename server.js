@@ -12,39 +12,6 @@ app.use(cors({ origin: '*' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const users = new Map();
-let cachedMatches = [];
-let lastFetch = null;
-
-async function fetchMatches() {
-  try {
-    const today = new Date().toISOString().split('T')[0];
-    if (lastFetch === today && cachedMatches.length > 0) return cachedMatches;
-    const res = await axios.get('https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=' + today + '&s=Soccer');
-    const events = res.data.events || [];
-    cachedMatches = events.slice(0, 15).map(function(e, i) {
-      return {
-        id: i + 1,
-        day: new Date(e.dateEvent).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }),
-        league: e.strLeague || 'Football',
-        home: e.strHomeTeam,
-        hf: '⚽',
-        away: e.strAwayTeam,
-        af: '⚽',
-        time: e.strTime ? e.strTime.slice(0,5) : '20:45',
-        odds: {
-          h: parseFloat((Math.random() * 2 + 1.4).toFixed(2)),
-          n: parseFloat((Math.random() * 1.5 + 2.8).toFixed(2)),
-          a: parseFloat((Math.random() * 2.5 + 1.8).toFixed(2))
-        }
-      };
-    });
-    lastFetch = today;
-    return cachedMatches;
-  } catch(err) {
-    console.error('Fetch matches error:', err.message);
-    return cachedMatches;
-  }
-}
 
 function getOrCreateUser(discordUser) {
   if (!users.has(discordUser.id)) {
@@ -63,7 +30,8 @@ function getOrCreateUser(discordUser) {
 }
 
 function checkBonus(user) {
-  const today = new Date().toDateString();
+  const now = new Date();
+  const today = now.toDateString();
   if (user.lastBonus === today) return null;
   user.streak = (user.streak || 0) + 1;
   if (user.streak > 7) user.streak = 7;
@@ -145,9 +113,8 @@ app.get('/api/leaderboard', function(req, res) {
   res.json(list);
 });
 
-app.get('/api/matches', async function(req, res) {
-  var matches = await fetchMatches();
-  res.json(matches);
+app.get('/api/matches', function(req, res) {
+  res.json(MATCHES);
 });
 
 app.post('/api/bet', function(req, res) {
@@ -174,6 +141,21 @@ app.post('/api/bet', function(req, res) {
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+var MATCHES = [
+  { id: 1, day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 } },
+  { id: 2, day: 'Mardi 31 mars', league: 'Amical International', home: 'Algerie', hf: '🇩🇿', away: 'Uruguay', af: '🇺🇾', time: '20:30', odds: { h: 2.40, n: 3.10, a: 2.90 } },
+  { id: 3, day: 'Mardi 31 mars', league: 'Amical International', home: 'Angleterre', hf: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', away: 'Japon', af: '🇯🇵', time: '20:45', odds: { h: 1.75, n: 3.50, a: 4.20 } },
+  { id: 4, day: 'Mardi 31 mars', league: 'Amical International', home: 'Maroc', hf: '🇲🇦', away: 'Paraguay', af: '🇵🇾', time: '20:00', odds: { h: 1.85, n: 3.20, a: 4.00 } },
+  { id: 5, day: 'Mardi 31 mars', league: 'Amical International', home: 'Senegal', hf: '🇸🇳', away: 'Gambie', af: '🇬🇲', time: '21:00', odds: { h: 1.70, n: 3.40, a: 4.80 } },
+  { id: 6, day: 'Mardi 31 mars', league: 'Amical International', home: 'Pays-Bas', hf: '🇳🇱', away: 'Equateur', af: '🇪🇨', time: '20:45', odds: { h: 1.80, n: 3.30, a: 4.20 } },
+  { id: 7, day: 'Mardi 31 mars', league: 'Amical International', home: 'Ecosse', hf: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', away: 'Cote Ivoire', af: '🇨🇮', time: '20:30', odds: { h: 2.60, n: 3.20, a: 2.70 } },
+  { id: 8, day: 'Mardi 31 mars', league: 'Amical International', home: 'Norvege', hf: '🇳🇴', away: 'Suisse', af: '🇨🇭', time: '18:00', odds: { h: 2.50, n: 3.10, a: 2.80 } },
+  { id: 9, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Monaco', hf: '🇲🇨', away: 'Brest', af: '⚽', time: '15:00', odds: { h: 1.70, n: 3.50, a: 4.50 } },
+  { id: 10, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Strasbourg', hf: '⚽', away: 'Marseille', af: '⚽', time: '17:15', odds: { h: 3.20, n: 3.10, a: 2.20 } },
+  { id: 11, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Lille', hf: '⚽', away: 'Lens', af: '⚽', time: '20:45', odds: { h: 1.90, n: 3.40, a: 3.80 } },
+  { id: 12, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '⚽', away: 'Lyon', af: '⚽', time: '20:45', odds: { h: 2.30, n: 3.20, a: 3.00 } }
+];
 
 app.listen(PORT, function() {
   console.log('BET2RUE sur port ' + PORT);
