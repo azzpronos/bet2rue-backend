@@ -107,7 +107,7 @@ app.get('/auth/discord/callback', async (req, res) => {
     req.session.userId = user.id;
 
     // Redirige vers le frontend
-    res.redirect(`${process.env.FRONTEND_URL}?login=success`);
+    res.redirect(`${process.env.FRONTEND_URL}?login=success&uid=${user.id}`);
 
   } catch (err) {
     console.error('OAuth error:', err.response?.data || err.message);
