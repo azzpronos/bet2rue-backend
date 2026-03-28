@@ -227,7 +227,7 @@ let matchesData = [];
 async function init() {
   // Vérifie si connecté via session
   try {
-    const res = await fetch(`${API}/api/me`, { credentials: 'include' });
+    const res = await fetch(`${API}/api/me`, { credentials: 'omit' });
     if (res.ok) {
       currentUser = await res.json();
       renderUserBar();
@@ -383,7 +383,7 @@ async function placeBet() {
   try {
     const res = await fetch(`${API}/api/bet`, {
       method: 'POST',
-      credentials: 'include',
+      credentials: 'omit',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ picks: coupon, stake })
     });
@@ -493,7 +493,7 @@ function showLoginWall() {
 
 // ─── Logout ────────────────────────────────────────────────
 async function logout() {
-  await fetch(`${API}/auth/logout`, { method: 'POST', credentials: 'include' });
+  await fetch(`${API}/auth/logout`, { method: 'POST', credentials: 'omit' });
   currentUser = null;
   coupon = [];
   refreshCoupon();
