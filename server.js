@@ -214,6 +214,12 @@ const MATCHES = [
   { id: 9, day: 'Mardi 31 mars', league: 'Amical International', home: 'Autriche', hf: '🇦🇹', away: 'Corée du Sud', af: '🇰🇷', time: '20:45', odds: { h: 2.00, n: 3.20, a: 3.60 } },
   { id: 10, day: 'Mardi 31 mars', league: 'Amical International', home: 'Sénégal', hf: '🇸🇳', away: 'Gambie', af: '🇬🇲', time: '21:00', odds: { h: 1.70, n: 3.40, a: 4.80 } },
 ];
+// ligne 217 vide
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`✅ BetZone backend démarré sur http://localhost:${PORT}`);
