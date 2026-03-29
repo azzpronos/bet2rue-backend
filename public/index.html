@@ -110,6 +110,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .abtn.a{background:#3b0808;color:#f87171;border:1px solid #f87171}.abtn.a:hover{background:#f87171;color:#000}
 .settled-badge{background:#052e16;color:#4ade80;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
 .locked-badge{background:#3b0808;color:#f87171;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
+.res-card{background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -128,7 +129,8 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('leaderboard',this)">CLASSEMENT</button>
     <button class="nb" onclick="sw('mybets',this)">MES PARIS</button>
     <button class="nb" onclick="sw('profile',this)">PROFIL</button>
-    <button class="nb" onclick="sw('shop',this)">🛍️ BOUTIQUE</button> <button class="nb" onclick="sw('results',this)">📊 RÉSULTATS</button>
+    <button class="nb" onclick="sw('shop',this)">🛍️ BOUTIQUE</button>
+    <button class="nb" onclick="sw('results',this)">📊 RESULTATS</button>
   </div>
 </nav>
 <main>
@@ -143,10 +145,8 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
         <div style="font-size:13px;color:var(--gris);line-height:1.8">Echange tes <b style="color:var(--or)">EV</b> contre des recompenses reelles !<br>Pour utiliser Shuffle depuis la France → <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">suis le tuto sur notre Discord</a></div>
       </div>
       <div id="shop-list"></div>
-    </div><div id="tab-results" class="tab">
-  <div class="stitle">📊 HISTORIQUE DES RÉSULTATS</div>
-  <div id="results-list"></div>
-</div>
+    </div>
+    <div id="tab-results" class="tab"><div class="stitle">📊 HISTORIQUE DES RESULTATS</div><div id="results-list"></div></div>
     <div id="tab-admin" class="tab"><div class="stitle" style="color:var(--or)">PANEL ADMIN</div><div id="admin-list"></div></div>
   </div>
   <div>
@@ -258,22 +258,45 @@ async function buyItem(itemId){
   if(!user)return;if(!confirm('Confirmer l\'echange ?'))return;
   try{var res=await fetch('/api/shop/buy?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({itemId:itemId,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();loadShop();showToast('Demande envoyee ! Verifie tes MP Discord dans les 24h.');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}
 }
+async function loadResults(){
+  var el=document.getElementById('results-list');
+  try{
+    var res=await fetch('/api/results');
+    var data=await res.json();
+    if(!data.length){el.innerHTML='<div class="empty">Aucun resultat pour l\'instant</div>';return;}
+    el.innerHTML=data.map(function(r){
+      var resultLabel=r.result==='h'?r.home:r.result==='n'?'Match Nul':r.away;
+      var resultFlag=r.result==='h'?r.hf:r.result==='n'?'🤝':r.af;
+      var bgColor=r.result==='n'?'#1c1400':'#052e16';
+      var txtColor=r.result==='n'?'#fbbf24':'#4ade80';
+      return '<div class="res-card">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+        +'<span style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:.5px">'+r.league+'</span>'
+        +'<span style="font-size:11px;color:var(--gris)">'+r.day+' — '+r.time+'</span>'
+        +'</div>'
+        +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'
+        +'<span style="font-family:Bebas Neue,sans-serif;font-size:16px">'+r.hf+' '+r.home+'</span>'
+        +'<span style="background:var(--noir3);border-radius:6px;padding:3px 10px;font-family:Bebas Neue,sans-serif;font-size:12px;color:var(--gris)">VS</span>'
+        +'<span style="font-family:Bebas Neue,sans-serif;font-size:16px">'+r.away+' '+r.af+'</span>'
+        +'</div>'
+        +'<div style="background:'+bgColor+';border-radius:7px;padding:8px 12px;text-align:center">'
+        +'<span style="font-family:Bebas Neue,sans-serif;font-size:15px;color:'+txtColor+'">'+resultFlag+' VAINQUEUR : '+resultLabel.toUpperCase()+'</span>'
+        +'</div></div>';
+    }).join('');
+  }catch(e){el.innerHTML='<div class="empty">Erreur de chargement</div>';}
+}
 function renderProfile(){
   var el=document.getElementById('pc');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>';return;}
   var wins=user.bets?user.bets.filter(function(b){return b.status==='win';}).length:0;
   var total=user.bets?user.bets.length:0;var wr=total?Math.round(wins/total*100):0;var initials=user.username.slice(0,2).toUpperCase();
-  el.innerHTML='<div class="pcard"><div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div><div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div><div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE • 🔥 '+user.streak+' jours de streak</div><div class="sg"><div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde EV</div></div><div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div><div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div><div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div></div><div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">🎁 CODE PROMO</div><div style="display:flex;gap:8px"><input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code..."><button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap">ACTIVER</button></div></div></div>';
+  el.innerHTML='<div class="pcard"><div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div><div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div><div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE • 🔥 '+user.streak+' jours de streak</div><div class="sg"><div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde EV</div></div><div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div><div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div><div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div></div>'
+  +'<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">🎁 CODE PROMO</div><div style="display:flex;gap:8px"><input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code..."><button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap">ACTIVER</button></div></div></div>';
 }
 async function usePromo(){
   if(!user){showToast('Connecte-toi !','err');return;}
   var code=document.getElementById('promo-input').value.trim().toUpperCase();
   if(!code){showToast('Entre un code !','err');return;}
-  try{
-    var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});
-    var data=await res.json();
-    if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' EV sur ton compte !');}
-    else{showToast(data.error||'Erreur','err');}
-  }catch(e){showToast('Erreur connexion','err');}
+  try{var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' EV sur ton compte !');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}
 }
 async function loadAdmin(){
   if(!user||!user.isAdmin){document.getElementById('admin-list').innerHTML='<div class="empty">Acces refuse</div>';return;}
@@ -290,34 +313,9 @@ function sw(tab,btn){
   if(tab==='leaderboard')loadLB();
   if(tab==='mybets')renderBets();
   if(tab==='shop')loadShop();
-  if(tab==='profile')renderProfile();
   if(tab==='results')loadResults();
-```
+  if(tab==='profile')renderProfile();
   if(tab==='admin')loadAdmin();
-}async function loadResults(){
-  var el=document.getElementById('results-list');
-  try{
-    var res=await fetch('/api/results');
-    var data=await res.json();
-    if(!data.length){el.innerHTML='<div class="empty">Aucun resultat pour l\'instant</div>';return;}
-    el.innerHTML=data.map(function(r){
-      var resultLabel=r.result==='h'?r.home:r.result==='n'?'Match Nul':r.away;
-      var resultFlag=r.result==='h'?r.hf:r.result==='n'?'🤝':r.af;
-      return '<div style="background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:8px">'
-        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
-        +'<span style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:.5px">'+r.league+'</span>'
-        +'<span style="font-size:11px;color:var(--gris)">'+r.day+' — '+r.time+'</span>'
-        +'</div>'
-        +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'
-        +'<span style="font-family:Bebas Neue,sans-serif;font-size:16px;display:flex;align-items:center;gap:5px">'+r.hf+' '+r.home+'</span>'
-        +'<span style="background:var(--noir3);border-radius:6px;padding:3px 10px;font-family:Bebas Neue,sans-serif;font-size:13px;color:var(--gris)">VS</span>'
-        +'<span style="font-family:Bebas Neue,sans-serif;font-size:16px;display:flex;align-items:center;gap:5px">'+r.away+' '+r.af+'</span>'
-        +'</div>'
-        +'<div style="background:'+(r.result==='n'?'#1c1400':'#052e16')+';border-radius:7px;padding:8px 12px;text-align:center">'
-        +'<span style="font-family:Bebas Neue,sans-serif;font-size:15px;color:'+(r.result==='n'?'#fbbf24':'#4ade80')+'">'+resultFlag+' VAINQUEUR : '+resultLabel.toUpperCase()+'</span>'
-        +'</div></div>';
-    }).join('');
-  }catch(e){el.innerHTML='<div class="empty">Erreur de chargement</div>';}
 }
 function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type==='err'?'err':'');setTimeout(function(){t.className='toast';},3500);}
 setInterval(async function(){try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}},60000);
