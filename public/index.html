@@ -226,7 +226,7 @@ function refC(){
   var body=document.getElementById('cb');var footer=document.getElementById('cf');
   if(!coupon.length){body.innerHTML='<div class="cempty">Clique sur une cote<br>pour l\'ajouter !</div>';footer.style.display='none';return;}
   footer.style.display='block';
-  body.innerHTML=coupon.map(function(c,i){return '<div class="ci"><button class="cr" onclick="rp('+i+')">x</button><div class="cm">'+c.match+'</div><div class="cp">'+c.pick+'</div><div class="co">Cote : '+c.odd.toFixed(2)+'<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px">🎁 CODE PROMO</div><div style="display:flex;gap:8px"><input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code..."><button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer">ACTIVER</button></div></div>'+'<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px">🎁 CODE PROMO</div><div style="display:flex;gap:8px"><input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code..."><button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer">ACTIVER</button></div></div>'+'</div></div>';}).join('');
+  body.innerHTML=coupon.map(function(c,i){return '<div class="ci"><button class="cr" onclick="rp('+i+')">x</button><div class="cm">'+c.match+'</div><div class="cp">'+c.pick+'</div><div class="co">Cote : '+c.odd.toFixed(2)+'</div></div>';}).join('');
   upd();
 }
 function rp(i){coupon.splice(i,1);refC();renderMatches();}
@@ -278,7 +278,7 @@ function sw(tab,btn){
   if(tab==='shop')loadShop();
   if(tab==='profile')renderProfile();
   if(tab==='admin')loadAdmin();
-}async function usePromo(){if(!user){showToast('Connecte-toi !','err');return;}var code=document.getElementById('promo-input').value.trim().toUpperCase();if(!code){showToast('Entre un code !','err');return;}try{var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' EV sur ton compte !');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}}
+}
 function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type==='err'?'err':'');setTimeout(function(){t.className='toast';},3500);}
 setInterval(async function(){try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}},60000);
 init();
