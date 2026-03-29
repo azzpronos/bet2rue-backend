@@ -281,9 +281,14 @@ botClient.on('messageCreate', async function(message) {
 const AFFILIATE_URL = 'https://shuffle.com/?r=Y0wS9u2Vh7';
 
 const SHOP_ITEMS = [
-  { id: 1, name: '10€ Shuffle', cost: 25000, description: 'Bon de 10€ sur Shuffle.com' },
-  { id: 2, name: '20€ Shuffle', cost: 50000, description: 'Bon de 20€ sur Shuffle.com' },
-  { id: 3, name: '50€ Shuffle', cost: 125000, description: 'Bon de 50€ sur Shuffle.com' }
+  { id: 1, name: '10€ Shuffle', cost: 25000, description: 'Bon de 10€ sur Shuffle.com — voir tuto Discord' },
+  { id: 2, name: '20€ Shuffle', cost: 50000, description: 'Bon de 20€ sur Shuffle.com — voir tuto Discord' },
+  { id: 3, name: '50€ Shuffle', cost: 125000, description: 'Bon de 50€ sur Shuffle.com — voir tuto Discord' },
+  { id: 4, name: '1v1 FIFA vs Azzpronos 🎮', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h pour organiser le match.' },
+  { id: 5, name: 'Prono VIP en MP 🎯', cost: 5000, description: 'Azzpronos t\'envoie son meilleur prono du jour en message prive !' },
+  { id: 6, name: 'Shoutout Discord 📢', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET2RUE !' },
+  { id: 7, name: 'Maillot de foot au choix 👕', cost: 250000, description: 'Le graal ! Echange tes EV contre un vrai maillot de foot au choix. Azzpronos te contacte en MP pour les details.' },
+  { id: 8, name: 'Jeu video au choix 🕹️', cost: 200000, description: 'Choisis n\'importe quel jeu video et Azzpronos te l\'offre ! Azzpronos te contacte en MP pour les details.' }
 ];
 
 app.get('/api/shop', function(req, res) {
