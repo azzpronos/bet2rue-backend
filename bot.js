@@ -68,7 +68,40 @@ client.on('messageCreate', async function(message) {
       message.channel.send('❌ Erreur de connexion au serveur.');
     }
   }
+if (content.startsWith('!createcode')) {
+    var parts = content.split(' ');
+    if (parts.length !== 4) { message.channel.send('❌ Format : `!createcode CODE MONTANT UTILISATIONS`\nEx: `!createcode NOEL 500 100`'); return; }
+    var code = parts[1].toUpperCase();
+    var reward = parseInt(parts[2]);
+    var maxUses = parseInt(parts[3]);
+    if (isNaN(reward) || isNaN(maxUses)) { message.channel.send('❌ Montant et utilisations doivent etre des nombres'); return; }
+    try {
+      await Promo.create({ code: code, reward: reward, maxUses: maxUses });
+      message.channel.send('✅ Code promo créé !\n**Code :** ' + code + '\n**Récompense :** ' + reward + ' EV\n**Utilisations max :** ' + maxUses);
+    } catch(e) {
+      message.channel.send('❌ Ce code existe déjà !');
+    }
+  }
 
+  if (content.startsWith('!code')) {
+    var parts = content.split(' ');
+    if (parts.length !== 2) { message.channel.send('❌ Format : `!code MONCODE`'); return; }
+    var code = parts[1].toUpperCase();
+    var promo = await Promo.findOne({ code: code });
+    if (!promo) { message.channel.send('❌ Code introuvable'); return; }
+    if (promo.uses >= promo.maxUses) { message.channel.send('❌ Code épuisé'); return; }
+    var discordId = message.author.id;
+    if (promo.usedBy.includes(discordId)) { message.channel.send('❌ Tu as déjà utilisé ce code !'); return; }
+    var user = await User.findOne({ id: discordId });
+    if (!user) { message.channel.send('❌ Connecte-toi d\'abord sur bet2rue-backend.onrender.com'); return; }
+    promo.uses += 1;
+    promo.usedBy.push(discordId);
+    promo.markModified('usedBy');
+    await promo.save();
+    user.balance += promo.reward;
+    await user.save();
+    message.channel.send('✅ Code **' + code + '** activé ! **+' + promo.reward + ' EV** ajoutés sur ton compte BET2RUE !');
+  }
   if (content === '!classement') {
     try {
       var res = await fetch(API_URL + '/api/leaderboard');
