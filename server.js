@@ -76,10 +76,10 @@ async function getOrCreateUser(discordUser, refId) {
     if (refId && refId !== discordUser.id) {
       var parrain = await User.findOne({ id: refId });
       if (parrain) {
-        parrain.balance += 500;
+        parrain.balance += 1000;
         parrain.referrals = (parrain.referrals || 0) + 1;
         await parrain.save();
-        console.log('Parrainage : ' + parrain.username + ' gagne 500 Pesos pour ' + discordUser.username);
+        console.log('Parrainage : ' + parrain.username + ' gagne 1000 Pesos pour ' + discordUser.username);
       }
     }
     console.log('Nouvel utilisateur: ' + discordUser.username);
@@ -457,10 +457,10 @@ botClient.on('messageCreate', async function(message) {
     var targetUser = await User.findOne({ id: targetId });
     if (!targetUser) { message.channel.send('❌ Utilisateur introuvable — il doit dabord se connecter sur le site'); return; }
     if (targetUser.shuffleValidated) { message.channel.send('❌ Ce membre a deja recu son bonus Shuffle !'); return; }
-    targetUser.balance += 1500;
+    targetUser.balance += 5000;
     targetUser.shuffleValidated = true;
     await targetUser.save();
-    message.channel.send('✅ **Bonus Shuffle valide !**\n👤 **' + targetUser.username + '** a recu **+1500 Pesos** sur son compte BET2RUE !');
+    message.channel.send('✅ **Bonus Shuffle valide !**\n👤 **' + targetUser.username + '** a recu **+5000 Pesos** sur son compte BET2RUE !');
     try {
       var checkChannel = await botClient.channels.fetch('1487956908106322174');
       await checkChannel.send('✅ **' + targetUser.username + '** — Bonus Shuffle confirme par Azzpronos !');
@@ -480,3 +480,4 @@ botClient.on('messageCreate', async function(message) {
 });
 
 botClient.login(process.env.DISCORD_BOT_TOKEN);
+
