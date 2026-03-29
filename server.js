@@ -18,6 +18,16 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(function(err) { console.error('Erreur MongoDB:', err.message); });
 
 const UserSchema = new mongoose.Schema({
+  const PromoSchema = new mongoose.Schema({
+  code: { type: String, unique: true, uppercase: true },
+  reward: Number,
+  maxUses: { type: Number, default: 1 },
+  uses: { type: Number, default: 0 },
+  usedBy: { type: Array, default: [] },
+  createdAt: { type: String, default: () => new Date().toISOString() }
+});
+const Promo = mongoose.model('Promo', PromoSchema);
+  
   id: { type: String, unique: true },
   username: String,
   avatar: String,
@@ -212,6 +222,26 @@ app.post('/api/bet', async function(req, res) {
 });
 
 app.get('/api/shop', function(req, res) {
+  app.post('/api/promo', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var user = await User.findOne({ id: uid });
+  if (!user) return res.status(401).json({ error: 'Non connecte' });
+  var code = (req.body.code || '').toUpperCase().trim();
+  if (!code) return res.status(400).json({ error: 'Code invalide' });
+  var promo = await Promo.findOne({ code: code });
+  if (!promo) return res.status(400).json({ error: 'Code introuvable' });
+  if (promo.uses >= promo.maxUses) return res.status(400).json({ error: 'Code epuise' });
+  if (promo.usedBy.includes(uid)) return res.status(400).json({ error: 'Code deja utilise' });
+  promo.uses += 1;
+  promo.usedBy.push(uid);
+  promo.markModified('usedBy');
+  await promo.save();
+  user.balance += promo.reward;
+  user.balance = parseFloat(user.balance.toFixed(2));
+  await user.save();
+  res.json({ ok: true, reward: promo.reward, newBalance: user.balance });
+});
   res.json(SHOP_ITEMS);
 });
 
