@@ -230,3 +230,52 @@ var MATCHES = [
 app.listen(PORT, function() {
   console.log('BET2RUE sur port ' + PORT);
 });
+
+const { Client, GatewayIntentBits } = require('discord.js');
+const botClient = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
+});
+const API_URL = 'https://bet2rue-backend.onrender.com';
+botClient.once('ready', function() {
+  console.log('Bot connecte : ' + botClient.user.tag);
+});
+botClient.on('messageCreate', async function(message) {
+  if (message.author.bot) return;
+  if (message.author.id !== ADMIN_ID) return;
+  var content = message.content.trim();
+  if (content === '!matchs') {
+    var txt = '📋 **MATCHS BET2RUE**\n\n';
+    MATCHES.forEach(function(m) {
+      var status = m.settled ? '✅ REGLE' : m.locked ? '🔴 FERME' : '🟢 OUVERT';
+      txt += 'ID **' + m.id + '** | ' + m.day + ' ' + m.time + '\n';
+      txt += m.hf + ' ' + m.home + ' vs ' + m.away + ' ' + m.af + '\n';
+      txt += '1→' + m.odds.h + ' | N→' + m.odds.n + ' | 2→' + m.odds.a + ' | ' + status + '\n\n';
+    });
+    message.channel.send(txt);
+  }
+  if (content.startsWith('!resultat')) {
+    var parts = content.split(' ');
+    if (parts.length !== 3) { message.channel.send('❌ Format : `!resultat ID 1/n/2`'); return; }
+    var matchId = parseInt(parts[1]);
+    var result = parts[2].toLowerCase();
+    if (!['1','n','2'].includes(result)) { message.channel.send('❌ Utilise 1, n ou 2'); return; }
+    var resultKey = result === '1' ? 'h' : result === 'n' ? 'n' : 'a';
+    var count = settleMatch(matchId, resultKey);
+    var resultLabel = result === '1' ? 'Victoire domicile' : result === 'n' ? 'Match nul' : 'Victoire exterieur';
+    message.channel.send('✅ **Resultat enregistre !**\nMatch ID ' + matchId + ' → ' + resultLabel + '\n🏆 ' + count + ' paris regles !');
+  }
+  if (content === '!classement') {
+    var list = Array.from(users.values()).sort(function(a,b){return b.balance-a.balance;}).slice(0,10);
+    var txt = '🏆 **CLASSEMENT BET2RUE**\n\n';
+    var medals = ['🥇','🥈','🥉'];
+    list.forEach(function(p,i) {
+      txt += (medals[i]||(i+1)+'.') + ' **' + p.username + '** — ' + Math.round(p.balance).toLocaleString() + ' EV\n';
+    });
+    message.channel.send(txt);
+  }
+});
+botClient.login(process.env.DISCORD_BOT_TOKEN);
