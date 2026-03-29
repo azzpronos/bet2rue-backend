@@ -31,6 +31,20 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('User', UserSchema);
 
 const PromoSchema = new mongoose.Schema({
+  const ResultSchema = new mongoose.Schema({
+  matchId: Number,
+  home: String,
+  away: String,
+  hf: String,
+  af: String,
+  day: String,
+  time: String,
+  league: String,
+  result: String,
+  odds: Object,
+  settledAt: { type: String, default: function() { return new Date().toISOString(); } }
+});
+const Result = mongoose.model('Result', ResultSchema);
   code: { type: String, unique: true, uppercase: true },
   reward: Number,
   maxUses: { type: Number, default: 1 },
@@ -86,6 +100,18 @@ async function settleMatch(matchId, result) {
   if (!match) return 0;
   match.result = result;
   match.settled = true;
+  await Result.create({
+  matchId: matchId,
+  home: match.home,
+  away: match.away,
+  hf: match.hf,
+  af: match.af,
+  day: match.day,
+  time: match.time,
+  league: match.league,
+  result: result,
+  odds: match.odds
+});
   var count = 0;
   var users = await User.find({});
   for (var i = 0; i < users.length; i++) {
@@ -278,7 +304,10 @@ app.post('/api/admin/result', async function(req, res) {
   var count = await settleMatch(matchId, result);
   res.json({ ok: true, settled: count });
 });
-
+app.get('/api/results', async function(req, res) {
+  var results = await Result.find({}).sort({ settledAt: -1 }).limit(50);
+  res.json(results);
+});
 app.get('/api/admin/matches', function(req, res) {
   var uid = req.query.uid;
   if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
