@@ -30,6 +30,21 @@ const UserSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', UserSchema);
 
+const ResultSchema = new mongoose.Schema({
+  matchId: Number,
+  home: String,
+  away: String,
+  hf: String,
+  af: String,
+  day: String,
+  time: String,
+  league: String,
+  result: String,
+  odds: Object,
+  settledAt: { type: String, default: function() { return new Date().toISOString(); } }
+});
+const Result = mongoose.model('Result', ResultSchema);
+
 const PromoSchema = new mongoose.Schema({
   code: { type: String, unique: true, uppercase: true },
   reward: Number,
@@ -76,6 +91,11 @@ function isMatchLocked(match) {
   var parts = match.time.split(':');
   var hours = parseInt(parts[0]);
   var minutes = parseInt(parts[1]);
+  if (match.date) {
+    var dateParts = match.date.split('-');
+    var matchDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), hours, minutes, 0, 0);
+    return now >= matchDate;
+  }
   var matchDate = new Date();
   matchDate.setHours(hours, minutes, 0, 0);
   return now >= matchDate;
@@ -86,6 +106,18 @@ async function settleMatch(matchId, result) {
   if (!match) return 0;
   match.result = result;
   match.settled = true;
+  await Result.create({
+    matchId: matchId,
+    home: match.home,
+    away: match.away,
+    hf: match.hf,
+    af: match.af,
+    day: match.day,
+    time: match.time,
+    league: match.league,
+    result: result,
+    odds: match.odds
+  });
   var count = 0;
   var users = await User.find({});
   for (var i = 0; i < users.length; i++) {
@@ -183,6 +215,11 @@ app.get('/api/leaderboard', async function(req, res) {
       streak: u.streak || 0
     };
   }));
+});
+
+app.get('/api/results', async function(req, res) {
+  var results = await Result.find({}).sort({ settledAt: -1 }).limit(50);
+  res.json(results);
 });
 
 app.get('/api/matches', function(req, res) {
@@ -290,34 +327,34 @@ app.get('/', function(req, res) {
 });
 
 var SHOP_ITEMS = [
-  { id: 1, name: '10€ Shuffle', cost: 25000, description: 'Bon de 10€ sur Shuffle.com — voir tuto Discord' },
-  { id: 2, name: '20€ Shuffle', cost: 50000, description: 'Bon de 20€ sur Shuffle.com — voir tuto Discord' },
-  { id: 3, name: '50€ Shuffle', cost: 125000, description: 'Bon de 50€ sur Shuffle.com — voir tuto Discord' },
-  { id: 4, name: '1v1 FIFA vs Azzpronos 🎮', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h.' },
-  { id: 5, name: 'Prono VIP en MP 🎯', cost: 5000, description: 'Azzpronos t\'envoie son meilleur prono du jour en message prive !' },
-  { id: 6, name: 'Shoutout Discord 📢', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET2RUE !' },
-  { id: 7, name: 'Maillot de foot au choix 👕', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
-  { id: 8, name: 'Jeu video au choix 🕹️', cost: 200000, description: 'Choisis n\'importe quel jeu video ! Azzpronos te contacte en MP.' }
+  { id: 1, name: '10 euros Shuffle', cost: 25000, description: 'Bon de 10 euros sur Shuffle.com — voir tuto Discord' },
+  { id: 2, name: '20 euros Shuffle', cost: 50000, description: 'Bon de 20 euros sur Shuffle.com — voir tuto Discord' },
+  { id: 3, name: '50 euros Shuffle', cost: 125000, description: 'Bon de 50 euros sur Shuffle.com — voir tuto Discord' },
+  { id: 4, name: '1v1 FIFA vs Azzpronos', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h.' },
+  { id: 5, name: 'Prono VIP en MP', cost: 5000, description: 'Azzpronos envoie son meilleur prono du jour en message prive !' },
+  { id: 6, name: 'Shoutout Discord', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET2RUE !' },
+  { id: 7, name: 'Maillot de foot au choix', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
+  { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' }
 ];
 
 var MATCHES = [
-  { id: 1, day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '19:00', odds: { h: 3.20, n: 3.30, a: 2.10 }, result: null, settled: false },
-  { id: 2, day: 'Mardi 31 mars', league: 'Amical International', home: 'Algerie', hf: '🇩🇿', away: 'Uruguay', af: '🇺🇾', time: '18:30', odds: { h: 2.40, n: 3.10, a: 2.90 }, result: null, settled: false },
-  { id: 3, day: 'Mardi 31 mars', league: 'Amical International', home: 'Angleterre', hf: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', away: 'Japon', af: '🇯🇵', time: '18:45', odds: { h: 1.75, n: 3.50, a: 4.20 }, result: null, settled: false },
-  { id: 4, day: 'Mardi 31 mars', league: 'Amical International', home: 'Maroc', hf: '🇲🇦', away: 'Paraguay', af: '🇵🇾', time: '18:00', odds: { h: 1.85, n: 3.20, a: 4.00 }, result: null, settled: false },
-  { id: 5, day: 'Mardi 31 mars', league: 'Amical International', home: 'Senegal', hf: '🇸🇳', away: 'Gambie', af: '🇬🇲', time: '19:00', odds: { h: 1.70, n: 3.40, a: 4.80 }, result: null, settled: false },
-  { id: 6, day: 'Mardi 31 mars', league: 'Amical International', home: 'Pays-Bas', hf: '🇳🇱', away: 'Equateur', af: '🇪🇨', time: '18:45', odds: { h: 1.80, n: 3.30, a: 4.20 }, result: null, settled: false },
-  { id: 7, day: 'Mardi 31 mars', league: 'Amical International', home: 'Ecosse', hf: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', away: 'Cote Ivoire', af: '🇨🇮', time: '18:30', odds: { h: 2.60, n: 3.20, a: 2.70 }, result: null, settled: false },
-  { id: 8, day: 'Vendredi 3 avril', league: 'Ligue 1 - J27', home: 'PSG', hf: '🔵', away: 'Nantes', af: '🟡', time: '18:45', odds: { h: 1.25, n: 5.50, a: 10.0 }, result: null, settled: false },
-  { id: 9, day: 'Samedi 4 avril', league: 'Premier League', home: 'Arsenal', hf: '🔴', away: 'Fulham', af: '⚪', time: '11:30', odds: { h: 1.55, n: 4.00, a: 5.50 }, result: null, settled: false },
-  { id: 10, day: 'Samedi 4 avril', league: 'Premier League', home: 'Liverpool', hf: '🔴', away: 'Everton', af: '🔵', time: '14:00', odds: { h: 1.50, n: 4.20, a: 6.00 }, result: null, settled: false },
-  { id: 11, day: 'Samedi 4 avril', league: 'Premier League', home: 'Chelsea', hf: '🔵', away: 'Manchester Utd', af: '🔴', time: '14:00', odds: { h: 1.80, n: 3.50, a: 4.20 }, result: null, settled: false },
-  { id: 12, day: 'Samedi 4 avril', league: 'Premier League', home: 'Tottenham', hf: '⚪', away: 'Newcastle', af: '⚫', time: '16:30', odds: { h: 2.10, n: 3.30, a: 3.40 }, result: null, settled: false },
-  { id: 13, day: 'Dimanche 5 avril', league: 'Premier League', home: 'Manchester City', hf: '🔵', away: 'Aston Villa', af: '🟣', time: '13:00', odds: { h: 1.60, n: 3.80, a: 5.00 }, result: null, settled: false },
-  { id: 14, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Monaco', hf: '🔴', away: 'Brest', af: '⚽', time: '13:00', odds: { h: 1.70, n: 3.50, a: 4.50 }, result: null, settled: false },
-  { id: 15, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Strasbourg', hf: '🔵', away: 'Marseille', af: '🔵', time: '15:15', odds: { h: 3.20, n: 3.10, a: 2.20 }, result: null, settled: false },
-  { id: 16, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Lille', hf: '🔴', away: 'Lens', af: '🟡', time: '18:45', odds: { h: 1.90, n: 3.40, a: 3.80 }, result: null, settled: false },
-  { id: 17, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '🔴', away: 'Lyon', af: '🔴', time: '18:45', odds: { h: 2.30, n: 3.20, a: 3.00 }, result: null, settled: false }
+  { id: 1, date: '2026-03-29', day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 }, result: null, settled: false },
+  { id: 2, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Algerie', hf: '🇩🇿', away: 'Uruguay', af: '🇺🇾', time: '20:30', odds: { h: 2.40, n: 3.10, a: 2.90 }, result: null, settled: false },
+  { id: 3, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Angleterre', hf: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', away: 'Japon', af: '🇯🇵', time: '20:45', odds: { h: 1.75, n: 3.50, a: 4.20 }, result: null, settled: false },
+  { id: 4, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Maroc', hf: '🇲🇦', away: 'Paraguay', af: '🇵🇾', time: '20:00', odds: { h: 1.85, n: 3.20, a: 4.00 }, result: null, settled: false },
+  { id: 5, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Senegal', hf: '🇸🇳', away: 'Gambie', af: '🇬🇲', time: '21:00', odds: { h: 1.70, n: 3.40, a: 4.80 }, result: null, settled: false },
+  { id: 6, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Pays-Bas', hf: '🇳🇱', away: 'Equateur', af: '🇪🇨', time: '20:45', odds: { h: 1.80, n: 3.30, a: 4.20 }, result: null, settled: false },
+  { id: 7, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Ecosse', hf: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', away: 'Cote Ivoire', af: '🇨🇮', time: '20:30', odds: { h: 2.60, n: 3.20, a: 2.70 }, result: null, settled: false },
+  { id: 8, date: '2026-04-03', day: 'Vendredi 3 avril', league: 'Ligue 1 - J27', home: 'PSG', hf: '🔵', away: 'Nantes', af: '🟡', time: '20:45', odds: { h: 1.25, n: 5.50, a: 10.0 }, result: null, settled: false },
+  { id: 9, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Arsenal', hf: '🔴', away: 'Fulham', af: '⚪', time: '13:30', odds: { h: 1.55, n: 4.00, a: 5.50 }, result: null, settled: false },
+  { id: 10, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Liverpool', hf: '🔴', away: 'Everton', af: '🔵', time: '16:00', odds: { h: 1.50, n: 4.20, a: 6.00 }, result: null, settled: false },
+  { id: 11, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Chelsea', hf: '🔵', away: 'Manchester Utd', af: '🔴', time: '16:00', odds: { h: 1.80, n: 3.50, a: 4.20 }, result: null, settled: false },
+  { id: 12, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Tottenham', hf: '⚪', away: 'Newcastle', af: '⚫', time: '18:30', odds: { h: 2.10, n: 3.30, a: 3.40 }, result: null, settled: false },
+  { id: 13, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Premier League', home: 'Manchester City', hf: '🔵', away: 'Aston Villa', af: '🟣', time: '15:00', odds: { h: 1.60, n: 3.80, a: 5.00 }, result: null, settled: false },
+  { id: 14, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Monaco', hf: '🔴', away: 'Brest', af: '⚽', time: '15:00', odds: { h: 1.70, n: 3.50, a: 4.50 }, result: null, settled: false },
+  { id: 15, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Strasbourg', hf: '🔵', away: 'Marseille', af: '🔵', time: '17:15', odds: { h: 3.20, n: 3.10, a: 2.20 }, result: null, settled: false },
+  { id: 16, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Lille', hf: '🔴', away: 'Lens', af: '🟡', time: '20:45', odds: { h: 1.90, n: 3.40, a: 3.80 }, result: null, settled: false },
+  { id: 17, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '🔴', away: 'Lyon', af: '🔴', time: '20:45', odds: { h: 2.30, n: 3.20, a: 3.00 }, result: null, settled: false }
 ];
 
 app.listen(PORT, function() {
@@ -361,7 +398,7 @@ botClient.on('messageCreate', async function(message) {
 
   if (content.startsWith('!createcode')) {
     var parts = content.split(' ');
-    if (parts.length !== 4) { message.channel.send('❌ Format : `!createcode CODE MONTANT UTILISATIONS`\nEx: `!createcode BIENVENUE 500 999`'); return; }
+    if (parts.length !== 4) { message.channel.send('❌ Format : `!createcode CODE MONTANT UTILISATIONS`'); return; }
     var code = parts[1].toUpperCase();
     var reward = parseInt(parts[2]);
     var maxUses = parseInt(parts[3]);
