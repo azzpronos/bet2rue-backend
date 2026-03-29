@@ -7,7 +7,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--noir:#08090f;--noir2:#0f1120;--noir3:#161929;--rouge:#e8132a;--or:#f5a623;--blanc:#f0f2ff;--gris:#4a5180;--border:#252d52}
+:root{--noir:#08090f;--noir2:#0f1120;--noir3:#161929;--rouge:#e8132a;--or:#f5a623;--blanc:#f0f2ff;--gris:#4a5180;--border:#252d52;--vert:#10b981}
 body{background:var(--noir);color:var(--blanc);font-family:'Barlow',sans-serif;font-size:14px;min-height:100vh}
 header{background:var(--noir2);border-bottom:3px solid var(--rouge);padding:0 16px}
 .hi{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:10px}
@@ -16,14 +16,15 @@ header{background:var(--noir2);border-bottom:3px solid var(--rouge);padding:0 16
 .ub{display:flex;align-items:center;gap:10px}
 .bal{background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:12px}
 .bal b{color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:15px}
-.btn-dc{background:#5865F2;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;cursor:pointer}
+.btn-dc{background:#5865F2;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-dc:hover{background:#4752c4}
 .btn-out{background:none;border:1px solid var(--border);color:var(--gris);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer}
 .btn-out:hover{border-color:var(--rouge);color:var(--rouge)}
+.streak-badge{background:var(--or);color:#000;border-radius:5px;padding:2px 8px;font-family:'Bebas Neue',sans-serif;font-size:13px}
 .hero{background:var(--rouge);padding:6px 16px;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px}
 nav{background:var(--noir3);border-bottom:1px solid var(--border);overflow-x:auto}
 .ni{max-width:1100px;margin:0 auto;display:flex;padding:0 16px;white-space:nowrap}
-.nb{background:none;border:none;color:var(--gris);padding:11px 14px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;border-bottom:2px solid transparent;transition:all .2s}
+.nb{background:none;border:none;color:var(--gris);padding:11px 14px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;border-bottom:2px solid transparent;transition:all .2s;text-decoration:none;display:inline-block}
 .nb:hover{color:var(--blanc)}
 .nb.active{color:var(--rouge);border-bottom-color:var(--rouge)}
 main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 290px;gap:16px}
@@ -32,10 +33,11 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .day-label{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gris);padding:10px 0 8px;border-bottom:1px solid var(--border);margin-bottom:10px;margin-top:14px}
 .day-label:first-child{margin-top:0}
 .mc{background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-bottom:8px}
-.mc:hover{border-color:#3a4580}
-.mh{display:flex;justify-content:space-between;margin-bottom:7px}
+.mc.locked{opacity:.6}
+.mh{display:flex;justify-content:space-between;margin-bottom:7px;align-items:center}
 .league{font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:.5px}
 .mtime{font-size:11px;color:var(--or);font-weight:600}
+.lock-badge{background:#3b0808;color:#f87171;font-size:10px;font-family:'Bebas Neue',sans-serif;padding:2px 7px;border-radius:4px}
 .mteams{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
 .team{font-family:'Bebas Neue',sans-serif;font-size:16px;flex:1;display:flex;align-items:center;gap:5px}
 .team.r{flex-direction:row-reverse}
@@ -47,6 +49,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .ob.sel{background:var(--rouge);border-color:var(--rouge)}
 .ob.sel .ol{color:rgba(255,255,255,.7)}
 .ob.sel .ov{color:#fff}
+.ob.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
 .ol{font-size:9px;color:var(--gris);display:block;margin-bottom:2px;text-transform:uppercase}
 .ov{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--blanc)}
 .coupon{background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;position:sticky;top:16px}
@@ -68,30 +71,45 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .qb{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:5px;padding:5px 2px;font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gris);cursor:pointer}
 .qb:hover{color:var(--blanc)}
 .gr{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
-.gv{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#4ade80}
+.gv{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--vert)}
 .bbtn{width:100%;background:var(--rouge);border:none;color:#fff;padding:11px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;margin-top:6px}
 .bbtn:hover{background:#ff1f38}
 .clearbtn{width:100%;background:none;border:1px solid var(--border);color:var(--gris);padding:7px;border-radius:7px;font-size:11px;cursor:pointer;margin-top:6px}
+.clearbtn:hover{border-color:var(--rouge);color:var(--rouge)}
 .lb-row{background:var(--noir2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:7px;display:flex;align-items:center;gap:12px}
 .lb-rank{font-family:'Bebas Neue',sans-serif;font-size:20px;width:28px;text-align:center;color:var(--gris)}
-.lb-av{width:34px;height:34px;border-radius:50%;border:2px solid var(--border)}
 .lb-name{flex:1;font-weight:600}
 .lb-sub{font-size:11px;color:var(--gris)}
 .lb-bal{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--or)}
 .br{background:var(--noir2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.bs{font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;font-family:'Bebas Neue',sans-serif;white-space:nowrap}
+.bs{font-size:11px;padding:3px 8px;border-radius:4px;text-transform:uppercase;font-family:'Bebas Neue',sans-serif;white-space:nowrap}
 .win{background:#052e16;color:#4ade80}.loss{background:#3b0808;color:#f87171}.pending{background:#1c1400;color:#fbbf24}
 .pcard{background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:20px;max-width:380px}
-.p-av{width:60px;height:60px;border-radius:50%;border:3px solid var(--rouge);margin-bottom:12px}
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .sc{background:var(--noir3);border-radius:7px;padding:10px;text-align:center}
 .sn{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--or)}
 .slb{font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:.4px}
 .empty{text-align:center;padding:36px 0;color:var(--gris);font-size:13px;line-height:1.8}
-.toast{position:fixed;bottom:16px;right:16px;background:var(--noir2);border:1px solid #4ade80;border-radius:8px;padding:10px 16px;font-size:13px;z-index:999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;max-width:280px}
+.toast{position:fixed;bottom:16px;right:16px;background:var(--noir2);border:1px solid var(--vert);border-radius:8px;padding:10px 16px;font-size:13px;z-index:999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;max-width:280px}
 .toast.show{opacity:1;transform:translateY(0)}
 .toast.err{border-color:var(--rouge)}
 .stitle{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;color:var(--gris);text-transform:uppercase;margin-bottom:12px}
+.shop-item{background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.shop-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px}
+.shop-desc{font-size:12px;color:var(--gris);margin-top:4px}
+.shop-cost{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--or);margin-top:6px}
+.shop-btn{padding:10px 20px;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:15px;cursor:pointer;letter-spacing:.5px;white-space:nowrap}
+.shop-btn.can{background:var(--rouge);color:#fff}.shop-btn.can:hover{background:#ff1f38}
+.shop-btn.cant{background:var(--gris);color:#fff;cursor:not-allowed}
+.admin-match{background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:10px}
+.admin-title{font-family:'Bebas Neue',sans-serif;font-size:15px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.admin-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.abtn{padding:8px;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer}
+.abtn.h{background:#1a3a2a;color:#4ade80;border:1px solid #4ade80}.abtn.h:hover{background:#4ade80;color:#000}
+.abtn.n{background:#1c1400;color:#fbbf24;border:1px solid #fbbf24}.abtn.n:hover{background:#fbbf24;color:#000}
+.abtn.a{background:#3b0808;color:#f87171;border:1px solid #f87171}.abtn.a:hover{background:#f87171;color:#000}
+.settled-badge{background:#052e16;color:#4ade80;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
+.locked-badge{background:#3b0808;color:#f87171;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
 </style>
 </head>
 <body>
@@ -103,14 +121,15 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
     </div>
   </div>
 </header>
-<div class="hero">100% GRATUIT — PARIS VIRTUELS — ZERO VRAI ARGENT &nbsp;&nbsp; <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="background:#5865F2;color:#fff;padding:2px 10px;border-radius:4px;text-decoration:none;font-size:11px;font-family:'Bebas Neue',sans-serif;letter-spacing:.5px">🎮 DISCORD</a></div>
+<div class="hero">100% GRATUIT — PARIS VIRTUELS — ZERO VRAI ARGENT &nbsp;&nbsp; <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="background:#5865F2;color:#fff;padding:2px 10px;border-radius:4px;text-decoration:none;font-size:11px;font-family:'Bebas Neue',sans-serif">🎮 DISCORD</a></div>
 <nav>
-  <div class="ni">
+  <div class="ni" id="nav">
     <button class="nb active" onclick="sw('matches',this)">PARIS</button>
     <button class="nb" onclick="sw('leaderboard',this)">CLASSEMENT</button>
     <button class="nb" onclick="sw('mybets',this)">MES PARIS</button>
-    <button class="nb" onclick="sw('profile',this)">PROFIL</button> 
-  </div><button class="nb" onclick="sw('shop',this)">🛍️ BOUTIQUE</button>
+    <button class="nb" onclick="sw('profile',this)">PROFIL</button>
+    <button class="nb" onclick="sw('shop',this)">🛍️ BOUTIQUE</button>
+  </div>
 </nav>
 <main>
   <div>
@@ -118,7 +137,15 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
     <div id="tab-leaderboard" class="tab"><div class="stitle">CLASSEMENT BET2RUE</div><div id="lb"></div></div>
     <div id="tab-mybets" class="tab"><div class="stitle">MES PARIS</div><div id="bh"></div></div>
     <div id="tab-profile" class="tab"><div class="stitle">MON PROFIL</div><div id="pc"></div></div>
-  </div><div id="tab-shop" class="tab"><div class="stitle">🛍️ BOUTIQUE BET2RUE</div><div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px"><div style="font-size:13px;color:var(--gris);line-height:1.8">Échange tes <b style="color:var(--or)">EV</b> contre des récompenses réelles !<br>Pour utiliser Shuffle depuis la France → <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">suis le tuto sur notre Discord</a></div></div><div id="shop-list"></div></div>
+    <div id="tab-shop" class="tab">
+      <div class="stitle">🛍️ BOUTIQUE BET2RUE</div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
+        <div style="font-size:13px;color:var(--gris);line-height:1.8">Echange tes <b style="color:var(--or)">EV</b> contre des recompenses reelles !<br>Pour utiliser Shuffle depuis la France → <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">suis le tuto sur notre Discord</a></div>
+      </div>
+      <div id="shop-list"></div>
+    </div>
+    <div id="tab-admin" class="tab"><div class="stitle" style="color:var(--or)">PANEL ADMIN</div><div id="admin-list"></div></div>
+  </div>
   <div>
     <div class="coupon">
       <div class="ct">COUPON <span class="cbadge" id="cc">0</span></div>
@@ -146,268 +173,114 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 </main>
 <div class="toast" id="toast"></div>
 <script>
-var uid = null;
-var user = null;
-var coupon = [];
-var matches = [];
-
-function getUID() {
-  var p = new URLSearchParams(window.location.search);
-  var u = p.get('uid');
-  if (u) {
-    localStorage.setItem('bet2rue_uid', u);
-    window.history.replaceState({}, '', '/');
-    return u;
-  }
-  return localStorage.getItem('bet2rue_uid');
+var uid=null,user=null,coupon=[],matches=[];
+function getUID(){var p=new URLSearchParams(window.location.search);var u=p.get('uid');if(u){localStorage.setItem('b2r_uid',u);window.history.replaceState({},'','/');return u;}return localStorage.getItem('b2r_uid');}
+async function init(){
+  uid=getUID();
+  var params=new URLSearchParams(window.location.search);
+  var bonus=params.get('bonus');
+  if(params.get('login')==='success'&&bonus&&bonus!=='none'){var parts=bonus.split('_');showToast('Bienvenue ! +'+parts[0]+' EV bonus (Jour '+parts[1]+' streak) !');}
+  else if(params.get('login')==='success'){showToast('Bienvenue sur BET2RUE !');}
+  if(uid){try{var res=await fetch('/api/me?uid='+uid);if(res.ok){user=await res.json();renderUB();}else{uid=null;localStorage.removeItem('b2r_uid');}}catch(e){}}
+  try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}
 }
-
-async function init() {
-  uid = getUID();
-  var params = new URLSearchParams(window.location.search);
-  if (params.get('login') === 'success') {
-    showToast('Bienvenue sur BET2RUE ! 1000 EV offerts !');
-  }
-  if (uid) {
-    try {
-      var res = await fetch('/api/me?uid=' + uid);
-      if (res.ok) {
-        user = await res.json();
-        renderUB();
-      } else {
-        uid = null;
-        localStorage.removeItem('bet2rue_uid');
-      }
-    } catch(e) {}
-  }
-  try {
-    var r = await fetch('/api/matches');
-    matches = await r.json();
-    renderMatches();
-  } catch(e) {}
+function renderUB(){
+  var bar=document.getElementById('ub');
+  if(!user){bar.innerHTML='<a class="btn-dc" href="/auth/discord">CONNEXION DISCORD</a>';return;}
+  var initials=user.username.slice(0,2).toUpperCase();
+  if(user.isAdmin&&!document.getElementById('admin-nav-btn')){var nav=document.getElementById('nav');var btn=document.createElement('button');btn.className='nb';btn.id='admin-nav-btn';btn.setAttribute('onclick',"sw('admin',this)");btn.textContent='ADMIN';nav.appendChild(btn);}
+  bar.innerHTML='<div style="display:flex;align-items:center;gap:6px"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff">'+initials+'</div><span style="font-size:12px;color:var(--gris)">'+user.username+'</span>'+(user.streak>0?'<span class="streak-badge">🔥 J'+user.streak+'</span>':'')+'</div><div class="bal">Solde <b>'+Math.round(user.balance).toLocaleString()+' EV</b></div><button class="btn-out" onclick="logout()">Quitter</button>';
 }
-
-function renderUB() {
-  var bar = document.getElementById('ub');
-  if (!user) {
-    bar.innerHTML = '<a class="btn-dc" href="/auth/discord">CONNEXION DISCORD</a>';
-    return;
-  }
-  var initials = user.username.slice(0,2).toUpperCase();
-  bar.innerHTML = '<div style="display:flex;align-items:center;gap:6px"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff">' + initials + '</div><span style="font-size:12px;color:var(--gris)">' + user.username + '</span></div>'
-    + '<div class="bal">Solde <b>' + Math.round(user.balance).toLocaleString() + ' EV</b></div>'
-    + '<button class="btn-out" onclick="logout()">Quitter</button>';
-}
-
-function logout() {
-  uid = null; user = null; coupon = [];
-  localStorage.removeItem('bet2rue_uid');
-  renderUB(); refC(); renderMatches();
-  showToast('Deconnecte');
-}
-
-function renderMatches() {
-  var groups = {};
-  matches.forEach(function(m) {
-    if (!groups[m.day]) groups[m.day] = [];
-    groups[m.day].push(m);
-  });
-  var html = '';
-  Object.keys(groups).forEach(function(day) {
-    html += '<div class="day-label">AGENDA ' + day.toUpperCase() + '</div>';
-    groups[day].forEach(function(m) {
-      var s1 = coupon.find(function(c){return c.mid===m.id&&c.k==='h';});
-      var sN = coupon.find(function(c){return c.mid===m.id&&c.k==='n';});
-      var s2 = coupon.find(function(c){return c.mid===m.id&&c.k==='a';});
-      html += '<div class="mc">'
-        + '<div class="mh"><span class="league">' + m.league + '</span><span class="mtime">' + m.time + '</span></div>'
-        + '<div class="mteams">'
-        + '<span class="team"><span class="flag">' + m.hf + '</span>' + m.home + '</span>'
-        + '<span class="vsbox">VS</span>'
-        + '<span class="team r"><span class="flag">' + m.af + '</span>' + m.away + '</span>'
-        + '</div>'
-        + '<div class="odds-row">'
-        + '<button class="ob' + (s1?' sel':'') + '" onclick="tog(' + m.id + ',\'h\',\'' + m.home + '\',' + m.odds.h + ',\'' + m.home + ' vs ' + m.away + '\')">'
-        + '<span class="ol">1</span><span class="ov">' + m.odds.h.toFixed(2) + '</span></button>'
-        + '<button class="ob' + (sN?' sel':'') + '" onclick="tog(' + m.id + ',\'n\',\'Nul\',' + m.odds.n + ',\'' + m.home + ' vs ' + m.away + '\')">'
-        + '<span class="ol">N</span><span class="ov">' + m.odds.n.toFixed(2) + '</span></button>'
-        + '<button class="ob' + (s2?' sel':'') + '" onclick="tog(' + m.id + ',\'a\',\'' + m.away + '\',' + m.odds.a + ',\'' + m.home + ' vs ' + m.away + '\')">'
-        + '<span class="ol">2</span><span class="ov">' + m.odds.a.toFixed(2) + '</span></button>'
-        + '</div></div>';
+function logout(){uid=null;user=null;coupon=[];localStorage.removeItem('b2r_uid');renderUB();refC();renderMatches();showToast('Deconnecte');}
+function renderMatches(){
+  var groups={};
+  matches.forEach(function(m){if(!groups[m.day])groups[m.day]=[];groups[m.day].push(m);});
+  var html='';
+  Object.keys(groups).forEach(function(day){
+    html+='<div class="day-label">📅 '+day.toUpperCase()+'</div>';
+    groups[day].forEach(function(m){
+      var locked=m.locked;
+      var s1=coupon.find(function(c){return c.mid===m.id&&c.k==='h';});
+      var sN=coupon.find(function(c){return c.mid===m.id&&c.k==='n';});
+      var s2=coupon.find(function(c){return c.mid===m.id&&c.k==='a';});
+      html+='<div class="mc'+(locked?' locked':'')+'">'
+        +'<div class="mh"><span class="league">'+m.league+'</span><div style="display:flex;align-items:center;gap:6px">'+(locked?'<span class="lock-badge">FERME</span>':'')+'<span class="mtime">'+m.time+'</span></div></div>'
+        +'<div class="mteams"><span class="team"><span class="flag">'+m.hf+'</span>'+m.home+'</span><span class="vsbox">'+(m.settled?(m.result==='h'?'1':m.result==='n'?'N':'2'):'VS')+'</span><span class="team r"><span class="flag">'+m.af+'</span>'+m.away+'</span></div>';
+      if(!m.settled){html+='<div class="odds-row"><button class="ob'+(s1?' sel':'')+(locked?' disabled':'')+'" onclick="tog('+m.id+',\'h\',\''+m.home+'\','+m.odds.h+',\''+m.home+' vs '+m.away+'\')">'+'<span class="ol">1</span><span class="ov">'+m.odds.h.toFixed(2)+'</span></button>'+'<button class="ob'+(sN?' sel':'')+(locked?' disabled':'')+'" onclick="tog('+m.id+',\'n\',\'Nul\','+m.odds.n+',\''+m.home+' vs '+m.away+'\')">'+'<span class="ol">N</span><span class="ov">'+m.odds.n.toFixed(2)+'</span></button>'+'<button class="ob'+(s2?' sel':'')+(locked?' disabled':'')+'" onclick="tog('+m.id+',\'a\',\''+m.away+'\','+m.odds.a+',\''+m.home+' vs '+m.away+'\')">'+'<span class="ol">2</span><span class="ov">'+m.odds.a.toFixed(2)+'</span></button></div>';}
+      html+='</div>';
     });
   });
-  document.getElementById('ml').innerHTML = html;
+  document.getElementById('ml').innerHTML=html;
 }
-
-function tog(mid, k, pick, odd, match) {
-  if (!user) { showToast('Connecte-toi avec Discord !', 'err'); return; }
-  var idx = coupon.findIndex(function(c){return c.mid===mid;});
-  if (idx > -1) {
-    if (coupon[idx].k === k) coupon.splice(idx, 1);
-    else coupon[idx] = {mid:mid,k:k,pick:pick,odd:odd,match:match};
-  } else {
-    if (coupon.length >= 8) { showToast('Max 8 selections', 'err'); return; }
-    coupon.push({mid:mid,k:k,pick:pick,odd:odd,match:match});
-  }
-  refC(); renderMatches();
+function tog(mid,k,pick,odd,match){
+  if(!user){showToast('Connecte-toi avec Discord !','err');return;}
+  var m=matches.find(function(x){return x.id===mid;});
+  if(m&&m.locked){showToast('Ce match a deja commence !','err');return;}
+  var idx=coupon.findIndex(function(c){return c.mid===mid;});
+  if(idx>-1){if(coupon[idx].k===k)coupon.splice(idx,1);else coupon[idx]={mid:mid,k:k,pick:pick,odd:odd,match:match};}
+  else{if(coupon.length>=8){showToast('Max 8 selections','err');return;}coupon.push({mid:mid,k:k,pick:pick,odd:odd,match:match});}
+  refC();renderMatches();
 }
-
-function refC() {
-  document.getElementById('cc').textContent = coupon.length;
-  var body = document.getElementById('cb');
-  var footer = document.getElementById('cf');
-  if (!coupon.length) {
-    body.innerHTML = '<div class="cempty">Clique sur une cote<br>pour l\'ajouter !</div>';
-    footer.style.display = 'none'; return;
-  }
-  footer.style.display = 'block';
-  body.innerHTML = coupon.map(function(c,i) {
-    return '<div class="ci"><button class="cr" onclick="rp(' + i + ')">x</button>'
-      + '<div class="cm">' + c.match + '</div>'
-      + '<div class="cp">' + c.pick + '</div>'
-      + '<div class="co">Cote : ' + c.odd.toFixed(2) + '</div></div>';
-  }).join('');
+function refC(){
+  document.getElementById('cc').textContent=coupon.length;
+  var body=document.getElementById('cb');var footer=document.getElementById('cf');
+  if(!coupon.length){body.innerHTML='<div class="cempty">Clique sur une cote<br>pour l\'ajouter !</div>';footer.style.display='none';return;}
+  footer.style.display='block';
+  body.innerHTML=coupon.map(function(c,i){return '<div class="ci"><button class="cr" onclick="rp('+i+')">x</button><div class="cm">'+c.match+'</div><div class="cp">'+c.pick+'</div><div class="co">Cote : '+c.odd.toFixed(2)+'</div></div>';}).join('');
   upd();
 }
-
-function rp(i) { coupon.splice(i,1); refC(); renderMatches(); }
-function clearC() { coupon=[]; refC(); renderMatches(); }
-function ss(v) { document.getElementById('stake').value=v; upd(); }
-function upd() {
-  if (!coupon.length) return;
-  var stake = parseFloat(document.getElementById('stake').value)||0;
-  var tot = coupon.reduce(function(a,c){return a*c.odd;},1);
-  document.getElementById('to').textContent = tot.toFixed(2);
-  document.getElementById('pg').textContent = (stake*tot).toFixed(2) + ' EV';
+function rp(i){coupon.splice(i,1);refC();renderMatches();}
+function clearC(){coupon=[];refC();renderMatches();}
+function ss(v){document.getElementById('stake').value=v;upd();}
+function upd(){if(!coupon.length)return;var stake=parseFloat(document.getElementById('stake').value)||0;var tot=coupon.reduce(function(a,c){return a*c.odd;},1);document.getElementById('to').textContent=tot.toFixed(2);document.getElementById('pg').textContent=(stake*tot).toFixed(2)+' EV';}
+async function placeBet(){
+  if(!user){showToast('Connecte-toi !','err');return;}
+  var stake=parseFloat(document.getElementById('stake').value)||0;
+  if(stake<1){showToast('Mise min : 1 EV','err');return;}
+  if(stake>user.balance){showToast('Solde insuffisant !','err');return;}
+  try{var res=await fetch('/api/bet?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({picks:coupon,stake:stake,uid:uid})});var data=await res.json();if(!res.ok){showToast(data.error||'Erreur','err');return;}user.balance=data.newBalance;renderUB();coupon=[];refC();renderMatches();showToast('Pari place ! En attente du resultat ⏳');}catch(e){showToast('Erreur connexion','err');}
 }
-
-async function placeBet() {
-  if (!user) { showToast('Connecte-toi !', 'err'); return; }
-  var stake = parseFloat(document.getElementById('stake').value)||0;
-  if (stake < 1) { showToast('Mise min : 1 EV', 'err'); return; }
-  if (stake > user.balance) { showToast('Solde insuffisant !', 'err'); return; }
-  try {
-    var res = await fetch('/api/bet?uid=' + uid, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({picks:coupon, stake:stake, uid:uid})
-    });
-    var data = await res.json();
-    if (!res.ok) { showToast(data.error || 'Erreur', 'err'); return; }
-    user.balance = data.newBalance;
-    renderUB(); coupon=[]; refC(); renderMatches();
-    var s = data.bet.status;
-    showToast(s==='win'?'GAGNE ! +'+data.bet.potentialGain+' EV !':s==='loss'?'Pari perdu.':'En attente...', s==='win'?'':'err');
-  } catch(e) { showToast('Erreur connexion', 'err'); }
+async function loadLB(){
+  try{var res=await fetch('/api/leaderboard');var data=await res.json();var medals=['🥇','🥈','🥉'];document.getElementById('lb').innerHTML=data.length?data.map(function(p,i){var initials=p.username.slice(0,2).toUpperCase();return '<div class="lb-row"><div class="lb-rank">'+(medals[i]||i+1)+'</div><div style="width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0">'+initials+'</div><div><div class="lb-name">'+p.username+(user&&p.id===uid?' <span style="color:var(--rouge);font-size:10px">(toi)</span>':'')+'</div><div class="lb-sub">'+p.betsCount+' paris • 🔥 J'+p.streak+'</div></div><div class="lb-bal">'+p.balance.toLocaleString()+' EV</div></div>';}).join(''):'<div class="empty">Aucun membre pour l\'instant</div>';}catch(e){}
 }
-
-async function loadLB() {
-  try {
-    var res = await fetch('/api/leaderboard');
-    var data = await res.json();
-    var medals = ['1er','2e','3e'];
-    document.getElementById('lb').innerHTML = data.length ? data.map(function(p,i) {
-      var initials = p.username.slice(0,2).toUpperCase();
-      return '<div class="lb-row">'
-        + '<div class="lb-rank">' + (medals[i]||i+1) + '</div>'
-        + '<div style="width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;border:2px solid var(--border);flex-shrink:0">' + initials + '</div>'
-        + '<div><div class="lb-name">' + p.username + (user&&p.id===uid?' (toi)':'') + '</div><div class="lb-sub">' + p.betsCount + ' paris</div></div>'
-        + '<div class="lb-bal">' + p.balance.toLocaleString() + ' EV</div></div>';
-    }).join('') : '<div class="empty">Aucun membre pour l\'instant</div>';
-  } catch(e) {}
+async function renderBets(){
+  var el=document.getElementById('bh');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir tes paris</div>';return;}
+  try{var res=await fetch('/api/me?uid='+uid);var data=await res.json();user=data;if(!data.bets||!data.bets.length){el.innerHTML='<div class="empty">Aucun pari pour l\'instant</div>';return;}el.innerHTML=data.bets.map(function(b){return '<div class="br"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+b.picks.map(function(p){return p.pick;}).join(' + ')+'</div><div style="font-size:11px;color:var(--gris)">Mise '+b.stake+' EV x'+b.totalOdd+' = '+b.potentialGain+' EV</div></div><span class="bs '+b.status+'">'+(b.status==='win'?'GAGNE':b.status==='loss'?'PERDU':'EN ATTENTE')+'</span></div>';}).join('');}catch(e){}
 }
-
-async function renderBets() {
-  var el = document.getElementById('bh');
-  if (!user) { el.innerHTML='<div class="empty">Connecte-toi pour voir tes paris</div>'; return; }
-  try {
-    var res = await fetch('/api/me?uid='+uid);
-    var data = await res.json();
-    user = data;
-    if (!data.bets||!data.bets.length) { el.innerHTML='<div class="empty">Aucun pari pour l\'instant</div>'; return; }
-    el.innerHTML = data.bets.map(function(b) {
-      return '<div class="br"><div style="flex:1;min-width:0">'
-        + '<div style="font-size:13px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + b.picks.map(function(p){return p.pick;}).join(' + ') + '</div>'
-        + '<div style="font-size:11px;color:var(--gris)">Mise '+b.stake+' EV x'+b.totalOdd+' = '+b.potentialGain+' EV</div>'
-        + '</div><span class="bs '+b.status+'">'+(b.status==='win'?'GAGNE':b.status==='loss'?'PERDU':'EN COURS')+'</span></div>';
-    }).join('');
-  } catch(e) {}
+async function loadShop(){
+  var el=document.getElementById('shop-list');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour acceder a la boutique</div>';return;}
+  try{var res=await fetch('/api/shop');var items=await res.json();el.innerHTML=items.map(function(item){var canBuy=user.balance>=item.cost;return '<div class="shop-item"><div><div class="shop-name">'+item.name+'</div><div class="shop-desc">'+item.description+'</div><div class="shop-cost">'+item.cost.toLocaleString()+' EV</div></div><button onclick="buyItem('+item.id+')" class="shop-btn '+(canBuy?'can':'cant')+'">'+(canBuy?'ECHANGER':'SOLDE INSUFFISANT')+'</button></div>';}).join('');}catch(e){}
 }
-
-function renderProfile() {
-  if(tab==='shop')loadShop();
-  var el = document.getElementById('pc');
-  if (!user) { el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>'; return; }
-  var wins = user.bets ? user.bets.filter(function(b){return b.status==='win';}).length : 0;
-  var losses = user.bets ? user.bets.filter(function(b){return b.status==='loss';}).length : 0;
-  var total = user.bets ? user.bets.length : 0;
-  var wr = total ? Math.round(wins/total*100) : 0;
-  var initials = user.username.slice(0,2).toUpperCase();
-  el.innerHTML = '<div class="pcard">'
-    + '<div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">' + initials + '</div>'
-    + '<div style="font-family:Bebas Neue,sans-serif;font-size:24px">' + user.username + '</div>'
-    + '<div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE via Discord</div>'
-    + '<div class="sg">'
-    + '<div class="sc"><div class="sn">' + Math.round(user.balance).toLocaleString() + '</div><div class="slb">Solde EV</div></div>'
-    + '<div class="sc"><div class="sn">' + total + '</div><div class="slb">Paris</div></div>'
-    + '<div class="sc"><div class="sn" style="color:#4ade80">' + wins + '</div><div class="slb">Victoires</div></div>'
-    + '<div class="sc"><div class="sn">' + wr + '%</div><div class="slb">Reussite</div></div>'
-    + '</div></div>';
+async function buyItem(itemId){
+  if(!user)return;if(!confirm('Confirmer l\'echange ?'))return;
+  try{var res=await fetch('/api/shop/buy?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({itemId:itemId,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();loadShop();showToast('Demande envoyee ! Verifie tes MP Discord dans les 24h.');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}
 }
-
-function sw(tab, btn) {
+function renderProfile(){
+  var el=document.getElementById('pc');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>';return;}
+  var wins=user.bets?user.bets.filter(function(b){return b.status==='win';}).length:0;
+  var total=user.bets?user.bets.length:0;var wr=total?Math.round(wins/total*100):0;var initials=user.username.slice(0,2).toUpperCase();
+  el.innerHTML='<div class="pcard"><div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div><div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div><div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE • 🔥 '+user.streak+' jours de streak</div><div class="sg"><div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde EV</div></div><div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div><div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div><div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div></div></div>';
+}
+async function loadAdmin(){
+  if(!user||!user.isAdmin){document.getElementById('admin-list').innerHTML='<div class="empty">Acces refuse</div>';return;}
+  try{var res=await fetch('/api/admin/matches?uid='+uid);var data=await res.json();document.getElementById('admin-list').innerHTML=data.map(function(m){return '<div class="admin-match"><div class="admin-title"><span>'+m.home+' vs '+m.away+' — '+m.time+'</span>'+(m.settled?'<span class="settled-badge">REGLE : '+(m.result==='h'?m.home:m.result==='n'?'NUL':m.away)+'</span>':m.locked?'<span class="locked-badge">EN COURS</span>':'')+'</div>'+(!m.settled?'<div class="admin-btns"><button class="abtn h" onclick="setResult('+m.id+',\'h\')">1 '+m.home+'</button><button class="abtn n" onclick="setResult('+m.id+',\'n\')">N NUL</button><button class="abtn a" onclick="setResult('+m.id+',\'a\')">2 '+m.away+'</button></div>':'')+'</div>';}).join('');}catch(e){}
+}
+async function setResult(matchId,result){
+  try{var res=await fetch('/api/admin/result?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({matchId:matchId,result:result,uid:uid})});var data=await res.json();if(res.ok){showToast('Resultat enregistre ! '+data.settled+' paris regles.');var r=await fetch('/api/matches');matches=await r.json();loadAdmin();renderMatches();}else{showToast(data.error,'err');}}catch(e){showToast('Erreur','err');}
+}
+function sw(tab,btn){
   document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.getElementById('tab-'+tab).classList.add('active');
-  if (tab==='leaderboard') loadLB();
-  if (tab==='mybets') renderBets();
-  if (tab==='profile') renderProfile();if (tab==='shop') loadShop();
+  if(tab==='leaderboard')loadLB();
+  if(tab==='mybets')renderBets();
+  if(tab==='shop')loadShop();
+  if(tab==='profile')renderProfile();
+  if(tab==='admin')loadAdmin();
 }
-
-function showToast(msg, type) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + (type==='err'?'err':'');
-  setTimeout(function(){t.className='toast';}, 3500);
-}
-async function loadShop() {
-  var el = document.getElementById('shop-list');
-  if (!user) { el.innerHTML='<div class="empty">Connecte-toi pour acceder a la boutique</div>'; return; }
-  try {
-    var res = await fetch('/api/shop');
-    var items = await res.json();
-    el.innerHTML = items.map(function(item) {
-      var canBuy = user.balance >= item.cost;
-      return '<div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:16px">'
-        +'<div>'
-        +'<div style="font-family:Bebas Neue,sans-serif;font-size:20px;letter-spacing:1px">'+item.name+'</div>'
-        +'<div style="font-size:12px;color:var(--gris);margin-top:4px">'+item.description+'</div>'
-        +'<div style="font-family:Bebas Neue,sans-serif;font-size:16px;color:var(--or);margin-top:6px">'+item.cost.toLocaleString()+' EV</div>'
-        +'</div>'
-        +'<button onclick="buyItem('+item.id+')" style="background:'+(canBuy?'var(--rouge)':'var(--gris)')+';border:none;color:#fff;padding:10px 20px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:15px;cursor:'+(canBuy?'pointer':'not-allowed')+'">'
-        +(canBuy?'ECHANGER':'SOLDE INSUFFISANT')
-        +'</button></div>';
-    }).join('');
-  } catch(e) {}
-}
-
-async function buyItem(itemId) {
-  if (!user) return;
-  if (!confirm('Confirmer l\'echange ?')) return;
-  try {
-    var res = await fetch('/api/shop/buy?uid='+uid, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({itemId:itemId, uid:uid})
-    });
-    var data = await res.json();
-    if (res.ok) {
-      user.balance = data.newBalance;
-      renderUB(); loadShop();
-      showToast('Demande envoyee ! Verifie tes MP Discord dans les 24h.');
-    } else { showToast(data.error||'Erreur','err'); }
-  } catch(e) { showToast('Erreur connexion','err'); }
-}
+function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type==='err'?'err':'');setTimeout(function(){t.className='toast';},3500);}
+setInterval(async function(){try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}},60000);
 init();
 </script>
 </body>
