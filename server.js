@@ -77,7 +77,7 @@ function isMatchLocked(match) {
   var hours = parseInt(parts[0]);
   var minutes = parseInt(parts[1]);
   var matchDate = new Date();
-  matchDate.setHours(hours, minutes, 0, 0);
+  matchDate.setUTCHours(hours - 2, minutes, 0, 0);
   return now >= matchDate;
 }
 
