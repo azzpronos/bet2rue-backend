@@ -362,7 +362,7 @@ function sw(tab, btn) {
   document.getElementById('tab-'+tab).classList.add('active');
   if (tab==='leaderboard') loadLB();
   if (tab==='mybets') renderBets();
-  if (tab==='profile') renderProfile();
+  if (tab==='profile') renderProfile();if (tab==='shop') loadShop();
 }
 
 function showToast(msg, type) {
