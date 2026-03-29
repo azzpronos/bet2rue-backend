@@ -351,7 +351,7 @@ var SHOP_ITEMS = [
   { id: 3, name: '50 euros Shuffle', cost: 125000, description: 'Bon de 50 euros sur Shuffle.com — voir tuto Discord' },
   { id: 4, name: '1v1 FIFA vs Azzpronos', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h.' },
   { id: 5, name: 'Prono VIP en MP', cost: 5000, description: 'Azzpronos envoie son meilleur prono du jour en message prive !' },
-  { id: 6, name: 'Shoutout Discord', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET2RUE !' },
+  { id: 6, name: 'Shoutout Discord', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET2HESS !' },
   { id: 7, name: 'Maillot de foot au choix', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
   { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' }
 ];
@@ -377,7 +377,7 @@ var MATCHES = [
 ];
 
 app.listen(PORT, function() {
-  console.log('BET2RUE sur port ' + PORT);
+  console.log('BET2HESS sur port ' + PORT);
 });
 
 const { Client, GatewayIntentBits } = require('discord.js');
@@ -395,7 +395,7 @@ botClient.on('messageCreate', async function(message) {
   var content = message.content.trim();
 
   if (content === '!matchs') {
-    var txt = '📋 **MATCHS BET2RUE**\n\n';
+    var txt = '📋 **MATCHS BET2HESS**\n\n';
     MATCHES.forEach(function(m) {
       var status = m.settled ? '✅ REGLE' : isMatchLocked(m) ? '🔴 FERME' : '🟢 OUVERT';
       txt += 'ID **' + m.id + '** | ' + m.day + ' ' + m.time + '\n' + m.hf + ' ' + m.home + ' vs ' + m.away + ' ' + m.af + '\n1→' + m.odds.h + ' | N→' + m.odds.n + ' | 2→' + m.odds.a + ' | ' + status + '\n\n';
@@ -440,14 +440,14 @@ botClient.on('messageCreate', async function(message) {
     var discordId = message.author.id;
     if (promo.usedBy.includes(discordId)) { message.channel.send('❌ Tu as deja utilise ce code !'); return; }
     var user = await User.findOne({ id: discordId });
-    if (!user) { message.channel.send('❌ Connecte-toi dabord sur bet2rue-backend.onrender.com'); return; }
+    if (!user) { message.channel.send('❌ Connecte-toi dabord sur bet2hess-backend.onrender.com'); return; }
     promo.uses += 1;
     promo.usedBy.push(discordId);
     promo.markModified('usedBy');
     await promo.save();
     user.balance += promo.reward;
     await user.save();
-    message.channel.send('✅ Code **' + code + '** active ! **+' + promo.reward + ' EV** ajoutes sur ton compte BET2RUE !');
+    message.channel.send('✅ Code **' + code + '** active ! **+' + promo.reward + ' EV** ajoutes sur ton compte BET2HESS !');
   }
 
   if (content.startsWith('!valide')) {
@@ -460,7 +460,7 @@ botClient.on('messageCreate', async function(message) {
     targetUser.balance += 5000;
     targetUser.shuffleValidated = true;
     await targetUser.save();
-    message.channel.send('✅ **Bonus Shuffle valide !**\n👤 **' + targetUser.username + '** a recu **+5000 Pesos** sur son compte BET2RUE !');
+    message.channel.send('✅ **Bonus Shuffle valide !**\n👤 **' + targetUser.username + '** a recu **+5000 Pesos** sur son compte BET2HESS !');
     try {
       var checkChannel = await botClient.channels.fetch('1487956908106322174');
       await checkChannel.send('✅ **' + targetUser.username + '** — Bonus Shuffle confirme par Azzpronos !');
@@ -470,7 +470,7 @@ botClient.on('messageCreate', async function(message) {
 
   if (content === '!classement') {
     var users = await User.find({}).sort({ balance: -1 }).limit(10);
-    var txt = '🏆 **CLASSEMENT BET2RUE**\n\n';
+    var txt = '🏆 **CLASSEMENT BET2HESS**\n\n';
     var medals = ['🥇','🥈','🥉'];
     users.forEach(function(p, i) {
       txt += (medals[i] || (i+1) + '.') + ' **' + p.username + '** — ' + Math.round(p.balance).toLocaleString() + ' EV\n';
@@ -480,4 +480,3 @@ botClient.on('messageCreate', async function(message) {
 });
 
 botClient.login(process.env.DISCORD_BOT_TOKEN);
-
