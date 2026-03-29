@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const ADMIN_ID = '1143133778512986122';
+const SHOP_CHANNEL_ID = '1487785562222891078';
 
 app.use(express.json());
 app.use(cors({ origin: '*' }));
@@ -18,16 +19,6 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(function(err) { console.error('Erreur MongoDB:', err.message); });
 
 const UserSchema = new mongoose.Schema({
-  const PromoSchema = new mongoose.Schema({
-  code: { type: String, unique: true, uppercase: true },
-  reward: Number,
-  maxUses: { type: Number, default: 1 },
-  uses: { type: Number, default: 0 },
-  usedBy: { type: Array, default: [] },
-  createdAt: { type: String, default: () => new Date().toISOString() }
-});
-const Promo = mongoose.model('Promo', PromoSchema);
-  
   id: { type: String, unique: true },
   username: String,
   avatar: String,
@@ -35,12 +26,22 @@ const Promo = mongoose.model('Promo', PromoSchema);
   bets: { type: Array, default: [] },
   streak: { type: Number, default: 0 },
   lastBonus: { type: String, default: null },
-  createdAt: { type: String, default: () => new Date().toISOString() }
+  createdAt: { type: String, default: function() { return new Date().toISOString(); } }
 });
 const User = mongoose.model('User', UserSchema);
 
+const PromoSchema = new mongoose.Schema({
+  code: { type: String, unique: true, uppercase: true },
+  reward: Number,
+  maxUses: { type: Number, default: 1 },
+  uses: { type: Number, default: 0 },
+  usedBy: { type: Array, default: [] },
+  createdAt: { type: String, default: function() { return new Date().toISOString(); } }
+});
+const Promo = mongoose.model('Promo', PromoSchema);
+
 async function getOrCreateUser(discordUser) {
-  let user = await User.findOne({ id: discordUser.id });
+  var user = await User.findOne({ id: discordUser.id });
   if (!user) {
     user = await User.create({
       id: discordUser.id,
@@ -58,41 +59,44 @@ async function getOrCreateUser(discordUser) {
 }
 
 async function checkBonus(user) {
-  const now = new Date();
-  const today = now.toDateString();
+  var now = new Date();
+  var today = now.toDateString();
   if (user.lastBonus === today) return null;
   user.streak = (user.streak || 0) + 1;
   if (user.streak > 7) user.streak = 7;
-  const bonus = user.streak * 100;
+  var bonus = user.streak * 100;
   user.balance += bonus;
   user.lastBonus = today;
   await user.save();
-  return { bonus, streak: user.streak };
+  return { bonus: bonus, streak: user.streak };
 }
 
 function isMatchLocked(match) {
-  const now = new Date();
-  const [hours, minutes] = match.time.split(':').map(Number);
-  const matchDate = new Date();
+  var now = new Date();
+  var parts = match.time.split(':');
+  var hours = parseInt(parts[0]);
+  var minutes = parseInt(parts[1]);
+  var matchDate = new Date();
   matchDate.setHours(hours, minutes, 0, 0);
   return now >= matchDate;
 }
 
 async function settleMatch(matchId, result) {
-  const match = MATCHES.find(function(m) { return m.id === matchId; });
+  var match = MATCHES.find(function(m) { return m.id === matchId; });
   if (!match) return 0;
   match.result = result;
   match.settled = true;
-  let count = 0;
-  const users = await User.find({});
-  for (const user of users) {
-    let changed = false;
+  var count = 0;
+  var users = await User.find({});
+  for (var i = 0; i < users.length; i++) {
+    var user = users[i];
+    var changed = false;
     user.bets.forEach(function(bet) {
       if (bet.status !== 'pending') return;
-      const pick = bet.picks.find(function(p) { return p.mid === matchId; });
+      var pick = bet.picks.find(function(p) { return p.mid === matchId; });
       if (!pick) return;
       if (pick.k === result) {
-        const gain = parseFloat((bet.stake * bet.totalOdd).toFixed(2));
+        var gain = parseFloat((bet.stake * bet.totalOdd).toFixed(2));
         user.balance += gain;
         bet.status = 'win';
       } else {
@@ -221,8 +225,7 @@ app.post('/api/bet', async function(req, res) {
   res.json({ bet: bet, newBalance: user.balance });
 });
 
-app.get('/api/shop', function(req, res) {
-  app.post('/api/promo', async function(req, res) {
+app.post('/api/promo', async function(req, res) {
   var uid = req.query.uid || req.body.uid;
   if (!uid) return res.status(401).json({ error: 'Non connecte' });
   var user = await User.findOne({ id: uid });
@@ -242,6 +245,8 @@ app.get('/api/shop', function(req, res) {
   await user.save();
   res.json({ ok: true, reward: promo.reward, newBalance: user.balance });
 });
+
+app.get('/api/shop', function(req, res) {
   res.json(SHOP_ITEMS);
 });
 
@@ -319,7 +324,6 @@ app.listen(PORT, function() {
   console.log('BET2RUE sur port ' + PORT);
 });
 
-const SHOP_CHANNEL_ID = '1487785562222891078';
 const { Client, GatewayIntentBits } = require('discord.js');
 const botClient = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
@@ -333,6 +337,7 @@ botClient.on('messageCreate', async function(message) {
   if (message.author.bot) return;
   if (message.author.id !== ADMIN_ID) return;
   var content = message.content.trim();
+
   if (content === '!matchs') {
     var txt = '📋 **MATCHS BET2RUE**\n\n';
     MATCHES.forEach(function(m) {
@@ -341,6 +346,7 @@ botClient.on('messageCreate', async function(message) {
     });
     message.channel.send(txt);
   }
+
   if (content.startsWith('!resultat')) {
     var parts = content.split(' ');
     if (parts.length !== 3) { message.channel.send('❌ Format : `!resultat ID 1/n/2`'); return; }
@@ -352,6 +358,42 @@ botClient.on('messageCreate', async function(message) {
     var resultLabel = result === '1' ? 'Victoire domicile' : result === 'n' ? 'Match nul' : 'Victoire exterieur';
     message.channel.send('✅ **Resultat enregistre !**\nMatch ID ' + matchId + ' → ' + resultLabel + '\n🏆 ' + count + ' paris regles !');
   }
+
+  if (content.startsWith('!createcode')) {
+    var parts = content.split(' ');
+    if (parts.length !== 4) { message.channel.send('❌ Format : `!createcode CODE MONTANT UTILISATIONS`\nEx: `!createcode BIENVENUE 500 999`'); return; }
+    var code = parts[1].toUpperCase();
+    var reward = parseInt(parts[2]);
+    var maxUses = parseInt(parts[3]);
+    if (isNaN(reward) || isNaN(maxUses)) { message.channel.send('❌ Montant et utilisations doivent etre des nombres'); return; }
+    try {
+      await Promo.create({ code: code, reward: reward, maxUses: maxUses });
+      message.channel.send('✅ Code promo cree !\n**Code :** ' + code + '\n**Recompense :** ' + reward + ' EV\n**Utilisations max :** ' + maxUses);
+    } catch(e) {
+      message.channel.send('❌ Ce code existe deja !');
+    }
+  }
+
+  if (content.startsWith('!code')) {
+    var parts = content.split(' ');
+    if (parts.length !== 2) { message.channel.send('❌ Format : `!code MONCODE`'); return; }
+    var code = parts[1].toUpperCase();
+    var promo = await Promo.findOne({ code: code });
+    if (!promo) { message.channel.send('❌ Code introuvable'); return; }
+    if (promo.uses >= promo.maxUses) { message.channel.send('❌ Code epuise'); return; }
+    var discordId = message.author.id;
+    if (promo.usedBy.includes(discordId)) { message.channel.send('❌ Tu as deja utilise ce code !'); return; }
+    var user = await User.findOne({ id: discordId });
+    if (!user) { message.channel.send('❌ Connecte-toi dabord sur bet2rue-backend.onrender.com'); return; }
+    promo.uses += 1;
+    promo.usedBy.push(discordId);
+    promo.markModified('usedBy');
+    await promo.save();
+    user.balance += promo.reward;
+    await user.save();
+    message.channel.send('✅ Code **' + code + '** active ! **+' + promo.reward + ' EV** ajoutes sur ton compte BET2RUE !');
+  }
+
   if (content === '!classement') {
     var users = await User.find({}).sort({ balance: -1 }).limit(10);
     var txt = '🏆 **CLASSEMENT BET2RUE**\n\n';
