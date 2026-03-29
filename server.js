@@ -277,5 +277,56 @@ botClient.on('messageCreate', async function(message) {
     });
     message.channel.send(txt);
   }
+});const SHOP_CHANNEL_ID = '1487785562222891078';
+const AFFILIATE_URL = 'https://shuffle.com/?r=Y0wS9u2Vh7';
+
+const SHOP_ITEMS = [
+  { id: 1, name: '10€ Shuffle', cost: 25000, description: 'Bon de 10€ sur Shuffle.com' },
+  { id: 2, name: '20€ Shuffle', cost: 50000, description: 'Bon de 20€ sur Shuffle.com' },
+  { id: 3, name: '50€ Shuffle', cost: 125000, description: 'Bon de 50€ sur Shuffle.com' }
+];
+
+app.get('/api/shop', function(req, res) {
+  res.json(SHOP_ITEMS);
+});
+
+app.post('/api/shop/buy', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid || !users.has(uid)) return res.status(401).json({ error: 'Non connecte' });
+  var user = users.get(uid);
+  var itemId = req.body.itemId;
+  var item = SHOP_ITEMS.find(function(i) { return i.id === itemId; });
+  if (!item) return res.status(400).json({ error: 'Article introuvable' });
+  if (user.balance < item.cost) return res.status(400).json({ error: 'Solde insuffisant' });
+  user.balance -= item.cost;
+  user.balance = parseFloat(user.balance.toFixed(2));
+  try {
+    var channel = await botClient.channels.fetch(SHOP_CHANNEL_ID);
+    await channel.send(
+      '🛒 **NOUVELLE DEMANDE DÉCHANGE**\n\n'
+      + '👤 **' + user.username + '**\n'
+      + '💰 **' + item.name + '** (' + item.cost.toLocaleString() + ' EV)\n'
+      + '📋 ' + item.description + '\n'
+      + '🔗 Lien affiliation : ' + AFFILIATE_URL + '\n'
+      + '📅 ' + new Date().toLocaleString('fr-FR') + '\n\n'
+      + '⚠️ Envoie le code en MP à **' + user.username + '** et dis-lui de suivre le tuto sur Discord !'
+    );
+  } catch(e) {
+    console.error('Erreur envoi Discord:', e.message);
+  }
+  res.json({ ok: true, newBalance: user.balance, item: item });
+});
+
+botClient.on('messageCreate', async function(message) {
+  if (message.author.bot) return;
+  if (message.author.id !== ADMIN_ID) return;
+  var content = message.content.trim();
+  if (content === '!shop') {
+    var txt = '🛍️ **BOUTIQUE BET2RUE**\n\n';
+    SHOP_ITEMS.forEach(function(i) {
+      txt += '**' + i.name + '** — ' + i.cost.toLocaleString() + ' EV\n';
+    });
+    message.channel.send(txt);
+  }
 });
 botClient.login(process.env.DISCORD_BOT_TOKEN);
