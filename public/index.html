@@ -259,7 +259,18 @@ function renderProfile(){
   var el=document.getElementById('pc');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>';return;}
   var wins=user.bets?user.bets.filter(function(b){return b.status==='win';}).length:0;
   var total=user.bets?user.bets.length:0;var wr=total?Math.round(wins/total*100):0;var initials=user.username.slice(0,2).toUpperCase();
-  el.innerHTML='<div class="pcard"><div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div><div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div><div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE • 🔥 '+user.streak+' jours de streak</div><div class="sg"><div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde EV</div></div><div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div><div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div><div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div></div></div>';
+  el.innerHTML='<div class="pcard"><div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div><div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div><div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE • 🔥 '+user.streak+' jours de streak</div><div class="sg"><div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde EV</div></div><div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div><div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div><div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div></div><div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">🎁 CODE PROMO</div><div style="display:flex;gap:8px"><input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code..."><button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap">ACTIVER</button></div></div></div>';
+}
+async function usePromo(){
+  if(!user){showToast('Connecte-toi !','err');return;}
+  var code=document.getElementById('promo-input').value.trim().toUpperCase();
+  if(!code){showToast('Entre un code !','err');return;}
+  try{
+    var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});
+    var data=await res.json();
+    if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' EV sur ton compte !');}
+    else{showToast(data.error||'Erreur','err');}
+  }catch(e){showToast('Erreur connexion','err');}
 }
 async function loadAdmin(){
   if(!user||!user.isAdmin){document.getElementById('admin-list').innerHTML='<div class="empty">Acces refuse</div>';return;}
