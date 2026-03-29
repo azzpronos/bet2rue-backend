@@ -335,6 +335,7 @@ async function renderBets() {
 }
 
 function renderProfile() {
+  if(tab==='shop')loadShop();
   var el = document.getElementById('pc');
   if (!user) { el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>'; return; }
   var wins = user.bets ? user.bets.filter(function(b){return b.status==='win';}).length : 0;
@@ -370,7 +371,43 @@ function showToast(msg, type) {
   t.className = 'toast show ' + (type==='err'?'err':'');
   setTimeout(function(){t.className='toast';}, 3500);
 }
+async function loadShop() {
+  var el = document.getElementById('shop-list');
+  if (!user) { el.innerHTML='<div class="empty">Connecte-toi pour acceder a la boutique</div>'; return; }
+  try {
+    var res = await fetch('/api/shop');
+    var items = await res.json();
+    el.innerHTML = items.map(function(item) {
+      var canBuy = user.balance >= item.cost;
+      return '<div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:16px">'
+        +'<div>'
+        +'<div style="font-family:Bebas Neue,sans-serif;font-size:20px;letter-spacing:1px">'+item.name+'</div>'
+        +'<div style="font-size:12px;color:var(--gris);margin-top:4px">'+item.description+'</div>'
+        +'<div style="font-family:Bebas Neue,sans-serif;font-size:16px;color:var(--or);margin-top:6px">'+item.cost.toLocaleString()+' EV</div>'
+        +'</div>'
+        +'<button onclick="buyItem('+item.id+')" style="background:'+(canBuy?'var(--rouge)':'var(--gris)')+';border:none;color:#fff;padding:10px 20px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:15px;cursor:'+(canBuy?'pointer':'not-allowed')+'">'
+        +(canBuy?'ECHANGER':'SOLDE INSUFFISANT')
+        +'</button></div>';
+    }).join('');
+  } catch(e) {}
+}
 
+async function buyItem(itemId) {
+  if (!user) return;
+  if (!confirm('Confirmer l\'echange ?')) return;
+  try {
+    var res = await fetch('/api/shop/buy?uid='+uid, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({itemId:itemId, uid:uid})
+    });
+    var data = await res.json();
+    if (res.ok) {
+      user.balance = data.newBalance;
+      renderUB(); loadShop();
+      showToast('Demande envoyee ! Verifie tes MP Discord dans les 24h.');
+    } else { showToast(data.error||'Erreur','err'); }
+  } catch(e) { showToast('Erreur connexion','err'); }
+}
 init();
 </script>
 </body>
