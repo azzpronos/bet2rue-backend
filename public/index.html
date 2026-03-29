@@ -278,7 +278,7 @@ function sw(tab,btn){
   if(tab==='shop')loadShop();
   if(tab==='profile')renderProfile();
   if(tab==='admin')loadAdmin();
-}
+}async function usePromo(){if(!user){showToast('Connecte-toi !','err');return;}var code=document.getElementById('promo-input').value.trim().toUpperCase();if(!code){showToast('Entre un code !','err');return;}try{var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' EV sur ton compte !');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}}
 function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type==='err'?'err':'');setTimeout(function(){t.className='toast';},3500);}
 setInterval(async function(){try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}},60000);
 init();
