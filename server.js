@@ -26,6 +26,8 @@ const UserSchema = new mongoose.Schema({
   bets: { type: Array, default: [] },
   streak: { type: Number, default: 0 },
   lastBonus: { type: String, default: null },
+  referredBy: { type: String, default: null },
+  referrals: { type: Number, default: 0 },
   createdAt: { type: String, default: function() { return new Date().toISOString(); } }
 });
 const User = mongoose.model('User', UserSchema);
@@ -55,7 +57,7 @@ const PromoSchema = new mongoose.Schema({
 });
 const Promo = mongoose.model('Promo', PromoSchema);
 
-async function getOrCreateUser(discordUser) {
+async function getOrCreateUser(discordUser, refId) {
   var user = await User.findOne({ id: discordUser.id });
   if (!user) {
     user = await User.create({
@@ -66,8 +68,19 @@ async function getOrCreateUser(discordUser) {
       bets: [],
       streak: 0,
       lastBonus: null,
+      referredBy: refId || null,
+      referrals: 0,
       createdAt: new Date().toISOString()
     });
+    if (refId && refId !== discordUser.id) {
+      var parrain = await User.findOne({ id: refId });
+      if (parrain) {
+        parrain.balance += 500;
+        parrain.referrals = (parrain.referrals || 0) + 1;
+        await parrain.save();
+        console.log('Parrainage : ' + parrain.username + ' gagne 500 Pesos pour ' + discordUser.username);
+      }
+    }
     console.log('Nouvel utilisateur: ' + discordUser.username);
   }
   return user;
@@ -147,11 +160,13 @@ async function settleMatch(matchId, result) {
 }
 
 app.get('/auth/discord', function(req, res) {
+  var ref = req.query.ref || '';
   var params = new URLSearchParams({
     client_id: process.env.DISCORD_CLIENT_ID,
     redirect_uri: process.env.DISCORD_REDIRECT_URI,
     response_type: 'code',
-    scope: 'identify'
+    scope: 'identify',
+    state: ref
   });
   res.redirect('https://discord.com/oauth2/authorize?' + params.toString());
 });
@@ -175,7 +190,8 @@ app.get('/auth/discord/callback', async function(req, res) {
     var userRes = await axios.get('https://discord.com/api/users/@me', {
       headers: { Authorization: 'Bearer ' + access_token }
     });
-    var user = await getOrCreateUser(userRes.data);
+    var refId = req.query.state || null;
+    var user = await getOrCreateUser(userRes.data, refId);
     var bonusInfo = await checkBonus(user);
     var bonusParam = bonusInfo ? bonusInfo.bonus + '_' + bonusInfo.streak : 'none';
     res.redirect('/?uid=' + user.id + '&login=success&bonus=' + bonusParam);
@@ -197,6 +213,7 @@ app.get('/api/me', async function(req, res) {
     balance: user.balance,
     bets: user.bets,
     streak: user.streak || 0,
+    referrals: user.referrals || 0,
     isAdmin: user.id === ADMIN_ID,
     createdAt: user.createdAt
   });
