@@ -20,8 +20,8 @@ body{background:var(--noir);color:var(--blanc);font-family:'Barlow',sans-serif;f
 @keyframes fill{from{width:0}to{width:100%}}
 header{background:linear-gradient(135deg,#0a0e2e 0%,#0f1535 100%);border-bottom:3px solid var(--or);padding:0 16px}
 .hi{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:10px}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--blanc)}
-.logo span{color:var(--or)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.logo span{color:var(--or);text-shadow:0 0 12px rgba(245,166,35,0.6)}
 .ub{display:flex;align-items:center;gap:10px}
 .bal{background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:12px}
 .bal b{color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:15px}
@@ -186,7 +186,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
     <div id="tab-shop" class="tab">
       <div class="stitle">BOUTIQUE BET2RUE</div>
       <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
-        <div style="font-size:13px;color:var(--gris);line-height:1.8">Echange tes <b style="color:var(--or)">EV</b> contre des recompenses reelles !<br>Pour utiliser Shuffle depuis la France → <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">suis le tuto sur notre Discord</a></div>
+        <div style="font-size:13px;color:var(--gris);line-height:1.8">Echange tes <b style="color:var(--or)">Pesos</b> contre des recompenses reelles !<br>Pour utiliser Shuffle depuis la France → <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">suis le tuto sur notre Discord</a></div>
       </div>
       <div id="shop-list"></div>
     </div>
@@ -203,7 +203,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
         <div class="sr">
           <span class="sl">Mise</span>
           <input class="si" type="number" id="stake" value="10" min="1" max="1000" oninput="upd()">
-          <span style="font-size:11px;color:var(--gris)">EV</span>
+          <span style="font-size:11px;color:var(--gris)">Pesos</span>
         </div>
         <div class="qs">
           <button class="qb" onclick="ss(5)">5</button>
@@ -242,7 +242,7 @@ async function init(){
   uid=getUID();
   var params=new URLSearchParams(window.location.search);
   var bonus=params.get('bonus');
-  if(params.get('login')==='success'&&bonus&&bonus!=='none'){var parts=bonus.split('_');showToast('Bienvenue ! +'+parts[0]+' EV bonus (Jour '+parts[1]+' streak) !');}
+  if(params.get('login')==='success'&&bonus&&bonus!=='none'){var parts=bonus.split('_');showToast('Bienvenue ! +'+parts[0]+' Pesos bonus (Jour '+parts[1]+' streak) !');}
   else if(params.get('login')==='success'){showToast('Bienvenue sur BET2RUE !');}
   if(uid){try{var res=await fetch('/api/me?uid='+uid);if(res.ok){user=await res.json();renderUB();}else{uid=null;localStorage.removeItem('b2r_uid');}}catch(e){}}
   try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}
@@ -254,7 +254,7 @@ function renderUB(){
   if(!user){bar.innerHTML='<a class="btn-dc" href="/auth/discord">CONNEXION DISCORD</a>';return;}
   var initials=user.username.slice(0,2).toUpperCase();
   if(user.isAdmin&&!document.getElementById('admin-nav-btn')){var nav=document.getElementById('nav');var btn=document.createElement('button');btn.className='nb';btn.id='admin-nav-btn';btn.setAttribute('onclick',"sw('admin',this)");btn.textContent='ADMIN';nav.appendChild(btn);}
-  bar.innerHTML='<div style="display:flex;align-items:center;gap:6px"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff">'+initials+'</div><span style="font-size:12px;color:var(--gris)">'+user.username+'</span>'+(user.streak>0?'<span class="streak-badge">🔥 J'+user.streak+'</span>':'')+'</div><div class="bal">Solde <b>'+Math.round(user.balance).toLocaleString()+' EV</b></div><button class="btn-out" onclick="logout()">Quitter</button>';
+  bar.innerHTML='<div style="display:flex;align-items:center;gap:6px"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff">'+initials+'</div><span style="font-size:12px;color:var(--gris)">'+user.username+'</span>'+(user.streak>0?'<span class="streak-badge">🔥 J'+user.streak+'</span>':'')+'</div><div class="bal">Solde <b>'+Math.round(user.balance).toLocaleString()+' Pesos</b></div><button class="btn-out" onclick="logout()">Quitter</button>';
 }
 
 function logout(){uid=null;user=null;coupon=[];localStorage.removeItem('b2r_uid');renderUB();refC();renderMatches();showToast('Deconnecte');}
@@ -301,28 +301,28 @@ function refC(){
 function rp(i){coupon.splice(i,1);refC();renderMatches();}
 function clearC(){coupon=[];refC();renderMatches();}
 function ss(v){document.getElementById('stake').value=v;upd();}
-function upd(){if(!coupon.length)return;var stake=parseFloat(document.getElementById('stake').value)||0;var tot=coupon.reduce(function(a,c){return a*c.odd;},1);document.getElementById('to').textContent=tot.toFixed(2);document.getElementById('pg').textContent=(stake*tot).toFixed(2)+' EV';}
+function upd(){if(!coupon.length)return;var stake=parseFloat(document.getElementById('stake').value)||0;var tot=coupon.reduce(function(a,c){return a*c.odd;},1);document.getElementById('to').textContent=tot.toFixed(2);document.getElementById('pg').textContent=(stake*tot).toFixed(2)+' Pesos';}
 
 async function placeBet(){
   if(!user){showToast('Connecte-toi !','err');return;}
   var stake=parseFloat(document.getElementById('stake').value)||0;
-  if(stake<1){showToast('Mise min : 1 EV','err');return;}
+  if(stake<1){showToast('Mise min : 1 Peso','err');return;}
   if(stake>user.balance){showToast('Solde insuffisant !','err');return;}
   try{var res=await fetch('/api/bet?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({picks:coupon,stake:stake,uid:uid})});var data=await res.json();if(!res.ok){showToast(data.error||'Erreur','err');return;}user.balance=data.newBalance;renderUB();coupon=[];refC();renderMatches();loadStats();showToast('Pari place ! En attente du resultat');}catch(e){showToast('Erreur connexion','err');}
 }
 
 async function loadLB(){
-  try{var res=await fetch('/api/leaderboard');var data=await res.json();var medals=['🥇','🥈','🥉'];document.getElementById('lb').innerHTML=data.length?data.map(function(p,i){var initials=p.username.slice(0,2).toUpperCase();return '<div class="lb-row"><div class="lb-rank">'+(medals[i]||i+1)+'</div><div style="width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0">'+initials+'</div><div><div class="lb-name">'+p.username+(user&&p.id===uid?' <span style="color:var(--rouge);font-size:10px">(toi)</span>':'')+'</div><div class="lb-sub">'+p.betsCount+' paris • 🔥 J'+p.streak+'</div></div><div class="lb-bal">'+p.balance.toLocaleString()+' EV</div></div>';}).join(''):'<div class="empty">Aucun membre pour l\'instant</div>';}catch(e){}
+  try{var res=await fetch('/api/leaderboard');var data=await res.json();var medals=['🥇','🥈','🥉'];document.getElementById('lb').innerHTML=data.length?data.map(function(p,i){var initials=p.username.slice(0,2).toUpperCase();return '<div class="lb-row"><div class="lb-rank">'+(medals[i]||i+1)+'</div><div style="width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0">'+initials+'</div><div><div class="lb-name">'+p.username+(user&&p.id===uid?' <span style="color:var(--rouge);font-size:10px">(toi)</span>':'')+'</div><div class="lb-sub">'+p.betsCount+' paris • 🔥 J'+p.streak+'</div></div><div class="lb-bal">'+p.balance.toLocaleString()+' Pesos</div></div>';}).join(''):'<div class="empty">Aucun membre pour l\'instant</div>';}catch(e){}
 }
 
 async function renderBets(){
   var el=document.getElementById('bh');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir tes paris</div>';return;}
-  try{var res=await fetch('/api/me?uid='+uid);var data=await res.json();user=data;if(!data.bets||!data.bets.length){el.innerHTML='<div class="empty">Aucun pari pour l\'instant</div>';return;}el.innerHTML=data.bets.map(function(b){return '<div class="br"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+b.picks.map(function(p){return p.pick;}).join(' + ')+'</div><div style="font-size:11px;color:var(--gris)">Mise '+b.stake+' EV x'+b.totalOdd+' = '+b.potentialGain+' EV</div></div><span class="bs '+b.status+'">'+(b.status==='win'?'GAGNE':b.status==='loss'?'PERDU':'EN ATTENTE')+'</span></div>';}).join('');}catch(e){}
+  try{var res=await fetch('/api/me?uid='+uid);var data=await res.json();user=data;if(!data.bets||!data.bets.length){el.innerHTML='<div class="empty">Aucun pari pour l\'instant</div>';return;}el.innerHTML=data.bets.map(function(b){return '<div class="br"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+b.picks.map(function(p){return p.pick;}).join(' + ')+'</div><div style="font-size:11px;color:var(--gris)">Mise '+b.stake+' Pesos x'+b.totalOdd+' = '+b.potentialGain+' Pesos</div></div><span class="bs '+b.status+'">'+(b.status==='win'?'GAGNE':b.status==='loss'?'PERDU':'EN ATTENTE')+'</span></div>';}).join('');}catch(e){}
 }
 
 async function loadShop(){
   var el=document.getElementById('shop-list');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour acceder a la boutique</div>';return;}
-  try{var res=await fetch('/api/shop');var items=await res.json();el.innerHTML=items.map(function(item){var canBuy=user.balance>=item.cost;return '<div class="shop-item"><div><div class="shop-name">'+item.name+'</div><div class="shop-desc">'+item.description+'</div><div class="shop-cost">'+item.cost.toLocaleString()+' EV</div></div><button onclick="buyItem('+item.id+')" class="shop-btn '+(canBuy?'can':'cant')+'">'+(canBuy?'ECHANGER':'SOLDE INSUFFISANT')+'</button></div>';}).join('');}catch(e){}
+  try{var res=await fetch('/api/shop');var items=await res.json();el.innerHTML=items.map(function(item){var canBuy=user.balance>=item.cost;return '<div class="shop-item"><div><div class="shop-name">'+item.name+'</div><div class="shop-desc">'+item.description+'</div><div class="shop-cost">'+item.cost.toLocaleString()+' Pesos</div></div><button onclick="buyItem('+item.id+')" class="shop-btn '+(canBuy?'can':'cant')+'">'+(canBuy?'ECHANGER':'SOLDE INSUFFISANT')+'</button></div>';}).join('');}catch(e){}
 }
 
 async function buyItem(itemId){
@@ -339,14 +339,14 @@ function renderProfile(){
   var el=document.getElementById('pc');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>';return;}
   var wins=user.bets?user.bets.filter(function(b){return b.status==='win';}).length:0;
   var total=user.bets?user.bets.length:0;var wr=total?Math.round(wins/total*100):0;var initials=user.username.slice(0,2).toUpperCase();
-  el.innerHTML='<div class="pcard"><div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div><div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div><div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE • 🔥 '+user.streak+' jours de streak</div><div class="sg"><div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde EV</div></div><div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div><div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div><div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div></div><div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">CODE PROMO</div><div style="display:flex;gap:8px"><input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code..."><button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap">ACTIVER</button></div></div></div>';
+  el.innerHTML='<div class="pcard"><div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div><div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div><div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2RUE • 🔥 '+user.streak+' jours de streak</div><div class="sg"><div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde Pesos</div></div><div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div><div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div><div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div></div><div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">CODE PROMO</div><div style="display:flex;gap:8px"><input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code..."><button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap">ACTIVER</button></div></div></div>';
 }
 
 async function usePromo(){
   if(!user){showToast('Connecte-toi !','err');return;}
   var code=document.getElementById('promo-input').value.trim().toUpperCase();
   if(!code){showToast('Entre un code !','err');return;}
-  try{var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' EV sur ton compte !');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}
+  try{var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' Pesos sur ton compte !');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}
 }
 
 async function loadAdmin(){
