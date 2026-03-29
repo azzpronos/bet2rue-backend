@@ -3,20 +3,36 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const ADMIN_ID = '1143133778512986122';
 
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const ADMIN_ID = '1143133778512986122';
-const users = new Map();
+mongoose.connect(process.env.MONGODB_URI)
+  .then(function() { console.log('MongoDB connecte !'); })
+  .catch(function(err) { console.error('Erreur MongoDB:', err.message); });
 
-function getOrCreateUser(discordUser) {
-  if (!users.has(discordUser.id)) {
-    users.set(discordUser.id, {
+const UserSchema = new mongoose.Schema({
+  id: { type: String, unique: true },
+  username: String,
+  avatar: String,
+  balance: { type: Number, default: 1000 },
+  bets: { type: Array, default: [] },
+  streak: { type: Number, default: 0 },
+  lastBonus: { type: String, default: null },
+  createdAt: { type: String, default: () => new Date().toISOString() }
+});
+const User = mongoose.model('User', UserSchema);
+
+async function getOrCreateUser(discordUser) {
+  let user = await User.findOne({ id: discordUser.id });
+  if (!user) {
+    user = await User.create({
       id: discordUser.id,
       username: discordUser.username,
       avatar: discordUser.avatar,
@@ -26,11 +42,12 @@ function getOrCreateUser(discordUser) {
       lastBonus: null,
       createdAt: new Date().toISOString()
     });
+    console.log('Nouvel utilisateur: ' + discordUser.username);
   }
-  return users.get(discordUser.id);
+  return user;
 }
 
-function checkBonus(user) {
+async function checkBonus(user) {
   const now = new Date();
   const today = now.toDateString();
   if (user.lastBonus === today) return null;
@@ -39,6 +56,7 @@ function checkBonus(user) {
   const bonus = user.streak * 100;
   user.balance += bonus;
   user.lastBonus = today;
+  await user.save();
   return { bonus, streak: user.streak };
 }
 
@@ -50,13 +68,15 @@ function isMatchLocked(match) {
   return now >= matchDate;
 }
 
-function settleMatch(matchId, result) {
+async function settleMatch(matchId, result) {
   const match = MATCHES.find(function(m) { return m.id === matchId; });
   if (!match) return 0;
   match.result = result;
   match.settled = true;
   let count = 0;
-  users.forEach(function(user) {
+  const users = await User.find({});
+  for (const user of users) {
+    let changed = false;
     user.bets.forEach(function(bet) {
       if (bet.status !== 'pending') return;
       const pick = bet.picks.find(function(p) { return p.mid === matchId; });
@@ -65,14 +85,18 @@ function settleMatch(matchId, result) {
         const gain = parseFloat((bet.stake * bet.totalOdd).toFixed(2));
         user.balance += gain;
         bet.status = 'win';
-        count++;
       } else {
         bet.status = 'loss';
-        count++;
       }
       user.balance = parseFloat(user.balance.toFixed(2));
+      changed = true;
+      count++;
     });
-  });
+    if (changed) {
+      user.markModified('bets');
+      await user.save();
+    }
+  }
   return count;
 }
 
@@ -105,8 +129,8 @@ app.get('/auth/discord/callback', async function(req, res) {
     var userRes = await axios.get('https://discord.com/api/users/@me', {
       headers: { Authorization: 'Bearer ' + access_token }
     });
-    var user = getOrCreateUser(userRes.data);
-    var bonusInfo = checkBonus(user);
+    var user = await getOrCreateUser(userRes.data);
+    var bonusInfo = await checkBonus(user);
     var bonusParam = bonusInfo ? bonusInfo.bonus + '_' + bonusInfo.streak : 'none';
     res.redirect('/?uid=' + user.id + '&login=success&bonus=' + bonusParam);
   } catch (err) {
@@ -115,10 +139,11 @@ app.get('/auth/discord/callback', async function(req, res) {
   }
 });
 
-app.get('/api/me', function(req, res) {
+app.get('/api/me', async function(req, res) {
   var uid = req.query.uid;
-  if (!uid || !users.has(uid)) return res.status(401).json({ error: 'Non connecte' });
-  var user = users.get(uid);
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var user = await User.findOne({ id: uid });
+  if (!user) return res.status(401).json({ error: 'Non connecte' });
   res.json({
     id: user.id,
     username: user.username,
@@ -131,35 +156,32 @@ app.get('/api/me', function(req, res) {
   });
 });
 
-app.get('/api/leaderboard', function(req, res) {
-  var list = Array.from(users.values())
-    .sort(function(a, b) { return b.balance - a.balance; })
-    .slice(0, 20)
-    .map(function(u) {
-      return {
-        id: u.id,
-        username: u.username,
-        avatar: u.avatar ? 'https://cdn.discordapp.com/avatars/' + u.id + '/' + u.avatar + '.png' : 'https://cdn.discordapp.com/embed/avatars/0.png',
-        balance: u.balance,
-        betsCount: u.bets.length,
-        wins: u.bets.filter(function(b) { return b.status === 'win'; }).length,
-        streak: u.streak || 0
-      };
-    });
-  res.json(list);
+app.get('/api/leaderboard', async function(req, res) {
+  var users = await User.find({}).sort({ balance: -1 }).limit(20);
+  res.json(users.map(function(u) {
+    return {
+      id: u.id,
+      username: u.username,
+      avatar: u.avatar ? 'https://cdn.discordapp.com/avatars/' + u.id + '/' + u.avatar + '.png' : 'https://cdn.discordapp.com/embed/avatars/0.png',
+      balance: u.balance,
+      betsCount: u.bets.length,
+      wins: u.bets.filter(function(b) { return b.status === 'win'; }).length,
+      streak: u.streak || 0
+    };
+  }));
 });
 
 app.get('/api/matches', function(req, res) {
-  var now = new Date();
   res.json(MATCHES.map(function(m) {
     return Object.assign({}, m, { locked: isMatchLocked(m) });
   }));
 });
 
-app.post('/api/bet', function(req, res) {
+app.post('/api/bet', async function(req, res) {
   var uid = req.query.uid || req.body.uid;
-  if (!uid || !users.has(uid)) return res.status(401).json({ error: 'Non connecte' });
-  var user = users.get(uid);
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var user = await User.findOne({ id: uid });
+  if (!user) return res.status(401).json({ error: 'Non connecte' });
   var picks = req.body.picks;
   var stake = req.body.stake;
   if (!picks || !picks.length) return res.status(400).json({ error: 'Selections invalides' });
@@ -184,16 +206,41 @@ app.post('/api/bet', function(req, res) {
     placedAt: new Date().toISOString()
   };
   user.bets.unshift(bet);
+  user.markModified('bets');
+  await user.save();
   res.json({ bet: bet, newBalance: user.balance });
 });
 
-app.post('/api/admin/result', function(req, res) {
+app.get('/api/shop', function(req, res) {
+  res.json(SHOP_ITEMS);
+});
+
+app.post('/api/shop/buy', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var user = await User.findOne({ id: uid });
+  if (!user) return res.status(401).json({ error: 'Non connecte' });
+  var itemId = req.body.itemId;
+  var item = SHOP_ITEMS.find(function(i) { return i.id === itemId; });
+  if (!item) return res.status(400).json({ error: 'Article introuvable' });
+  if (user.balance < item.cost) return res.status(400).json({ error: 'Solde insuffisant' });
+  user.balance -= item.cost;
+  user.balance = parseFloat(user.balance.toFixed(2));
+  await user.save();
+  try {
+    var channel = await botClient.channels.fetch(SHOP_CHANNEL_ID);
+    await channel.send('🛒 **NOUVELLE DEMANDE ECHANGE**\n\n👤 **' + user.username + '**\n💰 **' + item.name + '** (' + item.cost.toLocaleString() + ' EV)\n📋 ' + item.description + '\n📅 ' + new Date().toLocaleString('fr-FR'));
+  } catch(e) { console.error('Erreur Discord:', e.message); }
+  res.json({ ok: true, newBalance: user.balance, item: item });
+});
+
+app.post('/api/admin/result', async function(req, res) {
   var uid = req.query.uid || req.body.uid;
   if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
   var matchId = req.body.matchId;
   var result = req.body.result;
   if (!matchId || !result) return res.status(400).json({ error: 'Donnees manquantes' });
-  var count = settleMatch(matchId, result);
+  var count = await settleMatch(matchId, result);
   res.json({ ok: true, settled: count });
 });
 
@@ -206,6 +253,17 @@ app.get('/api/admin/matches', function(req, res) {
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+var SHOP_ITEMS = [
+  { id: 1, name: '10€ Shuffle', cost: 25000, description: 'Bon de 10€ sur Shuffle.com — voir tuto Discord' },
+  { id: 2, name: '20€ Shuffle', cost: 50000, description: 'Bon de 20€ sur Shuffle.com — voir tuto Discord' },
+  { id: 3, name: '50€ Shuffle', cost: 125000, description: 'Bon de 50€ sur Shuffle.com — voir tuto Discord' },
+  { id: 4, name: '1v1 FIFA vs Azzpronos 🎮', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h.' },
+  { id: 5, name: 'Prono VIP en MP 🎯', cost: 5000, description: 'Azzpronos t\'envoie son meilleur prono du jour en message prive !' },
+  { id: 6, name: 'Shoutout Discord 📢', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET2RUE !' },
+  { id: 7, name: 'Maillot de foot au choix 👕', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
+  { id: 8, name: 'Jeu video au choix 🕹️', cost: 200000, description: 'Choisis n\'importe quel jeu video ! Azzpronos te contacte en MP.' }
+];
 
 var MATCHES = [
   { id: 1, day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 }, result: null, settled: false },
@@ -231,18 +289,16 @@ app.listen(PORT, function() {
   console.log('BET2RUE sur port ' + PORT);
 });
 
+const SHOP_CHANNEL_ID = '1487785562222891078';
 const { Client, GatewayIntentBits } = require('discord.js');
 const botClient = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-  ]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
-const API_URL = 'https://bet2rue-backend.onrender.com';
+
 botClient.once('ready', function() {
   console.log('Bot connecte : ' + botClient.user.tag);
 });
+
 botClient.on('messageCreate', async function(message) {
   if (message.author.bot) return;
   if (message.author.id !== ADMIN_ID) return;
@@ -250,10 +306,8 @@ botClient.on('messageCreate', async function(message) {
   if (content === '!matchs') {
     var txt = '📋 **MATCHS BET2RUE**\n\n';
     MATCHES.forEach(function(m) {
-      var status = m.settled ? '✅ REGLE' : m.locked ? '🔴 FERME' : '🟢 OUVERT';
-      txt += 'ID **' + m.id + '** | ' + m.day + ' ' + m.time + '\n';
-      txt += m.hf + ' ' + m.home + ' vs ' + m.away + ' ' + m.af + '\n';
-      txt += '1→' + m.odds.h + ' | N→' + m.odds.n + ' | 2→' + m.odds.a + ' | ' + status + '\n\n';
+      var status = m.settled ? '✅ REGLE' : isMatchLocked(m) ? '🔴 FERME' : '🟢 OUVERT';
+      txt += 'ID **' + m.id + '** | ' + m.day + ' ' + m.time + '\n' + m.hf + ' ' + m.home + ' vs ' + m.away + ' ' + m.af + '\n1→' + m.odds.h + ' | N→' + m.odds.n + ' | 2→' + m.odds.a + ' | ' + status + '\n\n';
     });
     message.channel.send(txt);
   }
@@ -264,74 +318,19 @@ botClient.on('messageCreate', async function(message) {
     var result = parts[2].toLowerCase();
     if (!['1','n','2'].includes(result)) { message.channel.send('❌ Utilise 1, n ou 2'); return; }
     var resultKey = result === '1' ? 'h' : result === 'n' ? 'n' : 'a';
-    var count = settleMatch(matchId, resultKey);
+    var count = await settleMatch(matchId, resultKey);
     var resultLabel = result === '1' ? 'Victoire domicile' : result === 'n' ? 'Match nul' : 'Victoire exterieur';
     message.channel.send('✅ **Resultat enregistre !**\nMatch ID ' + matchId + ' → ' + resultLabel + '\n🏆 ' + count + ' paris regles !');
   }
   if (content === '!classement') {
-    var list = Array.from(users.values()).sort(function(a,b){return b.balance-a.balance;}).slice(0,10);
+    var users = await User.find({}).sort({ balance: -1 }).limit(10);
     var txt = '🏆 **CLASSEMENT BET2RUE**\n\n';
     var medals = ['🥇','🥈','🥉'];
-    list.forEach(function(p,i) {
-      txt += (medals[i]||(i+1)+'.') + ' **' + p.username + '** — ' + Math.round(p.balance).toLocaleString() + ' EV\n';
-    });
-    message.channel.send(txt);
-  }
-});const SHOP_CHANNEL_ID = '1487785562222891078';
-const AFFILIATE_URL = 'https://shuffle.com/?r=Y0wS9u2Vh7';
-
-const SHOP_ITEMS = [
-  { id: 1, name: '10€ Shuffle', cost: 25000, description: 'Bon de 10€ sur Shuffle.com — voir tuto Discord' },
-  { id: 2, name: '20€ Shuffle', cost: 50000, description: 'Bon de 20€ sur Shuffle.com — voir tuto Discord' },
-  { id: 3, name: '50€ Shuffle', cost: 125000, description: 'Bon de 50€ sur Shuffle.com — voir tuto Discord' },
-  { id: 4, name: '1v1 FIFA vs Azzpronos 🎮', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h pour organiser le match.' },
-  { id: 5, name: 'Prono VIP en MP 🎯', cost: 5000, description: 'Azzpronos t\'envoie son meilleur prono du jour en message prive !' },
-  { id: 6, name: 'Shoutout Discord 📢', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET2RUE !' },
-  { id: 7, name: 'Maillot de foot au choix 👕', cost: 250000, description: 'Le graal ! Echange tes EV contre un vrai maillot de foot au choix. Azzpronos te contacte en MP pour les details.' },
-  { id: 8, name: 'Jeu video au choix 🕹️', cost: 200000, description: 'Choisis n\'importe quel jeu video et Azzpronos te l\'offre ! Azzpronos te contacte en MP pour les details.' }
-];
-
-app.get('/api/shop', function(req, res) {
-  res.json(SHOP_ITEMS);
-});
-
-app.post('/api/shop/buy', async function(req, res) {
-  var uid = req.query.uid || req.body.uid;
-  if (!uid || !users.has(uid)) return res.status(401).json({ error: 'Non connecte' });
-  var user = users.get(uid);
-  var itemId = req.body.itemId;
-  var item = SHOP_ITEMS.find(function(i) { return i.id === itemId; });
-  if (!item) return res.status(400).json({ error: 'Article introuvable' });
-  if (user.balance < item.cost) return res.status(400).json({ error: 'Solde insuffisant' });
-  user.balance -= item.cost;
-  user.balance = parseFloat(user.balance.toFixed(2));
-  try {
-    var channel = await botClient.channels.fetch(SHOP_CHANNEL_ID);
-    await channel.send(
-      '🛒 **NOUVELLE DEMANDE DÉCHANGE**\n\n'
-      + '👤 **' + user.username + '**\n'
-      + '💰 **' + item.name + '** (' + item.cost.toLocaleString() + ' EV)\n'
-      + '📋 ' + item.description + '\n'
-      + '🔗 Lien affiliation : ' + AFFILIATE_URL + '\n'
-      + '📅 ' + new Date().toLocaleString('fr-FR') + '\n\n'
-      + '⚠️ Envoie le code en MP à **' + user.username + '** et dis-lui de suivre le tuto sur Discord !'
-    );
-  } catch(e) {
-    console.error('Erreur envoi Discord:', e.message);
-  }
-  res.json({ ok: true, newBalance: user.balance, item: item });
-});
-
-botClient.on('messageCreate', async function(message) {
-  if (message.author.bot) return;
-  if (message.author.id !== ADMIN_ID) return;
-  var content = message.content.trim();
-  if (content === '!shop') {
-    var txt = '🛍️ **BOUTIQUE BET2RUE**\n\n';
-    SHOP_ITEMS.forEach(function(i) {
-      txt += '**' + i.name + '** — ' + i.cost.toLocaleString() + ' EV\n';
+    users.forEach(function(p, i) {
+      txt += (medals[i] || (i+1) + '.') + ' **' + p.username + '** — ' + Math.round(p.balance).toLocaleString() + ' EV\n';
     });
     message.channel.send(txt);
   }
 });
+
 botClient.login(process.env.DISCORD_BOT_TOKEN);
