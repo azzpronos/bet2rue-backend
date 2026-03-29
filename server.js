@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(cors({ origin: '*' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const ADMIN_ID = '1143133778512986122';
 const users = new Map();
 
 function getOrCreateUser(discordUser) {
@@ -39,6 +40,40 @@ function checkBonus(user) {
   user.balance += bonus;
   user.lastBonus = today;
   return { bonus, streak: user.streak };
+}
+
+function isMatchLocked(match) {
+  const now = new Date();
+  const [hours, minutes] = match.time.split(':').map(Number);
+  const matchDate = new Date();
+  matchDate.setHours(hours, minutes, 0, 0);
+  return now >= matchDate;
+}
+
+function settleMatch(matchId, result) {
+  const match = MATCHES.find(function(m) { return m.id === matchId; });
+  if (!match) return 0;
+  match.result = result;
+  match.settled = true;
+  let count = 0;
+  users.forEach(function(user) {
+    user.bets.forEach(function(bet) {
+      if (bet.status !== 'pending') return;
+      const pick = bet.picks.find(function(p) { return p.mid === matchId; });
+      if (!pick) return;
+      if (pick.k === result) {
+        const gain = parseFloat((bet.stake * bet.totalOdd).toFixed(2));
+        user.balance += gain;
+        bet.status = 'win';
+        count++;
+      } else {
+        bet.status = 'loss';
+        count++;
+      }
+      user.balance = parseFloat(user.balance.toFixed(2));
+    });
+  });
+  return count;
 }
 
 app.get('/auth/discord', function(req, res) {
@@ -91,6 +126,7 @@ app.get('/api/me', function(req, res) {
     balance: user.balance,
     bets: user.bets,
     streak: user.streak || 0,
+    isAdmin: user.id === ADMIN_ID,
     createdAt: user.createdAt
   });
 });
@@ -114,7 +150,10 @@ app.get('/api/leaderboard', function(req, res) {
 });
 
 app.get('/api/matches', function(req, res) {
-  res.json(MATCHES);
+  var now = new Date();
+  res.json(MATCHES.map(function(m) {
+    return Object.assign({}, m, { locked: isMatchLocked(m) });
+  }));
 });
 
 app.post('/api/bet', function(req, res) {
@@ -126,11 +165,68 @@ app.post('/api/bet', function(req, res) {
   if (!picks || !picks.length) return res.status(400).json({ error: 'Selections invalides' });
   if (!stake || stake < 1 || stake > 1000) return res.status(400).json({ error: 'Mise invalide' });
   if (stake > user.balance) return res.status(400).json({ error: 'Solde insuffisant' });
+  var lockedPick = picks.find(function(p) {
+    var match = MATCHES.find(function(m) { return m.id === p.mid; });
+    return match && isMatchLocked(match);
+  });
+  if (lockedPick) return res.status(400).json({ error: 'Un match a deja commence !' });
   var totalOdd = picks.reduce(function(acc, p) { return acc * p.odd; }, 1);
   var potentialGain = parseFloat((stake * totalOdd).toFixed(2));
-  var rand = Math.random();
-  var status = rand < 0.45 ? 'win' : rand < 0.85 ? 'loss' : 'pending';
   user.balance -= stake;
-  if (status === 'win') user.balance += potentialGain;
   user.balance = parseFloat(user.balance.toFixed(2));
-  var bet = { id: Date.now(), picks: picks, stake: stake, totalOdd: parseFloat(totalOdd.toFixed(2)), potentialGain: potentialGain, status: status, plac
+  var bet = {
+    id: Date.now(),
+    picks: picks,
+    stake: stake,
+    totalOdd: parseFloat(totalOdd.toFixed(2)),
+    potentialGain: potentialGain,
+    status: 'pending',
+    placedAt: new Date().toISOString()
+  };
+  user.bets.unshift(bet);
+  res.json({ bet: bet, newBalance: user.balance });
+});
+
+app.post('/api/admin/result', function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
+  var matchId = req.body.matchId;
+  var result = req.body.result;
+  if (!matchId || !result) return res.status(400).json({ error: 'Donnees manquantes' });
+  var count = settleMatch(matchId, result);
+  res.json({ ok: true, settled: count });
+});
+
+app.get('/api/admin/matches', function(req, res) {
+  var uid = req.query.uid;
+  if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
+  res.json(MATCHES);
+});
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+var MATCHES = [
+  { id: 1, day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 }, result: null, settled: false },
+  { id: 2, day: 'Mardi 31 mars', league: 'Amical International', home: 'Algerie', hf: '🇩🇿', away: 'Uruguay', af: '🇺🇾', time: '20:30', odds: { h: 2.40, n: 3.10, a: 2.90 }, result: null, settled: false },
+  { id: 3, day: 'Mardi 31 mars', league: 'Amical International', home: 'Angleterre', hf: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', away: 'Japon', af: '🇯🇵', time: '20:45', odds: { h: 1.75, n: 3.50, a: 4.20 }, result: null, settled: false },
+  { id: 4, day: 'Mardi 31 mars', league: 'Amical International', home: 'Maroc', hf: '🇲🇦', away: 'Paraguay', af: '🇵🇾', time: '20:00', odds: { h: 1.85, n: 3.20, a: 4.00 }, result: null, settled: false },
+  { id: 5, day: 'Mardi 31 mars', league: 'Amical International', home: 'Senegal', hf: '🇸🇳', away: 'Gambie', af: '🇬🇲', time: '21:00', odds: { h: 1.70, n: 3.40, a: 4.80 }, result: null, settled: false },
+  { id: 6, day: 'Mardi 31 mars', league: 'Amical International', home: 'Pays-Bas', hf: '🇳🇱', away: 'Equateur', af: '🇪🇨', time: '20:45', odds: { h: 1.80, n: 3.30, a: 4.20 }, result: null, settled: false },
+  { id: 7, day: 'Mardi 31 mars', league: 'Amical International', home: 'Ecosse', hf: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', away: 'Cote Ivoire', af: '🇨🇮', time: '20:30', odds: { h: 2.60, n: 3.20, a: 2.70 }, result: null, settled: false },
+  { id: 8, day: 'Vendredi 3 avril', league: 'Ligue 1 - J27', home: 'PSG', hf: '🔵', away: 'Nantes', af: '🟡', time: '20:45', odds: { h: 1.25, n: 5.50, a: 10.0 }, result: null, settled: false },
+  { id: 9, day: 'Samedi 4 avril', league: 'Premier League', home: 'Arsenal', hf: '🔴', away: 'Fulham', af: '⚪', time: '13:30', odds: { h: 1.55, n: 4.00, a: 5.50 }, result: null, settled: false },
+  { id: 10, day: 'Samedi 4 avril', league: 'Premier League', home: 'Liverpool', hf: '🔴', away: 'Everton', af: '🔵', time: '16:00', odds: { h: 1.50, n: 4.20, a: 6.00 }, result: null, settled: false },
+  { id: 11, day: 'Samedi 4 avril', league: 'Premier League', home: 'Chelsea', hf: '🔵', away: 'Manchester Utd', af: '🔴', time: '16:00', odds: { h: 1.80, n: 3.50, a: 4.20 }, result: null, settled: false },
+  { id: 12, day: 'Samedi 4 avril', league: 'Premier League', home: 'Tottenham', hf: '⚪', away: 'Newcastle', af: '⚫', time: '18:30', odds: { h: 2.10, n: 3.30, a: 3.40 }, result: null, settled: false },
+  { id: 13, day: 'Dimanche 5 avril', league: 'Premier League', home: 'Manchester City', hf: '🔵', away: 'Aston Villa', af: '🟣', time: '15:00', odds: { h: 1.60, n: 3.80, a: 5.00 }, result: null, settled: false },
+  { id: 14, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Monaco', hf: '🔴', away: 'Brest', af: '⚽', time: '15:00', odds: { h: 1.70, n: 3.50, a: 4.50 }, result: null, settled: false },
+  { id: 15, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Strasbourg', hf: '🔵', away: 'Marseille', af: '🔵', time: '17:15', odds: { h: 3.20, n: 3.10, a: 2.20 }, result: null, settled: false },
+  { id: 16, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Lille', hf: '🔴', away: 'Lens', af: '🟡', time: '20:45', odds: { h: 1.90, n: 3.40, a: 3.80 }, result: null, settled: false },
+  { id: 17, day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '🔴', away: 'Lyon', af: '🔴', time: '20:45', odds: { h: 2.30, n: 3.20, a: 3.00 }, result: null, settled: false }
+];
+
+app.listen(PORT, function() {
+  console.log('BET2RUE sur port ' + PORT);
+});
