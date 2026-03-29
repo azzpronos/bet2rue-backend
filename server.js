@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
   lastBonus: { type: String, default: null },
   referredBy: { type: String, default: null },
   referrals: { type: Number, default: 0 },
+  shuffleValidated: { type: Boolean, default: false },
   createdAt: { type: String, default: function() { return new Date().toISOString(); } }
 });
 const User = mongoose.model('User', UserSchema);
@@ -214,6 +215,7 @@ app.get('/api/me', async function(req, res) {
     bets: user.bets,
     streak: user.streak || 0,
     referrals: user.referrals || 0,
+    shuffleValidated: user.shuffleValidated || false,
     isAdmin: user.id === ADMIN_ID,
     createdAt: user.createdAt
   });
@@ -446,6 +448,24 @@ botClient.on('messageCreate', async function(message) {
     user.balance += promo.reward;
     await user.save();
     message.channel.send('✅ Code **' + code + '** active ! **+' + promo.reward + ' EV** ajoutes sur ton compte BET2RUE !');
+  }
+
+  if (content.startsWith('!valide')) {
+    var parts = content.split(' ');
+    if (parts.length !== 2) { message.channel.send('❌ Format : `!valide DISCORD_ID`'); return; }
+    var targetId = parts[1];
+    var targetUser = await User.findOne({ id: targetId });
+    if (!targetUser) { message.channel.send('❌ Utilisateur introuvable — il doit dabord se connecter sur le site'); return; }
+    if (targetUser.shuffleValidated) { message.channel.send('❌ Ce membre a deja recu son bonus Shuffle !'); return; }
+    targetUser.balance += 1500;
+    targetUser.shuffleValidated = true;
+    await targetUser.save();
+    message.channel.send('✅ **Bonus Shuffle valide !**\n👤 **' + targetUser.username + '** a recu **+1500 Pesos** sur son compte BET2RUE !');
+    try {
+      var checkChannel = await botClient.channels.fetch('1487956908106322174');
+      await checkChannel.send('✅ **' + targetUser.username + '** — Bonus Shuffle confirme par Azzpronos !');
+    } catch(e) {}
+    return;
   }
 
   if (content === '!classement') {
