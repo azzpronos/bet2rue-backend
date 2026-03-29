@@ -128,6 +128,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .abtn.a{background:#3b0808;color:#f87171;border:1px solid #f87171}.abtn.a:hover{background:#f87171;color:#000}
 .settled-badge{background:#052e16;color:#4ade80;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
 .locked-badge{background:#3b0808;color:#f87171;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
+@keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 </style>
 </head>
 <body>
@@ -155,7 +156,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
       <div class="hero-tags">
         <span class="hero-tag">100% GRATUIT</span>
         <span class="hero-tag">ZERO VRAI ARGENT</span>
-        <span class="hero-tag"><a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#fff;text-decoration:none">🎮 <span class="hero-tag"><a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#fff;text-decoration:none;background:#5865F2;padding:3px 12px;border-radius:4px">🎮 REJOINDRE LE DISCORD</a></span> LE DISCORD</a></span>
+        <span class="hero-tag"><a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#fff;text-decoration:none">🎮 REJOINDRE LE DISCORD</a></span>
       </div>
     </div>
     <div class="hero-stats">
@@ -354,7 +355,7 @@ async function loadAdmin(){
 }
 
 async function setResult(matchId,result){
-  try{var res=await fetch('/api/admin/result?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({matchId:matchId,result:result,uid:uid})});var data=await res.json();if(res.ok){showToast('Resultat enregistre ! '+data.settled+' paris regles.');var r=await fetch('/api/matches');matches=await r.json();loadAdmin();renderMatches();}else{showToast(data.error,'err');}}catch(e){showToast('Erreur','err');}
+  try{var res=await fetch('/api/admin/result?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({matchId:matchId,result:result,uid:uid})});var data=await res.json();if(res.ok){showToast('Resultat enregistre ! '+data.settled+' paris regles.');launchConfetti();var r=await fetch('/api/matches');matches=await r.json();loadAdmin();renderMatches();}else{showToast(data.error,'err');}}catch(e){showToast('Erreur','err');}
 }
 
 function sw(tab,btn){
@@ -370,6 +371,15 @@ function sw(tab,btn){
   if(tab==='admin')loadAdmin();
 }
 
+function launchConfetti(){
+  var colors=['#e8132a','#f5a623','#4ade80','#fff','#5865F2'];
+  for(var i=0;i<80;i++){
+    var el=document.createElement('div');
+    el.style.cssText='position:fixed;width:'+(Math.random()*10+5)+'px;height:'+(Math.random()*10+5)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';top:-20px;left:'+Math.random()*100+'vw;border-radius:50%;z-index:9998;animation:confetti '+(Math.random()*2+1.5)+'s ease-in forwards;opacity:1';
+    document.body.appendChild(el);
+    setTimeout(function(e){e.remove();},(Math.random()*2+2)*1000,el);
+  }
+}
 function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type==='err'?'err':'');setTimeout(function(){t.className='toast';},3500);}
 setInterval(async function(){try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}},60000);
 init();
