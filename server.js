@@ -387,44 +387,28 @@ const botClient = new Client({
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
-botClient.once('ready', async function() {   console.log('Bot connecte : ' + botClient.user.tag);   try {     var verifyChannel = await botClient.channels.fetch('1482517246537633964');     var ticketChannel = await botClient.channels.fetch('1488203713381400638');     var { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');      var verifyRow = new ActionRowBuilder().addComponents(       new ButtonBuilder()         .setCustomId('accept_rules')         .setLabel('✅ J\'accepte les règles')         .setStyle(ButtonStyle.Success)     );     await verifyChannel.send({       content: '**🎰 BIENVENUE SUR BET0TALL !**
-
-📜 En rejoignant ce serveur tu acceptes de respecter les règles de la communauté.
-
-✅ Clique sur le bouton ci-dessous pour accéder au serveur !',       components: [verifyRow]     });      var ticketRow = new ActionRowBuilder().addComponents(       new ButtonBuilder()         .setCustomId('open_ticket')         .setLabel('📩 Ouvrir un ticket')         .setStyle(ButtonStyle.Primary)     );     await ticketChannel.send({       content: '📩 **ENVOIE TON PSEUDO**
-
-Clique sur le bouton ci-dessous pour ouvrir un ticket privé et envoyer ton pseudo !',       components: [ticketRow]     });   } catch(e) { console.error('Erreur ready:', e.message); } });
+botClient.once('ready', async function() {
   console.log('Bot connecte : ' + botClient.user.tag);
   try {
-    var channel = await botClient.channels.fetch('1482517246537633964');
-    var row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('accept_rules')
-        .setLabel('✅ J\'accepte les règles')
-        .setStyle(ButtonStyle.Success)
+    var verifyChannel = await botClient.channels.fetch('1482517246537633964');
+    var verifyRow = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId('accept_rules').setLabel("J'accepte les regles").setStyle(ButtonStyle.Success)
     );
-    await channel.send({
-      content: '**🎰 BIENVENUE SUR BET0TALL !**\n\n📜 En rejoignant ce serveur tu acceptes de respecter les règles de la communauté.\n\n✅ Clique sur le bouton ci-dessous pour accéder au serveur !',
-      components: [row]
+    await verifyChannel.send({
+      content: '**BIENVENUE SUR BET0TALL !**\n\nEn rejoignant ce serveur tu acceptes de respecter les regles.\n\nClique sur le bouton ci-dessous pour acceder au serveur !',
+      components: [verifyRow]
     });
-  } catch(e) { console.error('Erreur bouton:', e.message); }
-});
-
-botClient.on('interactionCreate', async function(interaction) {   if (!interaction.isButton()) return;    if (interaction.customId === 'accept_rules') {     try {       await interaction.member.roles.add('1488197704306655343');       await interaction.reply({ content: '✅ Bienvenue ! Tu as maintenant acces au serveur BET0TALL 🔥', ephemeral: true });     } catch(e) {       await interaction.reply({ content: '❌ Erreur — contacte un admin', ephemeral: true });     }   }    if (interaction.customId === 'open_ticket') {     try {       var existing = interaction.guild.channels.cache.find(function(c) {         return c.name === 'ticket-' + interaction.user.username.toLowerCase();       });       if (existing) {         await interaction.reply({ content: '❌ Tu as deja un ticket ouvert : <#' + existing.id + '>', ephemeral: true });         return;       }       var ticket = await interaction.guild.channels.create({         name: 'ticket-' + interaction.user.username.toLowerCase(),         parent: '1488204432004087950',         permissionOverwrites: [           { id: interaction.guild.id, deny: ['ViewChannel'] },           { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },           { id: interaction.guild.members.me.id, allow: ['ViewChannel', 'SendMessages'] }         ]       });       await ticket.send(         '👋 **' + interaction.user.username + '** — Bienvenue dans ton ticket !
-
-'         + '📝 Envoie ton **pseudo Shuffle** et ton **montant de depot** ici.
-'         + '✅ Tu seras credite sous 24h !
-
-'         + '<@' + ADMIN_ID + '> un nouveau ticket a ete ouvert !'       );       await interaction.reply({ content: '✅ Ton ticket a ete cree : <#' + ticket.id + '>', ephemeral: true });     } catch(e) {       console.error('Erreur ticket:', e.message);       await interaction.reply({ content: '❌ Erreur — contacte un admin', ephemeral: true });     }   }    if (interaction.customId === 'close_ticket') {     try {       await interaction.channel.send('🔒 Ticket ferme par ' + interaction.user.username);       setTimeout(async function() { await interaction.channel.delete(); }, 3000);       await interaction.reply({ content: '🔒 Ticket ferme !', ephemeral: true });     } catch(e) {}   } });
-  if (!interaction.isButton()) return;
-  if (interaction.customId === 'accept_rules') {
-    try {
-      await interaction.member.roles.add('1488197704306655343');
-      await interaction.reply({ content: '✅ Bienvenue ! Tu as maintenant accès au serveur BET0TALL 🔥', ephemeral: true });
-    } catch(e) {
-      await interaction.reply({ content: '❌ Erreur — contacte un admin', ephemeral: true });
-    }
-  }
+  } catch(e) { console.error('Erreur verify:', e.message); }
+  try {
+    var ticketChannel = await botClient.channels.fetch('1488203713381400638');
+    var ticketRow = new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId('open_ticket').setLabel('Ouvrir un ticket').setStyle(ButtonStyle.Primary)
+    );
+    await ticketChannel.send({
+      content: '**ENVOIE TON PSEUDO**\n\nClique sur le bouton ci-dessous pour ouvrir un ticket prive !',
+      components: [ticketRow]
+    });
+  } catch(e) { console.error('Erreur ticket:', e.message); }
 });
 
 botClient.on('messageCreate', async function(message) {
@@ -514,6 +498,43 @@ botClient.on('messageCreate', async function(message) {
       txt += (medals[i] || (i+1) + '.') + ' **' + p.username + '** — ' + Math.round(p.balance).toLocaleString() + ' EV\n';
     });
     message.channel.send(txt);
+  }
+});
+
+botClient.on('interactionCreate', async function(interaction) {
+  if (!interaction.isButton()) return;
+  if (interaction.customId === 'accept_rules') {
+    try {
+      await interaction.member.roles.add('1488197704306655343');
+      await interaction.reply({ content: 'Bienvenue ! Tu as maintenant acces au serveur BET0TALL', ephemeral: true });
+    } catch(e) { await interaction.reply({ content: 'Erreur — contacte un admin', ephemeral: true }); }
+  }
+  if (interaction.customId === 'open_ticket') {
+    try {
+      var existing = interaction.guild.channels.cache.find(function(c){ return c.name === 'ticket-' + interaction.user.username.toLowerCase(); });
+      if (existing) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existing.id + '>', ephemeral: true }); return; }
+      var ticket = await interaction.guild.channels.create({
+        name: 'ticket-' + interaction.user.username.toLowerCase(),
+        parent: '1488204432004087950',
+        permissionOverwrites: [
+          { id: interaction.guild.id, deny: ['ViewChannel'] },
+          { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },
+          { id: interaction.guild.members.me.id, allow: ['ViewChannel', 'SendMessages'] }
+        ]
+      });
+      var closeRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('close_ticket').setLabel('Fermer le ticket').setStyle(ButtonStyle.Danger)
+      );
+      await ticket.send({ content: '**' + interaction.user.username + '** — Envoie ton pseudo ici !\n<@' + ADMIN_ID + '> nouveau ticket !', components: [closeRow] });
+      await interaction.reply({ content: 'Ton ticket : <#' + ticket.id + '>', ephemeral: true });
+    } catch(e) { console.error('Erreur ticket:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
+  }
+  if (interaction.customId === 'close_ticket') {
+    try {
+      await interaction.channel.send('Ticket ferme par ' + interaction.user.username);
+      setTimeout(async function(){ await interaction.channel.delete(); }, 3000);
+      await interaction.reply({ content: 'Ticket ferme !', ephemeral: true });
+    } catch(e) {}
   }
 });
 
