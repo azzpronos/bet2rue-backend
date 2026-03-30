@@ -382,7 +382,7 @@ app.listen(PORT, function() {
 
 const { Client, GatewayIntentBits } = require('discord.js');
 const botClient = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
@@ -391,25 +391,33 @@ botClient.once('ready', async function() {
   console.log('Bot connecte : ' + botClient.user.tag);
   try {
     var verifyChannel = await botClient.channels.fetch('1482517246537633964');
-    var verifyRow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('accept_rules').setLabel("J'accepte les regles").setStyle(ButtonStyle.Success)
-    );
-    await verifyChannel.send({
-      content: '**BIENVENUE SUR BET0TALL !**\n\nEn rejoignant ce serveur tu acceptes de respecter les regles.\n\nClique sur le bouton ci-dessous pour acceder au serveur !',
-      components: [verifyRow]
-    });
+    var verifyMsgs = await verifyChannel.messages.fetch({ limit: 10 });
+    var verifySent = verifyMsgs.some(function(m){ return m.author.id === botClient.user.id && m.components.length > 0; });
+    if (!verifySent) {
+      var verifyRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('accept_rules').setLabel("J'accepte les regles").setStyle(ButtonStyle.Success)
+      );
+      await verifyChannel.send({
+        content: '**BIENVENUE SUR BET0TALL !**\n\nEn rejoignant ce serveur tu acceptes de respecter les regles.\n\nClique sur le bouton ci-dessous pour acceder au serveur !',
+        components: [verifyRow]
+      });
+    }
   } catch(e) { console.error('Erreur verify:', e.message); }
   try {
     var ticketChannel = await botClient.channels.fetch('1488203713381400638');
-    var ticketRow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success),
-      new ButtonBuilder().setCustomId('open_pesos').setLabel('5000 Pesos BET0TALL').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('open_question').setLabel('Question').setStyle(ButtonStyle.Secondary)
-    );
-    await ticketChannel.send({
-      content: '**ENVOIE TON PSEUDO**\n\nClique sur le bouton ci-dessous pour ouvrir un ticket prive !',
-      components: [ticketRow]
-    });
+    var ticketMsgs = await ticketChannel.messages.fetch({ limit: 10 });
+    var ticketSent = ticketMsgs.some(function(m){ return m.author.id === botClient.user.id && m.components.length > 0; });
+    if (!ticketSent) {
+      var ticketRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success),
+        new ButtonBuilder().setCustomId('open_pesos').setLabel('5000 Pesos BET0TALL').setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId('open_question').setLabel('Question').setStyle(ButtonStyle.Secondary)
+      );
+      await ticketChannel.send({
+        content: '**ENVOIE TON PSEUDO**\n\nClique sur le bouton ci-dessous pour ouvrir un ticket prive !',
+        components: [ticketRow]
+      });
+    }
   } catch(e) { console.error('Erreur ticket:', e.message); }
 });
 
@@ -502,18 +510,7 @@ botClient.on('messageCreate', async function(message) {
     message.channel.send(txt);
   }
 });
-botClient.on('guildMemberUpdate', async function(oldMember, newMember) {
-  var hadPending = oldMember.pending;
-  var isPending = newMember.pending;
-  if (hadPending && !isPending) {
-    try {
-      await newMember.roles.add('1488197704306655343');
-      console.log(newMember.user.username + ' a accepte les regles → role Membre attribue');
-    } catch(e) {
-      console.error('Erreur role:', e.message);
-    }
-  }
-});
+
 botClient.on('interactionCreate', async function(interaction) {
   if (!interaction.isButton()) return;
   if (interaction.customId === 'accept_rules') {
