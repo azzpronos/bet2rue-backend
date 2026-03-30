@@ -79,7 +79,7 @@ async function getOrCreateUser(discordUser, refId) {
         parrain.balance += 1000;
         parrain.referrals = (parrain.referrals || 0) + 1;
         await parrain.save();
-        console.log('Parrainage : ' + parrain.username + ' gagne 1000 Pesos pour ' + discordUser.username);
+        console.log('Parrainage : ' + parrain.username + ' gagne 1000 Tall pour ' + discordUser.username);
       }
     }
     console.log('Nouvel utilisateur: ' + discordUser.username);
@@ -410,7 +410,7 @@ botClient.once('ready', async function() {
     if (!ticketSent) {
       var ticketRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success),
-        new ButtonBuilder().setCustomId('open_pesos').setLabel('5000 Pesos BET0TALL').setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId('open_tall').setLabel('5000 Tall BET0TALL').setStyle(ButtonStyle.Primary),
         new ButtonBuilder().setCustomId('open_question').setLabel('Question').setStyle(ButtonStyle.Secondary)
       );
       await ticketChannel.send({
@@ -492,7 +492,7 @@ botClient.on('messageCreate', async function(message) {
     targetUser.balance += 5000;
     targetUser.shuffleValidated = true;
     await targetUser.save();
-    message.channel.send('✅ **Bonus Shuffle valide !**\n👤 **' + targetUser.username + '** a recu **+5000 Pesos** sur son compte BET0TALL !');
+    message.channel.send('✅ **Bonus Shuffle valide !**\n👤 **' + targetUser.username + '** a recu **+5000 Tall** sur son compte BET0TALL !');
     try {
       var checkChannel = await botClient.channels.fetch('1487956908106322174');
       await checkChannel.send('✅ **' + targetUser.username + '** — Bonus Shuffle confirme par Azzpronos !');
@@ -539,12 +539,12 @@ botClient.on('interactionCreate', async function(interaction) {
       await interaction.reply({ content: 'Ton ticket : <#' + ticket.id + '>', ephemeral: true });
     } catch(e) { console.error('Erreur ticket:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
   }
-  if (interaction.customId === 'open_pesos') {
+  if (interaction.customId === 'open_tall') {
     try {
-      var existingP = interaction.guild.channels.cache.find(function(c){ return c.name === 'pesos-' + interaction.user.username.toLowerCase(); });
+      var existingP = interaction.guild.channels.cache.find(function(c){ return c.name === 'tall-' + interaction.user.username.toLowerCase(); });
       if (existingP) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existingP.id + '>', ephemeral: true }); return; }
       var ticketP = await interaction.guild.channels.create({
-        name: 'pesos-' + interaction.user.username.toLowerCase(),
+        name: 'tall-' + interaction.user.username.toLowerCase(),
         parent: '1488276013233209374',
         permissionOverwrites: [
           { id: interaction.guild.id, deny: ['ViewChannel'] },
@@ -555,9 +555,9 @@ botClient.on('interactionCreate', async function(interaction) {
       var closeRowP = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('close_ticket').setLabel('Fermer le ticket').setStyle(ButtonStyle.Danger)
       );
-      await ticketP.send({ content: '**' + interaction.user.username + '** — Envoie ton pseudo BET0TALL pour recevoir tes 5000 Pesos !\n<@' + ADMIN_ID + '> nouveau ticket Pesos !', components: [closeRowP] });
+      await ticketP.send({ content: '**' + interaction.user.username + '** — Envoie ton pseudo BET0TALL pour recevoir tes 5000 Tall !\n<@' + ADMIN_ID + '> nouveau ticket Tall !', components: [closeRowP] });
       await interaction.reply({ content: 'Ton ticket : <#' + ticketP.id + '>', ephemeral: true });
-    } catch(e) { console.error('Erreur pesos:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
+    } catch(e) { console.error('Erreur tall:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
   }
 
   if (interaction.customId === 'open_question') {
