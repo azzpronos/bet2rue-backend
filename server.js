@@ -385,8 +385,35 @@ const botClient = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
 });
 
-botClient.once('ready', function() {
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
+botClient.once('ready', async function() {
   console.log('Bot connecte : ' + botClient.user.tag);
+  try {
+    var channel = await botClient.channels.fetch('1482517246537633964');
+    var row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('accept_rules')
+        .setLabel('✅ J\'accepte les règles')
+        .setStyle(ButtonStyle.Success)
+    );
+    await channel.send({
+      content: '**🎰 BIENVENUE SUR BET0TALL !**\n\n📜 En rejoignant ce serveur tu acceptes de respecter les règles de la communauté.\n\n✅ Clique sur le bouton ci-dessous pour accéder au serveur !',
+      components: [row]
+    });
+  } catch(e) { console.error('Erreur bouton:', e.message); }
+});
+
+botClient.on('interactionCreate', async function(interaction) {
+  if (!interaction.isButton()) return;
+  if (interaction.customId === 'accept_rules') {
+    try {
+      await interaction.member.roles.add('1488197704306655343');
+      await interaction.reply({ content: '✅ Bienvenue ! Tu as maintenant accès au serveur BET0TALL 🔥', ephemeral: true });
+    } catch(e) {
+      await interaction.reply({ content: '❌ Erreur — contacte un admin', ephemeral: true });
+    }
+  }
 });
 
 botClient.on('messageCreate', async function(message) {
