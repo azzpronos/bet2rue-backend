@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BET2HESS — Le Site du Peuple</title>
+<title>BET0TALL — Bet0Tall</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
@@ -134,14 +134,14 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 <body>
 
 <div id="splash">
-  <div class="splash-logo">BET<span>2</span>HESS</div>
-  <div class="splash-sub">LE SITE DU PEUPLE</div>
+  <div class="splash-logo">BET<span>0</span>TALL</div>
+  <div class="splash-sub">T'AS 0 TALL MAIS TU PARIES COMME UN RICHE</div>
   <div class="splash-bar"><div class="splash-fill"></div></div>
 </div>
 
 <header>
   <div class="hi">
-    <div class="logo">BET<span>2</span>HESS</div>
+    <div class="logo">BET<span>0</span>TALL</div>
     <div class="ub" id="ub">
       <a class="btn-dc" href="/auth/discord">CONNEXION DISCORD</a>
     </div>
@@ -151,8 +151,8 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 <div class="hero">
   <div class="hero-inner">
     <div>
-      <div class="hero-title">LE SITE DU PEUPLE</div>
-      <div class="hero-sub">BET2HESS — PARIS VIRTUELS</div>
+      <div class="hero-title">T'AS 0 TALL MAIS TU PARIES COMME UN RICHE</div>
+      <div class="hero-sub">BET0TALL — PARIS VIRTUELS</div>
       <div class="hero-tags">
         <span class="hero-tag">100% GRATUIT</span>
         <span class="hero-tag">ZERO VRAI ARGENT</span>
@@ -181,10 +181,10 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 <main>
   <div>
     <div id="tab-matches" class="tab active"><div id="ml"></div></div>
-    <div id="tab-leaderboard" class="tab"><div class="stitle">CLASSEMENT BET2HESS</div><div id="lb"></div></div>
+    <div id="tab-leaderboard" class="tab"><div class="stitle">CLASSEMENT BET0TALL</div><div id="lb"></div></div>
     <div id="tab-mybets" class="tab"><div class="stitle">MES PARIS</div><div id="bh"></div></div>
     <div id="tab-shop" class="tab">
-      <div class="stitle">BOUTIQUE BET2HESS</div>
+      <div class="stitle">BOUTIQUE BET0TALL</div>
       <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
         <div style="font-size:13px;color:var(--gris);line-height:1.8">Echange tes <b style="color:var(--or)">Pesos</b> contre des recompenses reelles !<br>Pour utiliser Shuffle depuis la France → <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">suis le tuto sur notre Discord</a></div>
       </div>
@@ -243,7 +243,7 @@ async function init(){
   var params=new URLSearchParams(window.location.search);
   var bonus=params.get('bonus');
   if(params.get('login')==='success'&&bonus&&bonus!=='none'){var parts=bonus.split('_');showToast('Bienvenue ! +'+parts[0]+' Pesos bonus (Jour '+parts[1]+' streak) !');}
-  else if(params.get('login')==='success'){showToast('Bienvenue sur BET2HESS !');}
+  else if(params.get('login')==='success'){showToast('Bienvenue sur BET0TALL !');}
   if(uid){try{var res=await fetch('/api/me?uid='+uid);if(res.ok){user=await res.json();renderUB();}else{uid=null;localStorage.removeItem('b2r_uid');}}catch(e){}}
   try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}
   loadStats();
@@ -339,11 +339,11 @@ function renderProfile(){
   var el=document.getElementById('pc');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>';return;}
   var wins=user.bets?user.bets.filter(function(b){return b.status==='win';}).length:0;
   var total=user.bets?user.bets.length:0;var wr=total?Math.round(wins/total*100):0;var initials=user.username.slice(0,2).toUpperCase();
-  var refLink='https://bet2hess-backend.onrender.com?ref='+user.id;
+  var refLink='https://bet0tall-backend.onrender.com?ref='+user.id;
   el.innerHTML='<div class="pcard">'
     +'<div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div>'
     +'<div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div>'
-    +'<div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET2HESS • 🔥 '+user.streak+' jours de streak</div>'
+    +'<div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET0TALL • 🔥 '+user.streak+' jours de streak</div>'
     +'<div class="sg">'
     +'<div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde Pesos</div></div>'
     +'<div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div>'
