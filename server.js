@@ -382,7 +382,7 @@ app.listen(PORT, function() {
 
 const { Client, GatewayIntentBits } = require('discord.js');
 const botClient = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]
 });
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
@@ -502,7 +502,18 @@ botClient.on('messageCreate', async function(message) {
     message.channel.send(txt);
   }
 });
-
+botClient.on('guildMemberUpdate', async function(oldMember, newMember) {
+  var hadPending = oldMember.pending;
+  var isPending = newMember.pending;
+  if (hadPending && !isPending) {
+    try {
+      await newMember.roles.add('1488197704306655343');
+      console.log(newMember.user.username + ' a accepte les regles → role Membre attribue');
+    } catch(e) {
+      console.error('Erreur role:', e.message);
+    }
+  }
+});
 botClient.on('interactionCreate', async function(interaction) {
   if (!interaction.isButton()) return;
   if (interaction.customId === 'accept_rules') {
