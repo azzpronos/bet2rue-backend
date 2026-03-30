@@ -402,7 +402,9 @@ botClient.once('ready', async function() {
   try {
     var ticketChannel = await botClient.channels.fetch('1488203713381400638');
     var ticketRow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('open_ticket').setLabel('Ouvrir un ticket').setStyle(ButtonStyle.Primary)
+      new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success),
+      new ButtonBuilder().setCustomId('open_pesos').setLabel('5000 Pesos BET0TALL').setStyle(ButtonStyle.Primary),
+      new ButtonBuilder().setCustomId('open_question').setLabel('Question').setStyle(ButtonStyle.Secondary)
     );
     await ticketChannel.send({
       content: '**ENVOIE TON PSEUDO**\n\nClique sur le bouton ci-dessous pour ouvrir un ticket prive !',
@@ -529,6 +531,48 @@ botClient.on('interactionCreate', async function(interaction) {
       await interaction.reply({ content: 'Ton ticket : <#' + ticket.id + '>', ephemeral: true });
     } catch(e) { console.error('Erreur ticket:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
   }
+  if (interaction.customId === 'open_pesos') {
+    try {
+      var existingP = interaction.guild.channels.cache.find(function(c){ return c.name === 'pesos-' + interaction.user.username.toLowerCase(); });
+      if (existingP) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existingP.id + '>', ephemeral: true }); return; }
+      var ticketP = await interaction.guild.channels.create({
+        name: 'pesos-' + interaction.user.username.toLowerCase(),
+        parent: '1488276013233209374',
+        permissionOverwrites: [
+          { id: interaction.guild.id, deny: ['ViewChannel'] },
+          { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },
+          { id: interaction.guild.members.me.id, allow: ['ViewChannel', 'SendMessages'] }
+        ]
+      });
+      var closeRowP = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('close_ticket').setLabel('Fermer le ticket').setStyle(ButtonStyle.Danger)
+      );
+      await ticketP.send({ content: '**' + interaction.user.username + '** — Envoie ton pseudo BET0TALL pour recevoir tes 5000 Pesos !\n<@' + ADMIN_ID + '> nouveau ticket Pesos !', components: [closeRowP] });
+      await interaction.reply({ content: 'Ton ticket : <#' + ticketP.id + '>', ephemeral: true });
+    } catch(e) { console.error('Erreur pesos:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
+  }
+
+  if (interaction.customId === 'open_question') {
+    try {
+      var existingQ = interaction.guild.channels.cache.find(function(c){ return c.name === 'question-' + interaction.user.username.toLowerCase(); });
+      if (existingQ) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existingQ.id + '>', ephemeral: true }); return; }
+      var ticketQ = await interaction.guild.channels.create({
+        name: 'question-' + interaction.user.username.toLowerCase(),
+        parent: '1488276013233209374',
+        permissionOverwrites: [
+          { id: interaction.guild.id, deny: ['ViewChannel'] },
+          { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },
+          { id: interaction.guild.members.me.id, allow: ['ViewChannel', 'SendMessages'] }
+        ]
+      });
+      var closeRowQ = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('close_ticket').setLabel('Fermer le ticket').setStyle(ButtonStyle.Danger)
+      );
+      await ticketQ.send({ content: '**' + interaction.user.username + '** — Pose ta question ici !\n<@' + ADMIN_ID + '> nouvelle question !', components: [closeRowQ] });
+      await interaction.reply({ content: 'Ton ticket : <#' + ticketQ.id + '>', ephemeral: true });
+    } catch(e) { console.error('Erreur question:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
+  }
+
   if (interaction.customId === 'close_ticket') {
     try {
       await interaction.channel.send('Ticket ferme par ' + interaction.user.username);
