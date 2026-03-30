@@ -515,7 +515,7 @@ botClient.on('interactionCreate', async function(interaction) {
       if (existing) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existing.id + '>', ephemeral: true }); return; }
       var ticket = await interaction.guild.channels.create({
         name: 'ticket-' + interaction.user.username.toLowerCase(),
-        parent: '1488204432004087950',
+        parent: '1488276013233209374',
         permissionOverwrites: [
           { id: interaction.guild.id, deny: ['ViewChannel'] },
           { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },
