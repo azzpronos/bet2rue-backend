@@ -176,6 +176,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('shop',this)">BOUTIQUE</button>
     <button class="nb" onclick="sw('blackjack',this)">BLACKJACK</button>
     <button class="nb" onclick="sw('crash',this)">CRASH</button>
+    <button class="nb" onclick="sw('feed',this)">FEED</button>
     <button class="nb" onclick="sw('offres',this)">OFFRES</button>
     <button class="nb" onclick="sw('results',this)">RESULTATS</button>
     <button class="nb" onclick="sw('profile',this)">PROFIL</button>
@@ -240,6 +241,10 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
         <button onclick="cStart()" style="background:var(--or);border:none;color:#000;padding:12px 32px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer">JOUER</button>
       </div>
       <div id="crash-history" style="margin-top:16px"></div>
+    </div>
+        <div id="tab-feed" class="tab">
+      <div class="stitle">FEED — PARIS EN DIRECT</div>
+      <div id="feed-list"></div>
     </div>
     <div id="tab-offres" class="tab">
       <div class="stitle">OFFRES D AFFILIATION</div>
@@ -629,6 +634,7 @@ function sw(tab,btn){
   if(tab==="mybets")renderBets();
   if(tab==="shop")loadShop();
   if(tab==="results")loadResults();
+  if(tab==="feed")loadFeed();
   if(tab==="profile")renderProfile();
   if(tab==="admin")loadAdmin();
 }
@@ -641,6 +647,25 @@ function launchConfetti(){
     setTimeout(function(e){e.remove();},(Math.random()*2+2)*1000,el);
   }
 }
+
+function loadFeed(){
+  var el=document.getElementById("feed-list");
+  if(!el)return;
+  el.innerHTML="<div class='empty'>Chargement...</div>";
+  fetch("/api/feed").then(function(r){return r.json();}).then(function(data){
+    if(!data.length){el.innerHTML="<div class='empty'>Aucun pari pour l'instant</div>";return;}
+    el.innerHTML=data.map(function(b){
+      var initials=b.username.slice(0,2).toUpperCase();
+      var av=b.avatar?"<img src='"+b.avatar+"' style='width:36px;height:36px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:36px;height:36px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:15px;color:#fff;flex-shrink:0'>"+initials+"</div>";
+      var picks=b.picks.map(function(p){return p.pick;}).join(" + ");
+      var date=b.placedAt?new Date(b.placedAt).toLocaleString("fr-FR"):"";
+      var statusColor=b.status==="win"?"#4ade80":b.status==="loss"?"#f87171":"#fbbf24";
+      var statusLabel=b.status==="win"?"GAGNE":b.status==="loss"?"PERDU":"EN ATTENTE";
+      return "<div style='background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start'>"+av+"<div style='flex:1;min-width:0'><div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px'><b style='color:var(--or)'>"+b.username+"</b><span style='font-size:10px;color:var(--gris)'>"+date+"</span></div><div style='font-size:13px;font-weight:600;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+picks+"</div><div style='display:flex;justify-content:space-between;align-items:center'><span style='font-size:11px;color:var(--gris)'>"+b.stake+" Tall x"+b.totalOdd+" = "+b.potentialGain+" Tall</span><span style='font-family:Bebas Neue,sans-serif;font-size:12px;color:"+statusColor+"'>"+statusLabel+"</span></div></div></div>";
+    }).join("");
+  }).catch(function(){el.innerHTML="<div class='empty'>Erreur de chargement</div>";});
+}
+
 function showToast(msg,type){
   var t=document.getElementById("toast");
   t.textContent=msg;t.className="toast show "+(type==="err"?"err":"");
