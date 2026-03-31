@@ -473,7 +473,28 @@ app.post('/api/admin/result', async function(req, res) {
   var count = await settleMatch(matchId, result);
   res.json({ ok: true, settled: count });
 });
-
+app.get('/api/admin/bets', async function(req, res) {
+  var uid = req.query.uid;
+  if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
+  var users = await User.find({}).sort({ createdAt: -1 });
+  var result = [];
+  users.forEach(function(u) {
+    u.bets.forEach(function(b) {
+      result.push({
+        username: u.username,
+        userId: u.id,
+        picks: b.picks,
+        stake: b.stake,
+        totalOdd: b.totalOdd,
+        potentialGain: b.potentialGain,
+        status: b.status,
+        placedAt: b.placedAt
+      });
+    });
+  });
+  result.sort(function(a,b){return new Date(b.placedAt)-new Date(a.placedAt);});
+  res.json(result.slice(0,200));
+});
 app.get('/api/admin/matches', function(req, res) {
   var uid = req.query.uid;
   if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
