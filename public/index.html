@@ -659,7 +659,7 @@ function loadFeed(){
     el.innerHTML=data.map(function(b){
       var initials=b.username.slice(0,2).toUpperCase();
       var av=b.avatar?"<img src='"+b.avatar+"' style='width:36px;height:36px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:36px;height:36px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:15px;color:#fff;flex-shrink:0'>"+initials+"</div>";
-      var picks=b.picks.map(function(p){return p.pick;}).join(" + ");
+      var picks=b.picks?b.picks.map(function(p){return p.pick;}).join(" + "):b.label||b.type;
       var date=b.placedAt?new Date(b.placedAt).toLocaleString("fr-FR"):"";
       var statusColor=b.status==="win"?"#4ade80":b.status==="loss"?"#f87171":"#fbbf24";
       var statusLabel=b.status==="win"?"GAGNE":b.status==="loss"?"PERDU":"EN ATTENTE";
