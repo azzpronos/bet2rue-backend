@@ -548,7 +548,7 @@ botClient.once('ready', async function() {
     var ticketSent = ticketMsgs.some(function(m){ return m.author.id === botClient.user.id && m.components.length > 0; });
     if (!ticketSent) {
       var ticketRow = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success),
+        new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success), new ButtonBuilder().setCustomId('open_2500').setLabel('2500 Tall Creation Compte').setStyle(ButtonStyle.Secondary),
         new ButtonBuilder().setCustomId('open_tall').setLabel('5000 Tall BET0TALL').setStyle(ButtonStyle.Primary),
         new ButtonBuilder().setCustomId('open_question').setLabel('Question').setStyle(ButtonStyle.Secondary)
       );
@@ -712,7 +712,26 @@ botClient.on('interactionCreate', async function(interaction) {
       await interaction.reply({ content: 'Ton ticket : <#' + ticketP.id + '>', ephemeral: true });
     } catch(e) { console.error('Erreur tall:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
   }
-
+if (interaction.customId === 'open_2500') {
+    try {
+      var existing2500 = interaction.guild.channels.cache.find(function(c){ return c.name === 'creation-' + interaction.user.username.toLowerCase(); });
+      if (existing2500) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existing2500.id + '>', ephemeral: true }); return; }
+      var ticket2500 = await interaction.guild.channels.create({
+        name: 'creation-' + interaction.user.username.toLowerCase(),
+        parent: '1488276013233209374',
+        permissionOverwrites: [
+          { id: interaction.guild.id, deny: ['ViewChannel'] },
+          { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },
+          { id: interaction.guild.members.me.id, allow: ['ViewChannel', 'SendMessages'] }
+        ]
+      });
+      var closeRow2500 = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('close_ticket').setLabel('Fermer le ticket').setStyle(ButtonStyle.Danger)
+      );
+      await ticket2500.send({ content: '**' + interaction.user.username + '** - Envoie ton pseudo Shuffle pour recevoir +2500 Tall !\\n<@' + ADMIN_ID + '> nouveau ticket creation compte !', components: [closeRow2500] });
+      await interaction.reply({ content: 'Ton ticket : <#' + ticket2500.id + '>', ephemeral: true });
+    } catch(e) { console.error('Erreur 2500:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
+  }
   if (interaction.customId === 'open_question') {
     try {
       var existingQ = interaction.guild.channels.cache.find(function(c){ return c.name === 'question-' + interaction.user.username.toLowerCase(); });
