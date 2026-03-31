@@ -48,6 +48,22 @@ const ResultSchema = new mongoose.Schema({
 });
 const Result = mongoose.model('Result', ResultSchema);
 
+const MarketSchema = new mongoose.Schema({
+  id: { type: String, unique: true },
+  creator: String,
+  creatorId: String,
+  question: String,
+  optionA: String,
+  optionB: String,
+  oddsA: { type: Number, default: 2.0 },
+  oddsB: { type: Number, default: 2.0 },
+  bets: { type: Array, default: [] },
+  status: { type: String, default: 'open' },
+  result: { type: String, default: null },
+  createdAt: { type: String, default: function() { return new Date().toISOString(); } }
+});
+const Market = mongoose.model('Market', MarketSchema);
+
 const PromoSchema = new mongoose.Schema({
   code: { type: String, unique: true, uppercase: true },
   reward: Number,
@@ -326,7 +342,7 @@ app.post('/api/transfer', async function(req, res) {
   if (amount > sender.balance) return res.status(400).json({ error: 'Solde insuffisant' });
   var receiver = await User.findOne({ username: { $regex: new RegExp('^' + targetUsername + '$', 'i') } });
   if (!receiver) return res.status(400).json({ error: 'Membre introuvable' });
-  if (receiver.id === uid) return res.status(400).json({ error: 'Tu ne peux pas t'envoyer des Tall' });
+  if (receiver.id === uid) return res.status(400).json({ error: 'Tu ne peux pas t\'envoyer des Tall' });
   sender.balance -= amount;
   sender.balance = parseFloat(sender.balance.toFixed(2));
   receiver.balance += amount;
@@ -338,6 +354,89 @@ app.post('/api/transfer', async function(req, res) {
     await recvUser.send('💸 **+' + amount + ' Tall** recus de **' + sender.username + '** sur BET0TALL !');
   } catch(e) {}
   res.json({ ok: true, newBalance: sender.balance, receiver: receiver.username, amount: amount });
+});
+
+app.get('/api/market', async function(req, res) {
+  var markets = await Market.find({ status: 'open' }).sort({ createdAt: -1 }).limit(20);
+  res.json(markets);
+});
+
+app.post('/api/market/create', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var user = await User.findOne({ id: uid });
+  if (!user) return res.status(401).json({ error: 'Non connecte' });
+  var question = (req.body.question || '').trim();
+  var optionA = (req.body.optionA || '').trim();
+  var optionB = (req.body.optionB || '').trim();
+  var oddsA = parseFloat(req.body.oddsA) || 2.0;
+  var oddsB = parseFloat(req.body.oddsB) || 2.0;
+  if (!question || !optionA || !optionB) return res.status(400).json({ error: 'Champs manquants' });
+  if (oddsA < 1.1 || oddsB < 1.1) return res.status(400).json({ error: 'Cote minimum : 1.10' });
+  var market = await Market.create({
+    id: Date.now().toString(),
+    creator: user.username,
+    creatorId: uid,
+    question: question,
+    optionA: optionA,
+    optionB: optionB,
+    oddsA: oddsA,
+    oddsB: oddsB,
+    bets: [],
+    status: 'open',
+    result: null
+  });
+  res.json({ ok: true, market: market });
+});
+
+app.post('/api/market/bet', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var user = await User.findOne({ id: uid });
+  if (!user) return res.status(401).json({ error: 'Non connecte' });
+  var marketId = req.body.marketId;
+  var option = req.body.option;
+  var stake = parseInt(req.body.stake);
+  if (!stake || stake < 10) return res.status(400).json({ error: 'Mise minimum : 10 Tall' });
+  if (stake > user.balance) return res.status(400).json({ error: 'Solde insuffisant' });
+  var market = await Market.findOne({ id: marketId });
+  if (!market) return res.status(400).json({ error: 'Pari introuvable' });
+  if (market.status !== 'open') return res.status(400).json({ error: 'Ce pari est ferme' });
+  var alreadyBet = market.bets.find(function(b) { return b.uid === uid; });
+  if (alreadyBet) return res.status(400).json({ error: 'Tu as deja mise sur ce pari' });
+  var odd = option === 'A' ? market.oddsA : market.oddsB;
+  user.balance -= stake;
+  user.balance = parseFloat(user.balance.toFixed(2));
+  await user.save();
+  market.bets.push({ uid: uid, username: user.username, option: option, stake: stake, odd: odd });
+  market.markModified('bets');
+  await market.save();
+  res.json({ ok: true, newBalance: user.balance });
+});
+
+app.post('/api/market/resolve', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var marketId = req.body.marketId;
+  var result = req.body.result;
+  var market = await Market.findOne({ id: marketId });
+  if (!market) return res.status(400).json({ error: 'Pari introuvable' });
+  if (market.status !== 'open') return res.status(400).json({ error: 'Deja resolu' });
+  if (market.creatorId !== uid && uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
+  market.status = 'closed';
+  market.result = result;
+  market.markModified('bets');
+  await market.save();
+  var winners = 0;
+  for (var i = 0; i < market.bets.length; i++) {
+    var bet = market.bets[i];
+    if (bet.option === result) {
+      var gain = parseFloat((bet.stake * bet.odd).toFixed(2));
+      var bettor = await User.findOne({ id: bet.uid });
+      if (bettor) { bettor.balance += gain; await bettor.save(); winners++; }
+    }
+  }
+  res.json({ ok: true, winners: winners });
 });
 
 app.get('/api/shop', function(req, res) {
