@@ -3,46 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BET0TALL — Bet0Tall</title>
+<title>BET0TALL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--noir:#08090f;--noir2:#0f1120;--noir3:#161929;--rouge:#e8132a;--or:#f5a623;--blanc:#f0f2ff;--gris:#4a5180;--border:#252d52;--vert:#10b981}
 body{background:var(--noir);color:var(--blanc);font-family:'Barlow',sans-serif;font-size:14px;min-height:100vh}
-#splash{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e2e 0%,#0f1535 50%,#0a0e2e 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
+#splash{position:fixed;inset:0;background:linear-gradient(135deg,#0a0e2e,#0f1535);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease}
 #splash.hide{opacity:0;pointer-events:none}
-.splash-logo{font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:4px;color:var(--blanc);animation:pulse 1s ease-in-out infinite alternate}
+.splash-logo{font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:4px;color:var(--blanc)}
 .splash-logo span{color:var(--or)}
-.splash-sub{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:6px;color:var(--gris);margin-top:8px}
+.splash-sub{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:6px;color:var(--gris);margin-top:8px}
 .splash-bar{width:200px;height:3px;background:var(--border);border-radius:2px;margin-top:30px;overflow:hidden}
-.splash-fill{height:100%;background:linear-gradient(90deg,var(--rouge),var(--or));border-radius:2px;animation:fill 1.5s ease forwards}
-@keyframes pulse{from{opacity:.6}to{opacity:1}}
+.splash-fill{height:100%;background:linear-gradient(90deg,var(--rouge),var(--or));animation:fill 1.5s ease forwards}
 @keyframes fill{from{width:0}to{width:100%}}
-header{background:linear-gradient(135deg,#0a0e2e 0%,#0f1535 100%);border-bottom:3px solid var(--or);padding:0 16px}
+header{background:linear-gradient(135deg,#0a0e2e,#0f1535);border-bottom:3px solid var(--or);padding:0 16px}
 .hi{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:10px}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
-.logo span{color:var(--or);text-shadow:0 0 12px rgba(245,166,35,0.6)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:#fff}
+.logo span{color:var(--or)}
 .ub{display:flex;align-items:center;gap:10px}
 .bal{background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:5px 12px;font-size:12px}
 .bal b{color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:15px}
-.btn-dc{background:#5865F2;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-dc:hover{background:#4752c4}
+.btn-dc{background:#5865F2;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-out{background:none;border:1px solid var(--border);color:var(--gris);padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer}
-.btn-out:hover{border-color:var(--rouge);color:var(--rouge)}
 .streak-badge{background:var(--or);color:#000;border-radius:5px;padding:2px 8px;font-family:'Bebas Neue',sans-serif;font-size:13px}
-.hero{background:linear-gradient(135deg,#0a0e2e 0%,#0f1535 50%,#0a0e2e 100%);padding:0;border-bottom:3px solid var(--or);position:relative;overflow:hidden}.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(245,166,35,0.08) 0%,transparent 70%);pointer-events:none}
+.hero{background:linear-gradient(135deg,#0a0e2e,#0f1535);padding:0;border-bottom:3px solid var(--or)}
 .hero-inner{max-width:1100px;margin:0 auto;padding:20px 16px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.hero-title{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:3px;background:linear-gradient(135deg,#fff 0%,var(--or) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-.hero-sub{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--or);margin-top:4px;opacity:.8}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;color:var(--or);line-height:1.2}
+.hero-sub{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:3px;color:var(--gris);margin-top:4px}
 .hero-tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.hero-tag{background:rgba(0,0,0,.2);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:1px;padding:3px 10px;border-radius:4px}
+.hero-tag{background:rgba(0,0,0,.3);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:11px;padding:3px 10px;border-radius:4px}
 .hero-stats{display:flex;gap:12px;flex-wrap:wrap}
 .hstat{background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);border-radius:8px;padding:10px 18px;text-align:center;min-width:80px}
-.hstat-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--or);letter-spacing:1px}
-.hstat-lbl{font-size:9px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:1px}
+.hstat-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--or)}
+.hstat-lbl{font-size:9px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px}
 nav{background:#0a0c20;border-bottom:1px solid rgba(245,166,35,0.2);overflow-x:auto}
 .ni{max-width:1100px;margin:0 auto;display:flex;padding:0 16px;white-space:nowrap}
-.nb{background:none;border:none;color:var(--gris);padding:11px 14px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;border-bottom:2px solid transparent;transition:all .2s;text-decoration:none;display:inline-block}
+.nb{background:none;border:none;color:var(--gris);padding:11px 14px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;border-bottom:2px solid transparent;transition:all .2s}
 .nb:hover{color:var(--blanc)}
 .nb.active{color:var(--or);border-bottom-color:var(--or)}
 main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 290px;gap:16px}
@@ -79,21 +76,16 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .cp{font-family:'Bebas Neue',sans-serif;font-size:14px;margin-bottom:2px}
 .co{color:var(--or);font-size:12px}
 .cr{float:right;background:none;border:none;color:var(--gris);cursor:pointer;font-size:15px}
-.cr:hover{color:var(--rouge)}
 .div{border:none;border-top:1px solid var(--border);margin:12px 0}
 .sr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .sl{font-size:12px;color:var(--gris);white-space:nowrap}
 .si{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--blanc);font-size:14px;font-family:'Bebas Neue',sans-serif;width:100%}
-.si:focus{outline:none;border-color:var(--rouge)}
 .qs{display:flex;gap:5px;margin-bottom:10px}
 .qb{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:5px;padding:5px 2px;font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gris);cursor:pointer}
-.qb:hover{color:var(--blanc)}
 .gr{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
 .gv{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--vert)}
-.bbtn{width:100%;background:var(--rouge);border:none;color:#fff;padding:11px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;cursor:pointer;margin-top:6px}
-.bbtn:hover{background:#ff1f38}
+.bbtn{width:100%;background:var(--rouge);border:none;color:#fff;padding:11px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;margin-top:6px}
 .clearbtn{width:100%;background:none;border:1px solid var(--border);color:var(--gris);padding:7px;border-radius:7px;font-size:11px;cursor:pointer;margin-top:6px}
-.clearbtn:hover{border-color:var(--rouge);color:var(--rouge)}
 .lb-row{background:var(--noir2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:7px;display:flex;align-items:center;gap:12px}
 .lb-rank{font-family:'Bebas Neue',sans-serif;font-size:20px;width:28px;text-align:center;color:var(--gris)}
 .lb-name{flex:1;font-weight:600}
@@ -102,7 +94,7 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .br{background:var(--noir2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .bs{font-size:11px;padding:3px 8px;border-radius:4px;text-transform:uppercase;font-family:'Bebas Neue',sans-serif;white-space:nowrap}
 .win{background:#052e16;color:#4ade80}.loss{background:#3b0808;color:#f87171}.pending{background:#1c1400;color:#fbbf24}
-.pcard{background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:20px;max-width:380px}
+.pcard{background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:20px;max-width:420px}
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .sc{background:var(--noir3);border-radius:7px;padding:10px;text-align:center}
 .sn{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--or)}
@@ -113,90 +105,82 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .toast.err{border-color:var(--rouge)}
 .stitle{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1.5px;color:var(--gris);text-transform:uppercase;margin-bottom:12px}
 .shop-item{background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:16px}
-.shop-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px}
+.shop-name{font-family:'Bebas Neue',sans-serif;font-size:20px}
 .shop-desc{font-size:12px;color:var(--gris);margin-top:4px}
 .shop-cost{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--or);margin-top:6px}
-.shop-btn{padding:10px 20px;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:15px;cursor:pointer;letter-spacing:.5px;white-space:nowrap}
-.shop-btn.can{background:var(--rouge);color:#fff}.shop-btn.can:hover{background:#ff1f38}
+.shop-btn{padding:10px 20px;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:15px;cursor:pointer}
+.shop-btn.can{background:var(--rouge);color:#fff}
 .shop-btn.cant{background:var(--gris);color:#fff;cursor:not-allowed}
 .admin-match{background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:10px}
 .admin-title{font-family:'Bebas Neue',sans-serif;font-size:15px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
 .admin-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .abtn{padding:8px;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer}
-.abtn.h{background:#1a3a2a;color:#4ade80;border:1px solid #4ade80}.abtn.h:hover{background:#4ade80;color:#000}
-.abtn.n{background:#1c1400;color:#fbbf24;border:1px solid #fbbf24}.abtn.n:hover{background:#fbbf24;color:#000}
-.abtn.a{background:#3b0808;color:#f87171;border:1px solid #f87171}.abtn.a:hover{background:#f87171;color:#000}
+.abtn.h{background:#1a3a2a;color:#4ade80;border:1px solid #4ade80}
+.abtn.n{background:#1c1400;color:#fbbf24;border:1px solid #fbbf24}
+.abtn.a{background:#3b0808;color:#f87171;border:1px solid #f87171}
 .settled-badge{background:#052e16;color:#4ade80;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
 .locked-badge{background:#3b0808;color:#f87171;font-size:11px;padding:3px 8px;border-radius:4px;font-family:'Bebas Neue',sans-serif}
-@keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
-
 .bj-table{background:linear-gradient(135deg,#1a3a2a,#0d2018);border:2px solid #2d6a4f;border-radius:14px;padding:20px;margin-bottom:16px}
 .bj-cards{display:flex;gap:8px;flex-wrap:wrap;min-height:80px;align-items:center;margin:10px 0}
 .bj-card{background:#fff;color:#000;border-radius:7px;width:52px;height:76px;display:flex;flex-direction:column;justify-content:space-between;padding:4px 6px;font-family:'Bebas Neue',sans-serif;font-size:18px;box-shadow:0 3px 8px rgba(0,0,0,.4);flex-shrink:0}
 .bj-card.red{color:#e8132a}
-.bj-card.hidden{background:linear-gradient(135deg,#1a1a2e,#252d52);color:transparent}
+.bj-card.hidden{background:linear-gradient(135deg,#1a1a2e,#252d52)}
 .bj-score{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--or);margin-bottom:8px}
 .bj-label{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:var(--gris);margin-bottom:6px}
-.bj-btn{padding:10px 20px;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;letter-spacing:.5px;margin:4px}
-.bj-btn.hit{background:#10b981;color:#fff}.bj-btn.hit:hover{background:#059669}
-.bj-btn.stand{background:var(--rouge);color:#fff}.bj-btn.stand:hover{background:#cc1122}
-.bj-btn.deal{background:var(--or);color:#000}.bj-btn.deal:hover{background:#d4911f}
-.bj-btn.double{background:#5865F2;color:#fff}.bj-btn.double:hover{background:#4752c4}
-.bj-result{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;padding:12px;border-radius:8px;text-align:center;margin-top:10px}
+.bj-btn{padding:10px 20px;border:none;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;margin:4px}
+.bj-result{font-family:'Bebas Neue',sans-serif;font-size:22px;padding:12px;border-radius:8px;text-align:center;margin-top:10px}
 .bj-result.win{background:#052e16;color:#4ade80}
 .bj-result.loss{background:#3b0808;color:#f87171}
 .bj-result.push{background:#1c1400;color:#fbbf24}
+.crash-box{background:linear-gradient(135deg,#0a1a0a,#0d200d);border:2px solid #10b981;border-radius:14px;padding:24px;margin-bottom:16px;text-align:center}
+.crash-mult{font-family:'Bebas Neue',sans-serif;font-size:80px;color:#4ade80;letter-spacing:2px;line-height:1}
+.crash-status{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gris);margin-top:8px}
+@keyframes confetti{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
 </style>
 </head>
 <body>
-
 <div id="splash">
   <div class="splash-logo">BET<span>0</span>TALL</div>
-  <div class="splash-sub">T'AS 0 TALL MAIS TU PARIES COMME UN MEK QUI A DES TALL</div>
+  <div class="splash-sub">T'AS 0 TALL MAIS TU PARIES</div>
   <div class="splash-bar"><div class="splash-fill"></div></div>
 </div>
-
 <header>
   <div class="hi">
     <div class="logo">BET<span>0</span>TALL</div>
-    <div class="ub" id="ub">
-      <a class="btn-dc" href="/auth/discord">CONNEXION DISCORD</a>
-    </div>
+    <div class="ub" id="ub"><a class="btn-dc" href="/auth/discord">CONNEXION DISCORD</a></div>
   </div>
 </header>
-
 <div class="hero">
   <div class="hero-inner">
     <div>
       <div class="hero-title">T'AS 0 TALL MAIS TU PARIES COMME UN MEK QUI A DES TALL</div>
-      <div class="hero-sub">BET0TALL — PARIS VIRTUELS</div>
+      <div class="hero-sub">BET0TALL - PARIS VIRTUELS</div>
       <div class="hero-tags">
         <span class="hero-tag">100% GRATUIT</span>
         <span class="hero-tag">ZERO VRAI ARGENT</span>
-        <span class="hero-tag"><a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#fff;text-decoration:none">🎮 REJOINDRE LE DISCORD</a></span>
+        <span class="hero-tag"><a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#fff;text-decoration:none;background:#5865F2;padding:3px 12px;border-radius:4px">REJOINDRE LE DISCORD</a></span>
       </div>
     </div>
     <div class="hero-stats">
       <div class="hstat"><div class="hstat-num" id="stat-members">0</div><div class="hstat-lbl">Membres</div></div>
       <div class="hstat"><div class="hstat-num" id="stat-bets">0</div><div class="hstat-lbl">Paris</div></div>
-      <div class="hstat"><div class="hstat-num" id="stat-matches">17</div><div class="hstat-lbl">Matchs</div></div>
+      <div class="hstat"><div class="hstat-num">17</div><div class="hstat-lbl">Matchs</div></div>
     </div>
   </div>
 </div>
-
 <nav>
   <div class="ni" id="nav">
     <button class="nb active" onclick="sw('matches',this)">PARIS</button>
     <button class="nb" onclick="sw('leaderboard',this)">CLASSEMENT</button>
     <button class="nb" onclick="sw('mybets',this)">MES PARIS</button>
     <button class="nb" onclick="sw('shop',this)">BOUTIQUE</button>
+    <button class="nb" onclick="sw('blackjack',this)">BLACKJACK</button>
+    <button class="nb" onclick="sw('crash',this)">CRASH</button>
+    <button class="nb" onclick="sw('offres',this)">OFFRES</button>
     <button class="nb" onclick="sw('results',this)">RESULTATS</button>
-    <button class="nb" onclick="sw('offres',this)">🎰 OFFRES</button>
-    <button class="nb" onclick="sw('blackjack',this)">🃏 BLACKJACK</button>
     <button class="nb" onclick="sw('profile',this)">PROFIL</button>
   </div>
 </nav>
-
 <main>
   <div>
     <div id="tab-matches" class="tab active"><div id="ml"></div></div>
@@ -205,63 +189,68 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
     <div id="tab-shop" class="tab">
       <div class="stitle">BOUTIQUE BET0TALL</div>
       <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
-        <div style="font-size:13px;color:var(--gris);line-height:1.8">Echange tes <b style="color:var(--or)">Tall</b> contre des recompenses reelles !<br>Pour utiliser Shuffle depuis la France → <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">suis le tuto sur notre Discord</a></div>
+        <div style="font-size:13px;color:var(--gris);line-height:1.8">Echange tes <b style="color:var(--or)">Tall</b> contre des recompenses ! <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="color:#5865F2">Tuto Shuffle sur Discord</a></div>
       </div>
       <div id="shop-list"></div>
     </div>
-    <div id="tab-offres" class="tab">
-      <div class="stitle">🎰 OFFRES D'AFFILIATION</div>
-      <div style="background:linear-gradient(135deg,#0a0e2e,#0f1535);border:2px solid var(--or);border-radius:14px;padding:24px;margin-bottom:16px">
-        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-          <div style="font-size:52px">🃏</div>
-          <div style="flex:1">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--or);letter-spacing:1px">SHUFFLE.COM</div>
-            <div style="font-size:12px;color:var(--gris);margin-top:6px;line-height:1.8">
-              ✅ Casino crypto premium<br>
-              ✅ Paris sportifs + Slots + Live casino<br>
-              ✅ Bonus exclusifs via notre lien<br>
-              ✅ Voir le tuto sur notre Discord pour l'acces depuis la France
-            </div>
-            <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-              <a href="https://shuffle.com/?r=Y0wS9u2Vh7" target="_blank" style="background:var(--or);color:#000;padding:10px 22px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;text-decoration:none;letter-spacing:1px">🔗 REJOINDRE SHUFFLE</a>
-              <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="background:#5865F2;color:#fff;padding:10px 22px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;text-decoration:none;letter-spacing:1px">🎮 VOIR LE TUTO</a>
-            </div>
-          </div>
+    <div id="tab-blackjack" class="tab">
+      <div class="stitle">BLACKJACK - MISE MIN 10 TALL</div>
+      <div class="bj-table">
+        <div class="bj-label">DEALER</div>
+        <div class="bj-score" id="bj-dealer-score">?</div>
+        <div class="bj-cards" id="bj-dealer-cards"></div>
+        <hr style="border-color:rgba(255,255,255,.1);margin:14px 0">
+        <div class="bj-label">TOI</div>
+        <div class="bj-score" id="bj-player-score">0</div>
+        <div class="bj-cards" id="bj-player-cards"></div>
+        <div id="bj-result-box"></div>
+      </div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:13px;color:var(--gris)">Mise :</span>
+          <input id="bj-stake" type="number" value="10" min="10" style="background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:16px;width:100px">
+          <span style="font-size:12px;color:var(--gris)">Tall</span>
+          <button onclick="bjSetStake(10)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">10</button>
+          <button onclick="bjSetStake(50)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">50</button>
+          <button onclick="bjSetStake(100)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">100</button>
+          <button onclick="bjSetStake(500)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">500</button>
         </div>
       </div>
-      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:12px;color:var(--gris);line-height:1.8">
-        ⚠️ <b style="color:var(--blanc)">Avertissement</b> — Le jeu d'argent peut etre addictif. Joue de maniere responsable. Interdit aux mineurs.
+      <div id="bj-actions"><button onclick="bjDeal()" style="background:var(--or);border:none;color:#000;padding:12px 32px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer">DISTRIBUER</button></div>
+    </div>
+    <div id="tab-crash" class="tab">
+      <div class="stitle">CRASH - MISE MIN 10 TALL</div>
+      <div class="crash-box">
+        <div style="font-size:12px;color:var(--gris);letter-spacing:2px;margin-bottom:8px">MULTIPLICATEUR</div>
+        <div class="crash-mult" id="crash-mult">1.00x</div>
+        <div class="crash-status" id="crash-status">EN ATTENTE</div>
+      </div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:13px;color:var(--gris)">Mise :</span>
+          <input id="crash-stake" type="number" value="10" min="10" style="background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:16px;width:100px">
+          <span style="font-size:12px;color:var(--gris)">Tall</span>
+          <button onclick="cStake(10)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">10</button>
+          <button onclick="cStake(50)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">50</button>
+          <button onclick="cStake(100)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">100</button>
+          <button onclick="cStake(500)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">500</button>
+        </div>
+      </div>
+      <div id="crash-actions">
+        <button onclick="cStart()" style="background:var(--or);border:none;color:#000;padding:12px 32px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer">JOUER</button>
+      </div>
+      <div id="crash-history" style="margin-top:16px"></div>
+    </div>
+    <div id="tab-offres" class="tab">
+      <div class="stitle">OFFRES D AFFILIATION</div>
+      <div style="background:linear-gradient(135deg,#0a0e2e,#0f1535);border:2px solid var(--or);border-radius:14px;padding:24px;margin-bottom:16px">
+        <div style="font-size:52px;margin-bottom:12px">🃏</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--or)">SHUFFLE.COM</div>
+        <div style="font-size:12px;color:var(--gris);margin-top:6px;line-height:1.8;margin-bottom:14px">Casino crypto premium - Paris sportifs + Slots + Live casino<br>Pour acces depuis la France : voir le tuto Discord</div>
+        <a href="https://shuffle.com/?r=Y0wS9u2Vh7" target="_blank" style="background:var(--or);color:#000;padding:10px 22px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;text-decoration:none;margin-right:8px">REJOINDRE SHUFFLE</a>
+        <a href="https://discord.gg/RQ58T3Gt" target="_blank" style="background:#5865F2;color:#fff;padding:10px 22px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;text-decoration:none">VOIR LE TUTO</a>
       </div>
     </div>
-    <div id="tab-blackjack" class="tab">
-  <div class="stitle">🃏 BLACKJACK — MISE MIN 10 TALL</div>
-  <div class="bj-table">
-    <div class="bj-label">DEALER</div>
-    <div class="bj-score" id="bj-dealer-score">?</div>
-    <div class="bj-cards" id="bj-dealer-cards"></div>
-    <hr style="border-color:rgba(255,255,255,.1);margin:14px 0">
-    <div class="bj-label">TOI</div>
-    <div class="bj-score" id="bj-player-score">0</div>
-    <div class="bj-cards" id="bj-player-cards"></div>
-    <div id="bj-result-box"></div>
-  </div>
-  <div style="background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-      <span style="font-size:13px;color:var(--gris)">Mise :</span>
-      <input id="bj-stake" type="number" value="10" min="10" style="background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:16px;width:100px">
-      <span style="font-size:12px;color:var(--gris)">Tall</span>
-      <div style="display:flex;gap:4px">
-        <button class="bj-btn" style="background:var(--noir3);color:var(--gris);padding:7px 12px;font-size:13px" onclick="bjSetStake(10)">10</button>
-        <button class="bj-btn" style="background:var(--noir3);color:var(--gris);padding:7px 12px;font-size:13px" onclick="bjSetStake(50)">50</button>
-        <button class="bj-btn" style="background:var(--noir3);color:var(--gris);padding:7px 12px;font-size:13px" onclick="bjSetStake(100)">100</button>
-        <button class="bj-btn" style="background:var(--noir3);color:var(--gris);padding:7px 12px;font-size:13px" onclick="bjSetStake(500)">500</button>
-      </div>
-    </div>
-  </div>
-  <div id="bj-actions">
-    <button class="bj-btn deal" onclick="bjDeal()">🃏 DISTRIBUER</button>
-  </div>
-</div>
     <div id="tab-results" class="tab"><div class="stitle">HISTORIQUE DES RESULTATS</div><div id="results-list"></div></div>
     <div id="tab-profile" class="tab"><div class="stitle">MON PROFIL</div><div id="pc"></div></div>
     <div id="tab-admin" class="tab"><div class="stitle" style="color:var(--or)">PANEL ADMIN</div><div id="admin-list"></div></div>
@@ -292,336 +281,361 @@ main{max-width:1100px;margin:0 auto;padding:16px;display:grid;grid-template-colu
   </div>
 </main>
 <div class="toast" id="toast"></div>
-
 <script>
 var uid=null,user=null,coupon=[],matches=[];
-
-setTimeout(function(){document.getElementById('splash').classList.add('hide');},1800);
-
-function getUID(){var p=new URLSearchParams(window.location.search);var u=p.get('uid');if(u){localStorage.setItem('b2r_uid',u);window.history.replaceState({},'','/');return u;}return localStorage.getItem('b2r_uid');}
-
-async function loadStats(){
-  try{
-    var res=await fetch('/api/leaderboard');
-    var data=await res.json();
-    document.getElementById('stat-members').textContent=data.length;
-    var totalBets=data.reduce(function(a,u){return a+u.betsCount;},0);
-    document.getElementById('stat-bets').textContent=totalBets;
-  }catch(e){}
+window.onload=function(){setTimeout(function(){document.getElementById("splash").classList.add("hide");},1800);};
+function getUID(){
+  var p=new URLSearchParams(window.location.search);
+  var u=p.get("uid");
+  if(u){localStorage.setItem("b2r_uid",u);history.replaceState({},"","/");return u;}
+  return localStorage.getItem("b2r_uid");
 }
-
-async function init(){
+function loadStats(){
+  fetch("/api/leaderboard").then(function(r){return r.json();}).then(function(data){
+    document.getElementById("stat-members").textContent=data.length;
+    var t=data.reduce(function(a,u){return a+u.betsCount;},0);
+    document.getElementById("stat-bets").textContent=t;
+  }).catch(function(){});
+}
+function init(){
   uid=getUID();
   var params=new URLSearchParams(window.location.search);
-  var bonus=params.get('bonus');
-  if(params.get('login')==='success'&&bonus&&bonus!=='none'){var parts=bonus.split('_');showToast('Bienvenue ! +'+parts[0]+' Tall bonus (Jour '+parts[1]+' streak) !');}
-  else if(params.get('login')==='success'){showToast('Bienvenue sur BET0TALL !');}
-  if(uid){try{var res=await fetch('/api/me?uid='+uid);if(res.ok){user=await res.json();renderUB();}else{uid=null;localStorage.removeItem('b2r_uid');}}catch(e){}}
-  try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}
+  var bonus=params.get("bonus");
+  if(params.get("login")==="success"&&bonus&&bonus!=="none"){
+    var parts=bonus.split("_");
+    showToast("Bienvenue ! +"+parts[0]+" Tall bonus (Jour "+parts[1]+" streak) !");
+  } else if(params.get("login")==="success"){showToast("Bienvenue sur BET0TALL !");}
+  if(uid){
+    fetch("/api/me?uid="+uid).then(function(r){
+      if(r.ok){return r.json();}else{uid=null;localStorage.removeItem("b2r_uid");throw new Error("not ok");}
+    }).then(function(data){user=data;renderUB();}).catch(function(){});
+  }
+  fetch("/api/matches").then(function(r){return r.json();}).then(function(data){matches=data;renderMatches();}).catch(function(){});
   loadStats();
 }
-
 function renderUB(){
-  var bar=document.getElementById('ub');
+  var bar=document.getElementById("ub");
   if(!user){bar.innerHTML='<a class="btn-dc" href="/auth/discord">CONNEXION DISCORD</a>';return;}
   var initials=user.username.slice(0,2).toUpperCase();
-  if(user.isAdmin&&!document.getElementById('admin-nav-btn')){var nav=document.getElementById('nav');var btn=document.createElement('button');btn.className='nb';btn.id='admin-nav-btn';btn.setAttribute('onclick',"sw('admin',this)");btn.textContent='ADMIN';nav.appendChild(btn);}
-  bar.innerHTML='<div style="display:flex;align-items:center;gap:6px"><div style="width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff">'+initials+'</div><span style="font-size:12px;color:var(--gris)">'+user.username+'</span>'+(user.streak>0?'<span class="streak-badge">🔥 J'+user.streak+'</span>':'')+'</div><div class="bal">Solde <b>'+Math.round(user.balance).toLocaleString()+' Tall</b></div><button class="btn-out" onclick="logout()">Quitter</button>';
+  if(user.isAdmin&&!document.getElementById("admin-nav-btn")){
+    var nav=document.getElementById("nav");
+    var btn=document.createElement("button");
+    btn.className="nb";btn.id="admin-nav-btn";
+    btn.setAttribute("onclick","sw('admin',this)");
+    btn.textContent="ADMIN";
+    nav.appendChild(btn);
+  }
+  bar.innerHTML="<div style='display:flex;align-items:center;gap:6px'><div style='width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff'>"+initials+"</div><span style='font-size:12px;color:var(--gris)'>"+user.username+"</span>"+(user.streak>0?"<span class='streak-badge'>J"+user.streak+"</span>":"")+"</div><div class='bal'>Solde <b>"+Math.round(user.balance).toLocaleString()+" Tall</b></div><button class='btn-out' onclick='logout()'>Quitter</button>";
 }
-
-function logout(){uid=null;user=null;coupon=[];localStorage.removeItem('b2r_uid');renderUB();refC();renderMatches();showToast('Deconnecte');}
-
+function logout(){uid=null;user=null;coupon=[];localStorage.removeItem("b2r_uid");renderUB();refC();renderMatches();showToast("Deconnecte");}
 function renderMatches(){
   var groups={};
   matches.forEach(function(m){if(!groups[m.day])groups[m.day]=[];groups[m.day].push(m);});
-  var html='';
+  var html="";
   Object.keys(groups).forEach(function(day){
-    html+='<div class="day-label">📅 '+day.toUpperCase()+'</div>';
+    html+="<div class='day-label'>"+day.toUpperCase()+"</div>";
     groups[day].forEach(function(m){
       var locked=m.locked;
-      var s1=coupon.find(function(c){return c.mid===m.id&&c.k==='h';});
-      var sN=coupon.find(function(c){return c.mid===m.id&&c.k==='n';});
-      var s2=coupon.find(function(c){return c.mid===m.id&&c.k==='a';});
-      html+='<div class="mc'+(locked?' locked':'')+'">'
-        +'<div class="mh"><span class="league">'+m.league+'</span><div style="display:flex;align-items:center;gap:6px">'+(locked?'<span class="lock-badge">FERME</span>':'')+'<span class="mtime">'+m.time+'</span></div></div>'
-        +'<div class="mteams"><span class="team"><span class="flag">'+m.hf+'</span>'+m.home+'</span><span class="vsbox">'+(m.settled?(m.result==='h'?'1':m.result==='n'?'N':'2'):'VS')+'</span><span class="team r"><span class="flag">'+m.af+'</span>'+m.away+'</span></div>';
-      if(!m.settled){html+='<div class="odds-row"><button class="ob'+(s1?' sel':'')+(locked?' disabled':'')+'" onclick="tog('+m.id+',\'h\',\''+m.home+'\','+m.odds.h+',\''+m.home+' vs '+m.away+'\')">'+'<span class="ol">1</span><span class="ov">'+m.odds.h.toFixed(2)+'</span></button>'+'<button class="ob'+(sN?' sel':'')+(locked?' disabled':'')+'" onclick="tog('+m.id+',\'n\',\'Nul\','+m.odds.n+',\''+m.home+' vs '+m.away+'\')">'+'<span class="ol">N</span><span class="ov">'+m.odds.n.toFixed(2)+'</span></button>'+'<button class="ob'+(s2?' sel':'')+(locked?' disabled':'')+'" onclick="tog('+m.id+',\'a\',\''+m.away+'\','+m.odds.a+',\''+m.home+' vs '+m.away+'\')">'+'<span class="ol">2</span><span class="ov">'+m.odds.a.toFixed(2)+'</span></button></div>';}
-      html+='</div>';
+      var s1=coupon.find(function(c){return c.mid===m.id&&c.k==="h";});
+      var sN=coupon.find(function(c){return c.mid===m.id&&c.k==="n";});
+      var s2=coupon.find(function(c){return c.mid===m.id&&c.k==="a";});
+      html+="<div class='mc"+(locked?" locked":"")+"'>";
+      html+="<div class='mh'><span class='league'>"+m.league+"</span><div style='display:flex;align-items:center;gap:6px'>"+(locked?"<span class='lock-badge'>FERME</span>":"")+"<span class='mtime'>"+m.time+"</span></div></div>";
+      html+="<div class='mteams'><span class='team'><span class='flag'>"+m.hf+"</span>"+m.home+"</span><span class='vsbox'>"+(m.settled?(m.result==="h"?"1":m.result==="n"?"N":"2"):"VS")+"</span><span class='team r'><span class='flag'>"+m.af+"</span>"+m.away+"</span></div>";
+      if(!m.settled){
+        html+="<div class='odds-row'>";
+        html+="<button class='ob"+(s1?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>";
+        html+="<button class='ob"+(sN?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>N</span><span class='ov'>"+m.odds.n.toFixed(2)+"</span></button>";
+        html+="<button class='ob"+(s2?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>2</span><span class='ov'>"+m.odds.a.toFixed(2)+"</span></button>";
+        html+="</div>";
+      }
+      html+="</div>";
     });
   });
-  document.getElementById('ml').innerHTML=html;
+  document.getElementById("ml").innerHTML=html;
 }
-
 function tog(mid,k,pick,odd,match){
-  if(!user){showToast('Connecte-toi avec Discord !','err');return;}
+  if(!user){showToast("Connecte-toi avec Discord !","err");return;}
   var m=matches.find(function(x){return x.id===mid;});
-  if(m&&m.locked){showToast('Ce match a deja commence !','err');return;}
+  if(m&&m.locked){showToast("Ce match a deja commence !","err");return;}
   var idx=coupon.findIndex(function(c){return c.mid===mid;});
   if(idx>-1){if(coupon[idx].k===k)coupon.splice(idx,1);else coupon[idx]={mid:mid,k:k,pick:pick,odd:odd,match:match};}
-  else{if(coupon.length>=8){showToast('Max 8 selections','err');return;}coupon.push({mid:mid,k:k,pick:pick,odd:odd,match:match});}
+  else{if(coupon.length>=8){showToast("Max 8 selections","err");return;}coupon.push({mid:mid,k:k,pick:pick,odd:odd,match:match});}
   refC();renderMatches();
 }
-
 function refC(){
-  document.getElementById('cc').textContent=coupon.length;
-  var body=document.getElementById('cb');var footer=document.getElementById('cf');
-  if(!coupon.length){body.innerHTML='<div class="cempty">Clique sur une cote<br>pour l\'ajouter !</div>';footer.style.display='none';return;}
-  footer.style.display='block';
-  body.innerHTML=coupon.map(function(c,i){return '<div class="ci"><button class="cr" onclick="rp('+i+')">x</button><div class="cm">'+c.match+'</div><div class="cp">'+c.pick+'</div><div class="co">Cote : '+c.odd.toFixed(2)+'</div></div>';}).join('');
+  document.getElementById("cc").textContent=coupon.length;
+  var body=document.getElementById("cb");
+  var footer=document.getElementById("cf");
+  if(!coupon.length){body.innerHTML="<div class='cempty'>Clique sur une cote<br>pour l'ajouter !</div>";footer.style.display="none";return;}
+  footer.style.display="block";
+  body.innerHTML=coupon.map(function(c,i){return "<div class='ci'><button class='cr' onclick='rp("+i+")'>x</button><div class='cm'>"+c.match+"</div><div class='cp'>"+c.pick+"</div><div class='co'>Cote : "+c.odd.toFixed(2)+"</div></div>";}).join("");
   upd();
 }
 function rp(i){coupon.splice(i,1);refC();renderMatches();}
 function clearC(){coupon=[];refC();renderMatches();}
-function ss(v){document.getElementById('stake').value=v;upd();}
-function upd(){if(!coupon.length)return;var stake=parseFloat(document.getElementById('stake').value)||0;var tot=coupon.reduce(function(a,c){return a*c.odd;},1);document.getElementById('to').textContent=tot.toFixed(2);document.getElementById('pg').textContent=(stake*tot).toFixed(2)+' Tall';}
-
-async function placeBet(){
-  if(!user){showToast('Connecte-toi !','err');return;}
-  var stake=parseFloat(document.getElementById('stake').value)||0;
-  if(stake<1){showToast('Mise min : 1 Tall','err');return;}
-  if(stake>user.balance){showToast('Solde insuffisant !','err');return;}
-  try{var res=await fetch('/api/bet?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({picks:coupon,stake:stake,uid:uid})});var data=await res.json();if(!res.ok){showToast(data.error||'Erreur','err');return;}user.balance=data.newBalance;renderUB();coupon=[];refC();renderMatches();loadStats();showToast('Pari place ! En attente du resultat');}catch(e){showToast('Erreur connexion','err');}
+function ss(v){document.getElementById("stake").value=v;upd();}
+function upd(){if(!coupon.length)return;var stake=parseFloat(document.getElementById("stake").value)||0;var tot=coupon.reduce(function(a,c){return a*c.odd;},1);document.getElementById("to").textContent=tot.toFixed(2);document.getElementById("pg").textContent=(stake*tot).toFixed(2)+" Tall";}
+function placeBet(){
+  if(!user){showToast("Connecte-toi !","err");return;}
+  var stake=parseFloat(document.getElementById("stake").value)||0;
+  if(stake<1){showToast("Mise min : 1 Tall","err");return;}
+  if(stake>user.balance){showToast("Solde insuffisant !","err");return;}
+  fetch("/api/bet?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({picks:coupon,stake:stake,uid:uid})})
+    .then(function(r){return r.json().then(function(d){return {ok:r.ok,data:d};});})
+    .then(function(res){
+      if(!res.ok){showToast(res.data.error||"Erreur","err");return;}
+      user.balance=res.data.newBalance;renderUB();coupon=[];refC();renderMatches();loadStats();
+      showToast("Pari place ! En attente du resultat");
+    }).catch(function(){showToast("Erreur connexion","err");});
 }
-
-async function loadLB(){
-  try{var res=await fetch('/api/leaderboard');var data=await res.json();var medals=['🥇','🥈','🥉'];document.getElementById('lb').innerHTML=data.length?data.map(function(p,i){var initials=p.username.slice(0,2).toUpperCase();return '<div class="lb-row"><div class="lb-rank">'+(medals[i]||i+1)+'</div><div style="width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0">'+initials+'</div><div><div class="lb-name">'+p.username+(user&&p.id===uid?' <span style="color:var(--rouge);font-size:10px">(toi)</span>':'')+'</div><div class="lb-sub">'+p.betsCount+' paris • 🔥 J'+p.streak+'</div></div><div class="lb-bal">'+p.balance.toLocaleString()+' Tall</div></div>';}).join(''):'<div class="empty">Aucun membre pour l\'instant</div>';}catch(e){}
+function loadLB(){
+  fetch("/api/leaderboard").then(function(r){return r.json();}).then(function(data){
+    var medals=["1","2","3"];
+    document.getElementById("lb").innerHTML=data.length?data.map(function(p,i){
+      var initials=p.username.slice(0,2).toUpperCase();
+      var av=p.avatar?"<img src='"+p.avatar+"' style='width:34px;height:34px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
+      return "<div class='lb-row'><div class='lb-rank'>"+(medals[i]||i+1)+"</div>"+av+"<div><div class='lb-name'>"+p.username+(user&&p.id===uid?" (toi)":"")+"</div><div class='lb-sub'>"+p.betsCount+" paris</div></div><div class='lb-bal'>"+p.balance.toLocaleString()+" Tall</div></div>";
+    }).join(""):"<div class='empty'>Aucun membre</div>";
+  }).catch(function(){});
 }
-
-async function renderBets(){
-  var el=document.getElementById('bh');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir tes paris</div>';return;}
-  try{var res=await fetch('/api/me?uid='+uid);var data=await res.json();user=data;if(!data.bets||!data.bets.length){el.innerHTML='<div class="empty">Aucun pari pour l\'instant</div>';return;}el.innerHTML=data.bets.map(function(b){return '<div class="br"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+b.picks.map(function(p){return p.pick;}).join(' + ')+'</div><div style="font-size:11px;color:var(--gris)">Mise '+b.stake+' Tall x'+b.totalOdd+' = '+b.potentialGain+' Tall</div></div><span class="bs '+b.status+'">'+(b.status==='win'?'GAGNE':b.status==='loss'?'PERDU':'EN ATTENTE')+'</span></div>';}).join('');}catch(e){}
+function renderBets(){
+  var el=document.getElementById("bh");
+  if(!user){el.innerHTML="<div class='empty'>Connecte-toi pour voir tes paris</div>";return;}
+  fetch("/api/me?uid="+uid).then(function(r){return r.json();}).then(function(data){
+    user=data;
+    if(!data.bets||!data.bets.length){el.innerHTML="<div class='empty'>Aucun pari pour l'instant</div>";return;}
+    el.innerHTML=data.bets.map(function(b){
+      return "<div class='br'><div style='flex:1;min-width:0'><div style='font-size:13px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+b.picks.map(function(p){return p.pick;}).join(" + ")+"</div><div style='font-size:11px;color:var(--gris)'>Mise "+b.stake+" Tall x"+b.totalOdd+" = "+b.potentialGain+" Tall</div></div><span class='bs "+b.status+"'>"+(b.status==="win"?"GAGNE":b.status==="loss"?"PERDU":"EN ATTENTE")+"</span></div>";
+    }).join("");
+  }).catch(function(){});
 }
-
-async function loadShop(){
-  var el=document.getElementById('shop-list');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour acceder a la boutique</div>';return;}
-  try{var res=await fetch('/api/shop');var items=await res.json();el.innerHTML=items.map(function(item){var canBuy=user.balance>=item.cost;return '<div class="shop-item"><div><div class="shop-name">'+item.name+'</div><div class="shop-desc">'+item.description+'</div><div class="shop-cost">'+item.cost.toLocaleString()+' Tall</div></div><button onclick="buyItem('+item.id+')" class="shop-btn '+(canBuy?'can':'cant')+'">'+(canBuy?'ECHANGER':'SOLDE INSUFFISANT')+'</button></div>';}).join('');}catch(e){}
+function loadShop(){
+  var el=document.getElementById("shop-list");
+  if(!user){el.innerHTML="<div class='empty'>Connecte-toi pour acceder a la boutique</div>";return;}
+  fetch("/api/shop").then(function(r){return r.json();}).then(function(items){
+    el.innerHTML=items.map(function(item){
+      var canBuy=user.balance>=item.cost;
+      return "<div class='shop-item'><div><div class='shop-name'>"+item.name+"</div><div class='shop-desc'>"+item.description+"</div><div class='shop-cost'>"+item.cost.toLocaleString()+" Tall</div></div><button onclick='buyItem("+item.id+")' class='shop-btn "+(canBuy?"can":"cant")+"'>"+(canBuy?"ECHANGER":"SOLDE INSUFFISANT")+"</button></div>";
+    }).join("");
+  }).catch(function(){});
 }
-
-async function buyItem(itemId){
-  if(!user)return;if(!confirm('Confirmer l\'echange ?'))return;
-  try{var res=await fetch('/api/shop/buy?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({itemId:itemId,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();loadShop();showToast('Demande envoyee ! Verifie tes MP Discord dans les 24h.');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}
+function buyItem(itemId){
+  if(!user)return;
+  if(!confirm("Confirmer l'echange ?"))return;
+  fetch("/api/shop/buy?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({itemId:itemId,uid:uid})})
+    .then(function(r){return r.json().then(function(d){return {ok:r.ok,data:d};});})
+    .then(function(res){
+      if(res.ok){user.balance=res.data.newBalance;renderUB();loadShop();showToast("Demande envoyee ! Verifie tes MP Discord dans les 24h.");}
+      else{showToast(res.data.error||"Erreur","err");}
+    }).catch(function(){showToast("Erreur connexion","err");});
 }
-
-async function loadResults(){
-  var el=document.getElementById('results-list');
-  try{var res=await fetch('/api/results');var data=await res.json();if(!data.length){el.innerHTML='<div class="empty">Aucun resultat pour l\'instant</div>';return;}el.innerHTML=data.map(function(r){var winner=r.result==='h'?r.home:r.result==='n'?'Match Nul':r.away;var wflag=r.result==='h'?r.hf:r.result==='n'?'🤝':r.af;return '<div style="background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:10px;color:var(--gris);text-transform:uppercase">'+r.league+'</span><span style="font-size:11px;color:var(--gris)">'+r.day+' — '+r.time+'</span></div><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><span style="font-family:Bebas Neue,sans-serif;font-size:16px">'+r.hf+' '+r.home+'</span><span style="background:var(--noir3);border-radius:6px;padding:3px 10px;font-family:Bebas Neue,sans-serif;font-size:13px;color:var(--gris)">VS</span><span style="font-family:Bebas Neue,sans-serif;font-size:16px">'+r.away+' '+r.af+'</span></div><div style="background:'+(r.result==='n'?'#1c1400':'#052e16')+';border-radius:7px;padding:8px 12px;text-align:center"><span style="font-family:Bebas Neue,sans-serif;font-size:15px;color:'+(r.result==='n'?'#fbbf24':'#4ade80')+'">'+wflag+' VAINQUEUR : '+winner.toUpperCase()+'</span></div></div>';}).join('');}catch(e){el.innerHTML='<div class="empty">Erreur de chargement</div>';}
+function loadResults(){
+  var el=document.getElementById("results-list");
+  fetch("/api/results").then(function(r){return r.json();}).then(function(data){
+    if(!data.length){el.innerHTML="<div class='empty'>Aucun resultat pour l'instant</div>";return;}
+    el.innerHTML=data.map(function(r){
+      var winner=r.result==="h"?r.home:r.result==="n"?"Match Nul":r.away;
+      var wflag=r.result==="h"?r.hf:r.result==="n"?"":r.af;
+      return "<div style='background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:8px'><div style='display:flex;justify-content:space-between;margin-bottom:8px'><span style='font-size:10px;color:var(--gris);text-transform:uppercase'>"+r.league+"</span><span style='font-size:11px;color:var(--gris)'>"+r.day+"</span></div><div style='display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px'><span style='font-family:Bebas Neue,sans-serif;font-size:16px'>"+r.hf+" "+r.home+"</span><span style='background:var(--noir3);border-radius:6px;padding:3px 10px;font-family:Bebas Neue,sans-serif;font-size:13px;color:var(--gris)'>VS</span><span style='font-family:Bebas Neue,sans-serif;font-size:16px'>"+r.away+" "+r.af+"</span></div><div style='background:"+(r.result==="n"?"#1c1400":"#052e16")+";border-radius:7px;padding:8px 12px;text-align:center'><span style='font-family:Bebas Neue,sans-serif;font-size:15px;color:"+(r.result==="n"?"#fbbf24":"#4ade80")+"'>"+wflag+" VAINQUEUR : "+winner.toUpperCase()+"</span></div></div>";
+    }).join("");
+  }).catch(function(){el.innerHTML="<div class='empty'>Erreur de chargement</div>";});
 }
-
 function renderProfile(){
-  var el=document.getElementById('pc');if(!user){el.innerHTML='<div class="empty">Connecte-toi pour voir ton profil</div>';return;}
-  var wins=user.bets?user.bets.filter(function(b){return b.status==='win';}).length:0;
-  var total=user.bets?user.bets.length:0;var wr=total?Math.round(wins/total*100):0;var initials=user.username.slice(0,2).toUpperCase();
-  var refLink='https://bet0tall-backend.onrender.com?ref='+user.id;
-  el.innerHTML='<div class="pcard">'
-    +'<div style="width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;border:3px solid var(--border);margin-bottom:12px">'+initials+'</div>'
-    +'<div style="font-family:Bebas Neue,sans-serif;font-size:24px">'+user.username+'</div>'
-    +'<div style="font-size:12px;color:var(--gris);margin-top:3px">Membre BET0TALL • 🔥 '+user.streak+' jours de streak</div>'
-    +'<div class="sg">'
-    +'<div class="sc"><div class="sn">'+Math.round(user.balance).toLocaleString()+'</div><div class="slb">Solde Tall</div></div>'
-    +'<div class="sc"><div class="sn">'+total+'</div><div class="slb">Paris</div></div>'
-    +'<div class="sc"><div class="sn" style="color:#4ade80">'+wins+'</div><div class="slb">Victoires</div></div>'
-    +'<div class="sc"><div class="sn">'+wr+'%</div><div class="slb">Reussite</div></div>'
-    +'</div>'
-    +(user.shuffleValidated
-      ? '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="background:#052e16;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px"><span style="font-size:20px">✅</span><div><div style="font-family:Bebas Neue,sans-serif;font-size:14px;color:#4ade80">BONUS SHUFFLE VALIDE</div><div style="font-size:11px;color:var(--gris)">Tu as recu +5000 Tall !</div></div></div></div>'
-      : '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px"><div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:#5865F2">🎰 BONUS SHUFFLE</div><div style="font-size:12px;color:var(--gris);margin-bottom:10px">Cree ton compte Shuffle via notre Discord et gagne +5000 Tall sans depot !</div><a href="https://discord.gg/RQ58T3Gt" target="_blank" style="display:inline-block;background:#5865F2;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;text-decoration:none">VOIR LE TUTO SUR DISCORD</a></div>')
-    +'<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px">'
-    +'<div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">🤝 PARRAINAGE</div>'
-    +'<div style="font-size:12px;color:var(--gris);margin-bottom:8px">Partage ton lien et gagne <b style=&quot;color:var(--or)&quot;>1000 Tall</b> par filleul !</div>'
-    +'<div style="display:flex;gap:8px;align-items:center">'
-    +'<input id="ref-link" readonly style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--or);font-size:11px" value="'+refLink+'">'
-    +'<button onclick="copyRef()" style="background:var(--or);border:none;color:#000;padding:8px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer">COPIER</button>'
-    +'</div>'
-    +'<div style="margin-top:8px;font-size:12px;color:var(--gris)">Filleuls : <b style=&quot;color:var(--or)&quot;>'+(user.referrals||0)+'</b></div>'
-    +'</div>'
-    +'<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px">'
-    +'<div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">💸 ENVOYER DES TALL</div>'
-    +'<div style="font-size:12px;color:var(--gris);margin-bottom:8px">Envoie des Tall a un autre membre BET0TALL</div>'
-    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
-    +'<input id="transfer-user" style="flex:2;min-width:120px;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-size:13px" placeholder="Pseudo Discord...">'
-    +'<input id="transfer-amount" type="number" min="10" style="flex:1;min-width:80px;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--or);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Montant">'
-    +'<button onclick="sendTransfer()" style="background:var(--or);border:none;color:#000;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap">ENVOYER</button>'
-    +'</div></div>'
-    +'<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:14px">'
-    +'<div style="font-family:Bebas Neue,sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:8px;color:var(--or)">CODE PROMO</div>'
-    +'<div style="display:flex;gap:8px">'
-    +'<input id="promo-input" style="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px" placeholder="Entre ton code...">'
-    +'<button onclick="usePromo()" style="background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap">ACTIVER</button>'
-    +'</div></div></div>';
+  var el=document.getElementById("pc");
+  if(!user){el.innerHTML="<div class='empty'>Connecte-toi pour voir ton profil</div>";return;}
+  var wins=user.bets?user.bets.filter(function(b){return b.status==="win";}).length:0;
+  var total=user.bets?user.bets.length:0;
+  var wr=total?Math.round(wins/total*100):0;
+  var initials=user.username.slice(0,2).toUpperCase();
+  var refLink="https://bet2rue-backend.onrender.com?ref="+user.id;
+  var html="<div class='pcard'>";
+  html+="<div style='width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;margin-bottom:12px'>"+initials+"</div>";
+  html+="<div style='font-family:Bebas Neue,sans-serif;font-size:24px'>"+user.username+"</div>";
+  html+="<div style='font-size:12px;color:var(--gris);margin-top:3px'>Membre BET0TALL - Streak : "+user.streak+" jours</div>";
+  html+="<div class='sg'><div class='sc'><div class='sn'>"+Math.round(user.balance).toLocaleString()+"</div><div class='slb'>Solde Tall</div></div><div class='sc'><div class='sn'>"+total+"</div><div class='slb'>Paris</div></div><div class='sc'><div class='sn' style='color:#4ade80'>"+wins+"</div><div class='slb'>Victoires</div></div><div class='sc'><div class='sn'>"+wr+"%</div><div class='slb'>Reussite</div></div></div>";
+  if(user.shuffleValidated){
+    html+="<div style='margin-top:16px;border-top:1px solid var(--border);padding-top:14px'><div style='background:#052e16;border-radius:8px;padding:10px 14px;color:#4ade80;font-family:Bebas Neue,sans-serif'>BONUS SHUFFLE VALIDE - +5000 Tall</div></div>";
+  } else {
+    html+="<div style='margin-top:16px;border-top:1px solid var(--border);padding-top:14px'><div style='font-family:Bebas Neue,sans-serif;font-size:15px;color:#5865F2;margin-bottom:8px'>BONUS SHUFFLE</div><div style='font-size:12px;color:var(--gris);margin-bottom:10px'>Cree ton compte Shuffle et gagne +5000 Tall !</div><a href='https://discord.gg/RQ58T3Gt' target='_blank' style='display:inline-block;background:#5865F2;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;text-decoration:none'>VOIR LE TUTO DISCORD</a></div>";
+  }
+  html+="<div style='margin-top:16px;border-top:1px solid var(--border);padding-top:14px'><div style='font-family:Bebas Neue,sans-serif;font-size:15px;color:var(--or);margin-bottom:8px'>PARRAINAGE</div><div style='font-size:12px;color:var(--gris);margin-bottom:8px'>Partage ton lien - 1000 Tall par filleul</div><div style='display:flex;gap:8px;align-items:center'><input id='ref-link' readonly style='flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--or);font-size:11px' value='"+refLink+"'><button onclick='copyRef()' style='background:var(--or);border:none;color:#000;padding:8px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer'>COPIER</button></div><div style='margin-top:8px;font-size:12px;color:var(--gris)'>Filleuls : <b style='color:var(--or)'>"+(user.referrals||0)+"</b></div></div>";
+  html+="<div style='margin-top:16px;border-top:1px solid var(--border);padding-top:14px'><div style='font-family:Bebas Neue,sans-serif;font-size:15px;color:var(--or);margin-bottom:8px'>ENVOYER DES TALL</div><div style='display:flex;gap:8px;flex-wrap:wrap'><input id='transfer-user' style='flex:2;min-width:120px;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-size:13px' placeholder='Pseudo Discord...'><input id='transfer-amount' type='number' min='10' style='flex:1;min-width:80px;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--or);font-family:Bebas Neue,sans-serif;font-size:14px' placeholder='Montant'><button onclick='sendTransfer()' style='background:var(--or);border:none;color:#000;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap'>ENVOYER</button></div></div>";
+  html+="<div style='margin-top:16px;border-top:1px solid var(--border);padding-top:14px'><div style='font-family:Bebas Neue,sans-serif;font-size:15px;color:var(--or);margin-bottom:8px'>CODE PROMO</div><div style='display:flex;gap:8px'><input id='promo-input' style='flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-family:Bebas Neue,sans-serif;font-size:14px' placeholder='Entre ton code...'><button onclick='usePromo()' style='background:var(--rouge);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;white-space:nowrap'>ACTIVER</button></div></div>";
+  html+="</div>";
+  el.innerHTML=html;
 }
-async function usePromo(){
-  if(!user){showToast('Connecte-toi !','err');return;}
-  var code=document.getElementById('promo-input').value.trim().toUpperCase();
-  if(!code){showToast('Entre un code !','err');return;}
-  try{var res=await fetch('/api/promo?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:code,uid:uid})});var data=await res.json();if(res.ok){user.balance=data.newBalance;renderUB();renderProfile();showToast('Code active ! +'+data.reward+' Tall sur ton compte !');}else{showToast(data.error||'Erreur','err');}}catch(e){showToast('Erreur connexion','err');}
+function copyRef(){var inp=document.getElementById("ref-link");inp.select();document.execCommand("copy");showToast("Lien copie ! Partage-le sur Discord");}
+function usePromo(){
+  if(!user){showToast("Connecte-toi !","err");return;}
+  var code=document.getElementById("promo-input").value.trim().toUpperCase();
+  if(!code){showToast("Entre un code !","err");return;}
+  fetch("/api/promo?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code:code,uid:uid})})
+    .then(function(r){return r.json().then(function(d){return {ok:r.ok,data:d};});})
+    .then(function(res){
+      if(res.ok){user.balance=res.data.newBalance;renderUB();renderProfile();showToast("Code active ! +"+res.data.reward+" Tall !");}
+      else{showToast(res.data.error||"Erreur","err");}
+    }).catch(function(){showToast("Erreur connexion","err");});
 }
-
-async function loadAdmin(){
-  if(!user||!user.isAdmin){document.getElementById('admin-list').innerHTML='<div class="empty">Acces refuse</div>';return;}
-  try{var res=await fetch('/api/admin/matches?uid='+uid);var data=await res.json();document.getElementById('admin-list').innerHTML=data.map(function(m){return '<div class="admin-match"><div class="admin-title"><span>'+m.home+' vs '+m.away+' — '+m.time+'</span>'+(m.settled?'<span class="settled-badge">REGLE</span>':m.locked?'<span class="locked-badge">EN COURS</span>':'')+'</div>'+(!m.settled?'<div class="admin-btns"><button class="abtn h" onclick="setResult('+m.id+',\'h\')">1 '+m.home+'</button><button class="abtn n" onclick="setResult('+m.id+',\'n\')">N NUL</button><button class="abtn a" onclick="setResult('+m.id+',\'a\')">2 '+m.away+'</button></div>':'')+'</div>';}).join('');}catch(e){}
+function sendTransfer(){
+  if(!user){showToast("Connecte-toi !","err");return;}
+  var username=document.getElementById("transfer-user").value.trim();
+  var amount=parseInt(document.getElementById("transfer-amount").value)||0;
+  if(!username){showToast("Entre un pseudo !","err");return;}
+  if(amount<10){showToast("Minimum 10 Tall","err");return;}
+  if(amount>user.balance){showToast("Solde insuffisant !","err");return;}
+  fetch("/api/transfer?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:username,amount:amount,uid:uid})})
+    .then(function(r){return r.json().then(function(d){return {ok:r.ok,data:d};});})
+    .then(function(res){
+      if(res.ok){user.balance=res.data.newBalance;renderUB();renderProfile();showToast(res.data.amount+" Tall envoyes a "+res.data.receiver+" !");}
+      else{showToast(res.data.error||"Erreur","err");}
+    }).catch(function(){showToast("Erreur connexion","err");});
 }
-
-async function setResult(matchId,result){
-  try{var res=await fetch('/api/admin/result?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({matchId:matchId,result:result,uid:uid})});var data=await res.json();if(res.ok){showToast('Resultat enregistre ! '+data.settled+' paris regles.');launchConfetti();var r=await fetch('/api/matches');matches=await r.json();loadAdmin();renderMatches();}else{showToast(data.error,'err');}}catch(e){showToast('Erreur','err');}
+function loadAdmin(){
+  if(!user||!user.isAdmin){document.getElementById("admin-list").innerHTML="<div class='empty'>Acces refuse</div>";return;}
+  fetch("/api/admin/matches?uid="+uid).then(function(r){return r.json();}).then(function(data){
+    var html="";
+    data.forEach(function(m){
+      html+="<div class='admin-match'><div class='admin-title'><span>"+m.home+" vs "+m.away+" - "+m.time+"</span>"+(m.settled?"<span class='settled-badge'>REGLE</span>":m.locked?"<span class='locked-badge'>EN COURS</span>":"")+"</div>";
+      if(!m.settled){html+="<div class='admin-btns'><button class='abtn h' onclick='setResult("+m.id+",\"h\")'>1 "+m.home+"</button><button class='abtn n' onclick='setResult("+m.id+",\"n\")'>N NUL</button><button class='abtn a' onclick='setResult("+m.id+",\"a\")'>2 "+m.away+"</button></div>";}
+      html+="</div>";
+    });
+    document.getElementById("admin-list").innerHTML=html;
+  }).catch(function(){});
 }
-
+function setResult(matchId,result){
+  fetch("/api/admin/result?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({matchId:matchId,result:result,uid:uid})})
+    .then(function(r){return r.json().then(function(d){return {ok:r.ok,data:d};});})
+    .then(function(res){
+      if(res.ok){showToast("Resultat enregistre ! "+res.data.settled+" paris regles.");launchConfetti();fetch("/api/matches").then(function(r){return r.json();}).then(function(d){matches=d;loadAdmin();renderMatches();});}
+      else{showToast(res.data.error,"err");}
+    }).catch(function(){showToast("Erreur","err");});
+}
+var bjDeck=[],bjPlayer=[],bjDealer=[],bjStake=10,bjActive=false;
+var bjS=["S","C","H","D"],bjV=["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+function bjInit(){bjDeck=[];bjS.forEach(function(s){bjV.forEach(function(v){bjDeck.push({s:s,v:v});});});bjDeck.sort(function(){return Math.random()-.5;});}
+function bjVal(c){if(["J","Q","K"].includes(c.v))return 10;if(c.v==="A")return 11;return parseInt(c.v);}
+function bjScore(hand){var s=0,a=0;hand.forEach(function(c){s+=bjVal(c);if(c.v==="A")a++;});while(s>21&&a>0){s-=10;a--;}return s;}
+function bjCard(c,hidden){if(hidden)return "<div class='bj-card hidden'><span>?</span></div>";var red=["H","D"].includes(c.s);return "<div class='bj-card"+(red?" red":"")+"'><span>"+c.v+"</span><span style='font-size:14px'>"+c.s+"</span></div>";}
+function bjRender(hideD){document.getElementById("bj-player-cards").innerHTML=bjPlayer.map(function(c){return bjCard(c,false);}).join("");if(hideD){document.getElementById("bj-dealer-cards").innerHTML=bjCard(bjDealer[0],false)+bjCard(bjDealer[1],true);document.getElementById("bj-dealer-score").textContent="?";}else{document.getElementById("bj-dealer-cards").innerHTML=bjDealer.map(function(c){return bjCard(c,false);}).join("");document.getElementById("bj-dealer-score").textContent=bjScore(bjDealer);}document.getElementById("bj-player-score").textContent=bjScore(bjPlayer);}
+function bjSetStake(v){document.getElementById("bj-stake").value=v;}
+function bjDeal(){
+  if(!user){showToast("Connecte-toi !","err");return;}
+  bjStake=parseInt(document.getElementById("bj-stake").value)||10;
+  if(bjStake<10){showToast("Mise min : 10 Tall","err");return;}
+  if(bjStake>user.balance){showToast("Solde insuffisant !","err");return;}
+  bjInit();bjPlayer=[bjDeck.pop(),bjDeck.pop()];bjDealer=[bjDeck.pop(),bjDeck.pop()];bjActive=true;
+  user.balance-=bjStake;renderUB();bjRender(true);
+  document.getElementById("bj-result-box").innerHTML="";
+  document.getElementById("bj-actions").innerHTML="<button onclick='bjHit()' style='background:#10b981;border:none;color:#fff;padding:10px 20px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:16px;cursor:pointer;margin:4px'>TIRER</button><button onclick='bjStand()' style='background:var(--rouge);border:none;color:#fff;padding:10px 20px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:16px;cursor:pointer;margin:4px'>RESTER</button><button onclick='bjDouble()' style='background:#5865F2;border:none;color:#fff;padding:10px 20px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:16px;cursor:pointer;margin:4px'>DOUBLER</button>";
+  if(bjScore(bjPlayer)===21){bjStand();}
+}
+function bjHit(){if(!bjActive)return;bjPlayer.push(bjDeck.pop());bjRender(true);if(bjScore(bjPlayer)>21){bjEnd("loss");}}
+function bjDouble(){if(!bjActive)return;if(bjStake>user.balance){showToast("Solde insuffisant pour doubler !","err");return;}user.balance-=bjStake;bjStake*=2;renderUB();bjPlayer.push(bjDeck.pop());bjRender(true);if(bjScore(bjPlayer)>21){bjEnd("loss");}else{bjStand();}}
+function bjStand(){if(!bjActive)return;while(bjScore(bjDealer)<17){bjDealer.push(bjDeck.pop());}bjRender(false);var ps=bjScore(bjPlayer),ds=bjScore(bjDealer);if(ds>21||ps>ds)bjEnd("win");else if(ps===ds)bjEnd("push");else bjEnd("loss");}
+function bjEnd(result){
+  bjActive=false;var gain=0,msg="",cls="";
+  if(result==="win"){gain=Math.floor(bjStake*2);msg="TU GAGNES +"+gain+" TALL !";cls="win";}
+  else if(result==="push"){gain=bjStake;msg="EGALITE - MISE REMBOURSEE";cls="push";}
+  else{msg="PERDU - "+bjStake+" TALL";cls="loss";}
+  if(gain>0){user.balance+=gain;renderUB();}
+  document.getElementById("bj-result-box").innerHTML="<div class='bj-result "+cls+"'>"+msg+"</div>";
+  document.getElementById("bj-actions").innerHTML="<button onclick='bjDeal()' style='background:var(--or);border:none;color:#000;padding:10px 20px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:16px;cursor:pointer'>REJOUER</button>";
+  if(result==="win")launchConfetti();
+  saveBalance();
+}
+var cRunning=false,cMultiplier=1.00,cInterval=null,cStakeVal=10,cBet=false,cHistory=[];
+function cStake(v){document.getElementById("crash-stake").value=v;}
+function cCrashPoint(){
+  var r=Math.random();
+  if(r<0.05)return 1.00;
+  if(r<0.20)return parseFloat((1+Math.random()*0.8).toFixed(2));
+  if(r<0.50)return parseFloat((1.8+Math.random()*2).toFixed(2));
+  if(r<0.75)return parseFloat((3.8+Math.random()*4).toFixed(2));
+  if(r<0.90)return parseFloat((7.8+Math.random()*8).toFixed(2));
+  return parseFloat((15+Math.random()*25).toFixed(2));
+}
+function cStart(){
+  if(!user){showToast("Connecte-toi !","err");return;}
+  if(cRunning)return;
+  cStakeVal=parseInt(document.getElementById("crash-stake").value)||10;
+  if(cStakeVal<10){showToast("Mise min : 10 Tall","err");return;}
+  if(cStakeVal>user.balance){showToast("Solde insuffisant !","err");return;}
+  user.balance-=cStakeVal;renderUB();
+  cBet=true;cRunning=true;cMultiplier=1.00;
+  var crashAt=cCrashPoint();
+  var el=document.getElementById("crash-mult");
+  var st=document.getElementById("crash-status");
+  el.style.color="#4ade80";el.textContent="1.00x";
+  st.textContent="EN COURS...";
+  document.getElementById("crash-actions").innerHTML="<button onclick='cCashout()' style='background:#10b981;border:none;color:#fff;padding:12px 32px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px'>ENCAISSER</button>";
+  cInterval=setInterval(function(){
+    if(!cRunning)return;
+    cMultiplier+=0.01+cMultiplier*0.003;
+    cMultiplier=Math.round(cMultiplier*100)/100;
+    el.textContent=cMultiplier.toFixed(2)+"x";
+    if(cMultiplier>=10)el.style.color="#f87171";
+    else if(cMultiplier>=3)el.style.color="#fbbf24";
+    if(cMultiplier>=crashAt){cEnd(false);}
+  },50);
+}
+function cCashout(){if(!cRunning||!cBet)return;cEnd(true);}
+function cEnd(cashed){
+  clearInterval(cInterval);cRunning=false;
+  var el=document.getElementById("crash-mult");
+  var st=document.getElementById("crash-status");
+  if(cashed){
+    var gain=Math.floor(cStakeVal*cMultiplier);
+    user.balance+=gain;renderUB();
+    el.style.color="#4ade80";
+    st.textContent="ENCAISSE A "+cMultiplier.toFixed(2)+"x";
+    cHistory.unshift({m:cMultiplier.toFixed(2),w:true});
+    showToast("Encaisse ! +"+gain+" Tall");
+    if(cMultiplier>=2)launchConfetti();
+  } else {
+    el.style.color="#f87171";
+    el.textContent=cMultiplier.toFixed(2)+"x CRASH !";
+    st.textContent="CRASH !";
+    cHistory.unshift({m:cMultiplier.toFixed(2),w:false});
+    showToast("CRASH a "+cMultiplier.toFixed(2)+"x ! Perdu "+cStakeVal+" Tall","err");
+  }
+  cBet=false;
+  if(cHistory.length>10)cHistory=cHistory.slice(0,10);
+  document.getElementById("crash-history").innerHTML="<div style='display:flex;gap:6px;flex-wrap:wrap;margin-top:8px'>"+cHistory.map(function(h){return "<span style='background:"+(h.w?"#052e16":"#3b0808")+";color:"+(h.w?"#4ade80":"#f87171")+";padding:4px 10px;border-radius:5px;font-family:Bebas Neue,sans-serif;font-size:14px'>"+h.m+"x</span>";}).join("")+"</div>";
+  document.getElementById("crash-actions").innerHTML="<button onclick='cStart()' style='background:var(--or);border:none;color:#000;padding:12px 32px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer'>REJOUER</button>";
+  saveBalance();
+}
+function saveBalance(){
+  if(!user||!uid)return;
+  fetch("/api/bj?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({balance:user.balance,uid:uid})}).catch(function(){});
+}
 function sw(tab,btn){
-  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-  document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='leaderboard')loadLB();
-  if(tab==='mybets')renderBets();
-  if(tab==='shop')loadShop();
-  if(tab==='results')loadResults();
-  if(tab==='profile')renderProfile();
-  if(tab==='admin')loadAdmin();
+  document.querySelectorAll(".nb").forEach(function(b){b.classList.remove("active");});
+  btn.classList.add("active");
+  document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active");});
+  document.getElementById("tab-"+tab).classList.add("active");
+  if(tab==="leaderboard")loadLB();
+  if(tab==="mybets")renderBets();
+  if(tab==="shop")loadShop();
+  if(tab==="results")loadResults();
+  if(tab==="profile")renderProfile();
+  if(tab==="admin")loadAdmin();
 }
-
 function launchConfetti(){
-  var colors=['#e8132a','#f5a623','#4ade80','#fff','#5865F2'];
+  var colors=["#e8132a","#f5a623","#4ade80","#fff","#5865F2"];
   for(var i=0;i<80;i++){
-    var el=document.createElement('div');
-    el.style.cssText='position:fixed;width:'+(Math.random()*10+5)+'px;height:'+(Math.random()*10+5)+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';top:-20px;left:'+Math.random()*100+'vw;border-radius:50%;z-index:9998;animation:confetti '+(Math.random()*2+1.5)+'s ease-in forwards;opacity:1';
+    var el=document.createElement("div");
+    el.style.cssText="position:fixed;width:"+(Math.random()*10+5)+"px;height:"+(Math.random()*10+5)+"px;background:"+colors[Math.floor(Math.random()*colors.length)]+";top:-20px;left:"+Math.random()*100+"vw;border-radius:50%;z-index:9998;animation:confetti "+(Math.random()*2+1.5)+"s ease-in forwards;opacity:1";
     document.body.appendChild(el);
     setTimeout(function(e){e.remove();},(Math.random()*2+2)*1000,el);
   }
 }
-
-var bjDeck=[], bjPlayer=[], bjDealer=[], bjStake=10, bjGameActive=false;
-var bjSuits=['♠','♣','♥','♦'], bjValues=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-
-function bjInit(){
-  bjDeck=[];
-  bjSuits.forEach(function(s){bjValues.forEach(function(v){bjDeck.push({s:s,v:v});});});
-  bjDeck.sort(function(){return Math.random()-.5;});
+function showToast(msg,type){
+  var t=document.getElementById("toast");
+  t.textContent=msg;t.className="toast show "+(type==="err"?"err":"");
+  setTimeout(function(){t.className="toast";},3500);
 }
-
-function bjCardVal(card){
-  if(['J','Q','K'].includes(card.v)) return 10;
-  if(card.v==='A') return 11;
-  return parseInt(card.v);
-}
-
-function bjScore(hand){
-  var score=0, aces=0;
-  hand.forEach(function(c){score+=bjCardVal(c);if(c.v==='A')aces++;});
-  while(score>21&&aces>0){score-=10;aces--;}
-  return score;
-}
-
-function bjCardHTML(card, hidden){
-  var red=['♥','♦'].includes(card.s);
-  if(hidden) return '<div class="bj-card hidden"><span>?</span></div>';
-  return '<div class="bj-card'+(red?' red':'')+'"><span>'+card.v+'</span><span style="font-size:14px">'+card.s+'</span></div>';
-}
-
-function bjRender(hideDealer){
-  var pc=document.getElementById('bj-player-cards');
-  var dc=document.getElementById('bj-dealer-cards');
-  var ps=document.getElementById('bj-player-score');
-  var ds=document.getElementById('bj-dealer-score');
-  pc.innerHTML=bjPlayer.map(function(c){return bjCardHTML(c,false);}).join('');
-  if(hideDealer){
-    dc.innerHTML=bjCardHTML(bjDealer[0],false)+bjCardHTML(bjDealer[1],true);
-    ds.textContent='?';
-  } else {
-    dc.innerHTML=bjDealer.map(function(c){return bjCardHTML(c,false);}).join('');
-    ds.textContent=bjScore(bjDealer);
-  }
-  ps.textContent=bjScore(bjPlayer);
-}
-
-function bjSetStake(v){document.getElementById('bj-stake').value=v;}
-
-function bjDeal(){
-  if(!user){showToast('Connecte-toi !','err');return;}
-  bjStake=parseInt(document.getElementById('bj-stake').value)||10;
-  if(bjStake<10){showToast('Mise min : 10 Tall','err');return;}
-  if(bjStake>user.balance){showToast('Solde insuffisant !','err');return;}
-  bjInit();
-  bjPlayer=[bjDeck.pop(),bjDeck.pop()];
-  bjDealer=[bjDeck.pop(),bjDeck.pop()];
-  bjGameActive=true;
-  user.balance-=bjStake;
-  renderUB();
-  bjRender(true);
-  document.getElementById('bj-result-box').innerHTML='';
-  document.getElementById('bj-actions').innerHTML=
-    '<button class="bj-btn hit" onclick="bjHit()">🎴 TIRER</button>'+
-    '<button class="bj-btn stand" onclick="bjStand()">✋ RESTER</button>'+
-    '<button class="bj-btn double" onclick="bjDouble()">⚡ DOUBLER</button>';
-  if(bjScore(bjPlayer)===21){bjStand();}
-}
-
-function bjHit(){
-  if(!bjGameActive) return;
-  bjPlayer.push(bjDeck.pop());
-  bjRender(true);
-  if(bjScore(bjPlayer)>21){bjEnd('loss');}
-}
-
-function bjDouble(){
-  if(!bjGameActive) return;
-  if(bjStake>user.balance){showToast('Solde insuffisant pour doubler !','err');return;}
-  user.balance-=bjStake;
-  bjStake*=2;
-  renderUB();
-  bjPlayer.push(bjDeck.pop());
-  bjRender(true);
-  if(bjScore(bjPlayer)>21){bjEnd('loss');}else{bjStand();}
-}
-
-function bjStand(){
-  if(!bjGameActive) return;
-  while(bjScore(bjDealer)<17){bjDealer.push(bjDeck.pop());}
-  bjRender(false);
-  var ps=bjScore(bjPlayer), ds=bjScore(bjDealer);
-  if(ds>21||ps>ds) bjEnd('win');
-  else if(ps===ds) bjEnd('push');
-  else bjEnd('loss');
-}
-
-function bjEnd(result){
-  bjGameActive=false;
-  var gain=0, msg='', cls='';
-  if(result==='win'){gain=Math.floor(bjStake*2);msg='🏆 TU GAGNES +'+gain+' TALL !';cls='win';}
-  else if(result==='push'){gain=bjStake;msg='🤝 EGALITE — MISE REMBOURSEE';cls='push';}
-  else{msg='💀 PERDU — '+bjStake+' TALL';cls='loss';}
-  if(gain>0){user.balance+=gain;renderUB();}
-  document.getElementById('bj-result-box').innerHTML='<div class="bj-result '+cls+'">'+msg+'</div>';
-  document.getElementById('bj-actions').innerHTML='<button class="bj-btn deal" onclick="bjDeal()">🃏 REJOUER</button>';
-  if(result==='win') launchConfetti();
-  bjSaveBalance();
-}
-
-async function bjSaveBalance(){
-  if(!user||!uid) return;
-  try{
-    await fetch('/api/bj?uid='+uid, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({balance:user.balance, uid:uid})});
-  }catch(e){}
-}
-
-async function sendTransfer(){
-  if(!user){showToast('Connecte-toi !','err');return;}
-  var username=document.getElementById('transfer-user').value.trim();
-  var amount=parseInt(document.getElementById('transfer-amount').value)||0;
-  if(!username){showToast('Entre un pseudo !','err');return;}
-  if(amount<10){showToast('Minimum 10 Tall','err');return;}
-  if(amount>user.balance){showToast('Solde insuffisant !','err');return;}
-  try{
-    var res=await fetch('/api/transfer?uid='+uid,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:username,amount:amount,uid:uid})});
-    var data=await res.json();
-    if(res.ok){
-      user.balance=data.newBalance;
-      renderUB();renderProfile();
-      showToast('💸 '+data.amount+' Tall envoyes a '+data.receiver+' !');
-    } else {showToast(data.error||'Erreur','err');}
-  }catch(e){showToast('Erreur connexion','err');}
-}
-
-function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(type==='err'?'err':'');setTimeout(function(){t.className='toast';},3500);}
-setInterval(async function(){try{var r=await fetch('/api/matches');matches=await r.json();renderMatches();}catch(e){}},60000);
+setInterval(function(){fetch("/api/matches").then(function(r){return r.json();}).then(function(d){matches=d;renderMatches();}).catch(function(){});},60000);
 init();
 </script>
 </body>
