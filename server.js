@@ -253,7 +253,27 @@ app.get('/api/leaderboard', async function(req, res) {
     };
   }));
 });
-
+app.get('/api/feed', async function(req, res) {
+  var users = await User.find({}).sort({ createdAt: -1 });
+  var feed = [];
+  users.forEach(function(u) {
+    u.bets.forEach(function(b) {
+      feed.push({
+        username: u.username,
+        avatar: u.avatar ? 'https://cdn.discordapp.com/avatars/' + u.id + '/' + u.avatar + '.png' : null,
+        type: 'sport',
+        picks: b.picks,
+        stake: b.stake,
+        totalOdd: b.totalOdd,
+        potentialGain: b.potentialGain,
+        status: b.status,
+        placedAt: b.placedAt
+      });
+    });
+  });
+  feed.sort(function(a,b){return new Date(b.placedAt)-new Date(a.placedAt);});
+  res.json(feed.slice(0,50));
+});
 app.get('/api/results', async function(req, res) {
   var results = await Result.find({}).sort({ settledAt: -1 }).limit(50);
   res.json(results);
