@@ -513,7 +513,9 @@ function loadAdmin(){
     var html="";
     data.forEach(function(m){
       html+="<div class='admin-match'><div class='admin-title'><span>"+m.home+" vs "+m.away+" - "+m.time+"</span>"+(m.settled?"<span class='settled-badge'>REGLE</span>":m.locked?"<span class='locked-badge'>EN COURS</span>":"")+"</div>";
-      if(!m.settled){html+="<div class='admin-btns'><button class='abtn h' onclick='setResult("+m.id+",\"h\")'>1 "+m.home+"</button><button class='abtn n' onclick='setResult("+m.id+",\"n\")'>N NUL</button><button class='abtn a' onclick='setResult("+m.id+",\"a\")'>2 "+m.away+"</button></div>";}
+      if(!m.locked&&!m.settled){html+="<button onclick='lockMatch("+m.id+")' style='background:#1c1400;border:1px solid #fbbf24;color:#fbbf24;padding:6px 12px;border-radius:6px;font-family:Bebas Neue,sans-serif;font-size:12px;cursor:pointer;margin-bottom:8px;width:100%'>FERMER LES PARIS</button>";}
+      if(m.locked&&!m.settled){html+="<button onclick='unlockMatch("+m.id+")' style='background:#3b0808;border:1px solid #f87171;color:#f87171;padding:6px 12px;border-radius:6px;font-family:Bebas Neue,sans-serif;font-size:12px;cursor:pointer;margin-bottom:8px;width:100%'>ROUVRIR LES PARIS</button>";}
+      if(!m.settled){html+="<div class='admin-btns'><button class='abtn h' onclick='setResult("+m.id+",\"h\")'> 1 "+m.home+"</button><button class='abtn n' onclick='setResult("+m.id+",\"n\")'> N NUL</button><button class='abtn a' onclick='setResult("+m.id+",\"a\")'> 2 "+m.away+"</button></div>";}
       html+="</div>";
     });
     document.getElementById("admin-list").innerHTML=html;
@@ -664,6 +666,17 @@ function loadFeed(){
       return "<div style='background:var(--noir2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start'>"+av+"<div style='flex:1;min-width:0'><div style='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px'><b style='color:var(--or)'>"+b.username+"</b><span style='font-size:10px;color:var(--gris)'>"+date+"</span></div><div style='font-size:13px;font-weight:600;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+picks+"</div><div style='display:flex;justify-content:space-between;align-items:center'><span style='font-size:11px;color:var(--gris)'>"+b.stake+" Tall x"+b.totalOdd+" = "+b.potentialGain+" Tall</span><span style='font-family:Bebas Neue,sans-serif;font-size:12px;color:"+statusColor+"'>"+statusLabel+"</span></div></div></div>";
     }).join("");
   }).catch(function(){el.innerHTML="<div class='empty'>Erreur de chargement</div>";});
+}
+
+
+function lockMatch(matchId){
+  if(!confirm("Fermer les paris pour ce match ?"))return;
+  fetch("/api/admin/lockMatch?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({matchId:matchId,uid:uid})})
+    .then(function(r){return r.json();}).then(function(data){if(data.ok){showToast("Match ferme !");fetch("/api/matches").then(function(r){return r.json();}).then(function(d){matches=d;loadAdmin();renderMatches();});}else{showToast(data.error,"err");}}).catch(function(){showToast("Erreur","err");});
+}
+function unlockMatch(matchId){
+  fetch("/api/admin/unlockMatch?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({matchId:matchId,uid:uid})})
+    .then(function(r){return r.json();}).then(function(data){if(data.ok){showToast("Match rouvert !");fetch("/api/matches").then(function(r){return r.json();}).then(function(d){matches=d;loadAdmin();renderMatches();});}else{showToast(data.error,"err");}}).catch(function(){showToast("Erreur","err");});
 }
 
 function showToast(msg,type){
