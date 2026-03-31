@@ -302,6 +302,18 @@ app.post('/api/promo', async function(req, res) {
   res.json({ ok: true, reward: promo.reward, newBalance: user.balance });
 });
 
+app.post('/api/bj', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var user = await User.findOne({ id: uid });
+  if (!user) return res.status(401).json({ error: 'Non connecte' });
+  var balance = req.body.balance;
+  if (typeof balance !== 'number' || balance < 0) return res.status(400).json({ error: 'Solde invalide' });
+  user.balance = parseFloat(balance.toFixed(2));
+  await user.save();
+  res.json({ ok: true, newBalance: user.balance });
+});
+
 app.get('/api/shop', function(req, res) {
   res.json(SHOP_ITEMS);
 });
