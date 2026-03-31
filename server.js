@@ -119,18 +119,19 @@ async function checkBonus(user) {
 }
 
 function isMatchLocked(match) {
-  var now = new Date();
+  // Render is UTC, France is UTC+2 - add 2 hours to now for comparison
+  var now = new Date(Date.now() + 2 * 60 * 60 * 1000);
   var parts = match.time.split(':');
   var hours = parseInt(parts[0]);
   var minutes = parseInt(parts[1]);
   if (match.date) {
     var dateParts = match.date.split('-');
-    var matchDate = new Date(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), hours, minutes, 0, 0);
-    return now >= matchDate;
+    var matchDate = new Date(Date.UTC(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), hours - 2, minutes, 0, 0));
+    return now >= matchDate || (match.forceLocked === true);
   }
   var matchDate = new Date();
   matchDate.setHours(hours, minutes, 0, 0);
-  return now >= matchDate;
+  return now >= matchDate || (match.forceLocked === true);
 }
 
 async function settleMatch(matchId, result) {
@@ -517,6 +518,26 @@ app.post('/api/admin/result', async function(req, res) {
   if (!matchId || !result) return res.status(400).json({ error: 'Donnees manquantes' });
   var count = await settleMatch(matchId, result);
   res.json({ ok: true, settled: count });
+});
+
+app.post('/api/admin/lockMatch', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
+  var matchId = req.body.matchId;
+  var match = MATCHES.find(function(m) { return m.id === matchId; });
+  if (!match) return res.status(400).json({ error: 'Match introuvable' });
+  match.forceLocked = true;
+  res.json({ ok: true });
+});
+
+app.post('/api/admin/unlockMatch', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
+  var matchId = req.body.matchId;
+  var match = MATCHES.find(function(m) { return m.id === matchId; });
+  if (!match) return res.status(400).json({ error: 'Match introuvable' });
+  match.forceLocked = false;
+  res.json({ ok: true });
 });
 
 app.get('/api/admin/matches', function(req, res) {
