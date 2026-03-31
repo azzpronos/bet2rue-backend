@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema({
   referrals: { type: Number, default: 0 },
   shuffleValidated: { type: Boolean, default: false },
   shuffleDeposit: { type: Boolean, default: false },
+  games: { type: Array, default: [] },
   createdAt: { type: String, default: function() { return new Date().toISOString(); } }
 });
 const User = mongoose.model('User', UserSchema);
@@ -253,27 +254,7 @@ app.get('/api/leaderboard', async function(req, res) {
     };
   }));
 });
-app.get('/api/feed', async function(req, res) {
-  var users = await User.find({}).sort({ createdAt: -1 });
-  var feed = [];
-  users.forEach(function(u) {
-    u.bets.forEach(function(b) {
-      feed.push({
-        username: u.username,
-        avatar: u.avatar ? 'https://cdn.discordapp.com/avatars/' + u.id + '/' + u.avatar + '.png' : null,
-        type: 'sport',
-        picks: b.picks,
-        stake: b.stake,
-        totalOdd: b.totalOdd,
-        potentialGain: b.potentialGain,
-        status: b.status,
-        placedAt: b.placedAt
-      });
-    });
-  });
-  feed.sort(function(a,b){return new Date(b.placedAt)-new Date(a.placedAt);});
-  res.json(feed.slice(0,50));
-});
+
 app.get('/api/results', async function(req, res) {
   var results = await Result.find({}).sort({ settledAt: -1 }).limit(50);
   res.json(results);
@@ -348,6 +329,12 @@ app.post('/api/bj', async function(req, res) {
   var balance = req.body.balance;
   if (typeof balance !== 'number' || balance < 0) return res.status(400).json({ error: 'Solde invalide' });
   user.balance = parseFloat(balance.toFixed(2));
+  if (req.body.game) {
+    if (!user.games) user.games = [];
+    user.games.unshift(req.body.game);
+    if (user.games.length > 50) user.games = user.games.slice(0, 50);
+    user.markModified('games');
+  }
   await user.save();
   res.json({ ok: true, newBalance: user.balance });
 });
@@ -493,28 +480,7 @@ app.post('/api/admin/result', async function(req, res) {
   var count = await settleMatch(matchId, result);
   res.json({ ok: true, settled: count });
 });
-app.get('/api/admin/bets', async function(req, res) {
-  var uid = req.query.uid;
-  if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
-  var users = await User.find({}).sort({ createdAt: -1 });
-  var result = [];
-  users.forEach(function(u) {
-    u.bets.forEach(function(b) {
-      result.push({
-        username: u.username,
-        userId: u.id,
-        picks: b.picks,
-        stake: b.stake,
-        totalOdd: b.totalOdd,
-        potentialGain: b.potentialGain,
-        status: b.status,
-        placedAt: b.placedAt
-      });
-    });
-  });
-  result.sort(function(a,b){return new Date(b.placedAt)-new Date(a.placedAt);});
-  res.json(result.slice(0,200));
-});
+
 app.get('/api/admin/matches', function(req, res) {
   var uid = req.query.uid;
   if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
@@ -589,7 +555,7 @@ botClient.once('ready', async function() {
     var ticketSent = ticketMsgs.some(function(m){ return m.author.id === botClient.user.id && m.components.length > 0; });
     if (!ticketSent) {
       var ticketRow = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success), new ButtonBuilder().setCustomId('open_2500').setLabel('2500 Tall Creation Compte').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success),
         new ButtonBuilder().setCustomId('open_tall').setLabel('5000 Tall BET0TALL').setStyle(ButtonStyle.Primary),
         new ButtonBuilder().setCustomId('open_question').setLabel('Question').setStyle(ButtonStyle.Secondary)
       );
@@ -753,26 +719,7 @@ botClient.on('interactionCreate', async function(interaction) {
       await interaction.reply({ content: 'Ton ticket : <#' + ticketP.id + '>', ephemeral: true });
     } catch(e) { console.error('Erreur tall:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
   }
-if (interaction.customId === 'open_2500') {
-    try {
-      var existing2500 = interaction.guild.channels.cache.find(function(c){ return c.name === 'creation-' + interaction.user.username.toLowerCase(); });
-      if (existing2500) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existing2500.id + '>', ephemeral: true }); return; }
-      var ticket2500 = await interaction.guild.channels.create({
-        name: 'creation-' + interaction.user.username.toLowerCase(),
-        parent: '1488276013233209374',
-        permissionOverwrites: [
-          { id: interaction.guild.id, deny: ['ViewChannel'] },
-          { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },
-          { id: interaction.guild.members.me.id, allow: ['ViewChannel', 'SendMessages'] }
-        ]
-      });
-      var closeRow2500 = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('close_ticket').setLabel('Fermer le ticket').setStyle(ButtonStyle.Danger)
-      );
-      await ticket2500.send({ content: '**' + interaction.user.username + '** - Envoie ton pseudo Shuffle pour recevoir +2500 Tall !\\n<@' + ADMIN_ID + '> nouveau ticket creation compte !', components: [closeRow2500] });
-      await interaction.reply({ content: 'Ton ticket : <#' + ticket2500.id + '>', ephemeral: true });
-    } catch(e) { console.error('Erreur 2500:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
-  }
+
   if (interaction.customId === 'open_question') {
     try {
       var existingQ = interaction.guild.channels.cache.find(function(c){ return c.name === 'question-' + interaction.user.username.toLowerCase(); });
