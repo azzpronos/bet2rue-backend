@@ -314,6 +314,32 @@ app.post('/api/bj', async function(req, res) {
   res.json({ ok: true, newBalance: user.balance });
 });
 
+app.post('/api/transfer', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid) return res.status(401).json({ error: 'Non connecte' });
+  var sender = await User.findOne({ id: uid });
+  if (!sender) return res.status(401).json({ error: 'Non connecte' });
+  var targetUsername = (req.body.username || '').toLowerCase().trim();
+  var amount = parseInt(req.body.amount);
+  if (!targetUsername) return res.status(400).json({ error: 'Pseudo invalide' });
+  if (!amount || amount < 10) return res.status(400).json({ error: 'Montant minimum : 10 Tall' });
+  if (amount > sender.balance) return res.status(400).json({ error: 'Solde insuffisant' });
+  var receiver = await User.findOne({ username: { $regex: new RegExp('^' + targetUsername + '$', 'i') } });
+  if (!receiver) return res.status(400).json({ error: 'Membre introuvable' });
+  if (receiver.id === uid) return res.status(400).json({ error: 'Tu ne peux pas t'envoyer des Tall' });
+  sender.balance -= amount;
+  sender.balance = parseFloat(sender.balance.toFixed(2));
+  receiver.balance += amount;
+  receiver.balance = parseFloat(receiver.balance.toFixed(2));
+  await sender.save();
+  await receiver.save();
+  try {
+    var recvUser = await botClient.users.fetch(receiver.id);
+    await recvUser.send('💸 **+' + amount + ' Tall** recus de **' + sender.username + '** sur BET0TALL !');
+  } catch(e) {}
+  res.json({ ok: true, newBalance: sender.balance, receiver: receiver.username, amount: amount });
+});
+
 app.get('/api/shop', function(req, res) {
   res.json(SHOP_ITEMS);
 });
