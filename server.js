@@ -559,7 +559,9 @@ var SHOP_ITEMS = [
   { id: 6, name: 'Shoutout Discord', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET0TALL !' },
   { id: 7, name: 'Maillot de foot au choix', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
   { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' }
-];
+{ id: 9, name: '20€ PSN', description: 'Carte cadeau PlayStation Network 20€', cost: 60000 },
+{ id: 10, name: 'Commande Uber Eats', description: 'Je te commande un repas Uber Eats !', cost: 70000 },
+{ id: 11, name: 'iPhone 17', description: 'Un iPhone 17 offert par Azzpronos !', cost: 3000000 },];
 
 var MATCHES = [
   { id: 1, date: '2026-03-29', day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 }, result: null, settled: false },
