@@ -462,6 +462,18 @@ app.post('/api/market/bet', async function(req, res) {
   res.json({ ok: true, newBalance: user.balance });
 });
 
+
+app.post('/api/market/close', async function(req, res) {
+  var uid = req.query.uid || req.body.uid;
+  if (!uid || uid !== ADMIN_ID) return res.status(403).json({ error: 'Acces refuse' });
+  var marketId = req.body.marketId;
+  var market = await Market.findOne({ id: marketId });
+  if (!market) return res.status(400).json({ error: 'Pari introuvable' });
+  market.status = 'closed_betting';
+  await market.save();
+  res.json({ ok: true });
+});
+
 app.post('/api/market/resolve', async function(req, res) {
   var uid = req.query.uid || req.body.uid;
   if (!uid) return res.status(401).json({ error: 'Non connecte' });
@@ -558,10 +570,7 @@ var SHOP_ITEMS = [
   { id: 5, name: 'Prono VIP en MP', cost: 5000, description: 'Azzpronos envoie son meilleur prono du jour en message prive !' },
   { id: 6, name: 'Shoutout Discord', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET0TALL !' },
   { id: 7, name: 'Maillot de foot au choix', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
-  { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' },
-  { id: 9, name: '20€ PSN', description: 'Carte cadeau PlayStation Network 20€', cost: 60000 },
-  { id: 10, name: 'Commande Uber Eats', description: 'Je te commande un repas Uber Eats !', cost: 70000 },
-  { id: 11, name: 'iPhone 17', description: 'Un iPhone 17 offert par Azzpronos !', cost: 3000000 },
+  { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' }
 ];
 
 var MATCHES = [
@@ -618,7 +627,8 @@ botClient.once('ready', async function() {
     if (!ticketSent) {
       var ticketRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('open_ticket').setLabel('25 euros Shuffle').setStyle(ButtonStyle.Success),
-        new ButtonBuilder().setCustomId('open_tall').setLabel('5000 Tall BET0TALL').setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId('open_2500').setLabel('2500 Tall Creation Compte').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('open_tall').setLabel('5000 Tall Depot Shuffle').setStyle(ButtonStyle.Primary),
         new ButtonBuilder().setCustomId('open_question').setLabel('Question').setStyle(ButtonStyle.Secondary)
       );
       await ticketChannel.send({
@@ -761,6 +771,27 @@ botClient.on('interactionCreate', async function(interaction) {
       await interaction.reply({ content: 'Ton ticket : <#' + ticket.id + '>', ephemeral: true });
     } catch(e) { console.error('Erreur ticket:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
   }
+  if (interaction.customId === 'open_2500') {
+    try {
+      var existing2500 = interaction.guild.channels.cache.find(function(c){ return c.name === 'creation-' + interaction.user.username.toLowerCase(); });
+      if (existing2500) { await interaction.reply({ content: 'Tu as deja un ticket ouvert : <#' + existing2500.id + '>', ephemeral: true }); return; }
+      var ticket2500 = await interaction.guild.channels.create({
+        name: 'creation-' + interaction.user.username.toLowerCase(),
+        parent: '1488276013233209374',
+        permissionOverwrites: [
+          { id: interaction.guild.id, deny: ['ViewChannel'] },
+          { id: interaction.user.id, allow: ['ViewChannel', 'SendMessages'] },
+          { id: interaction.guild.members.me.id, allow: ['ViewChannel', 'SendMessages'] }
+        ]
+      });
+      var closeRow2500 = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('close_ticket').setLabel('Fermer le ticket').setStyle(ButtonStyle.Danger)
+      );
+      await ticket2500.send({ content: '**' + interaction.user.username + '** — Envoie ton pseudo Shuffle pour recevoir tes +2500 Tall (creation de compte) !\n<@' + ADMIN_ID + '> nouveau ticket 2500 Tall !', components: [closeRow2500] });
+      await interaction.reply({ content: 'Ton ticket : <#' + ticket2500.id + '>', ephemeral: true });
+    } catch(e) { console.error('Erreur 2500:', e.message); await interaction.reply({ content: 'Erreur', ephemeral: true }); }
+  }
+
   if (interaction.customId === 'open_tall') {
     try {
       var existingP = interaction.guild.channels.cache.find(function(c){ return c.name === 'tall-' + interaction.user.username.toLowerCase(); });
