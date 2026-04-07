@@ -6,6 +6,10 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require('socket.io');
+const io = new Server(server, { cors: { origin: '*' } });
 const PORT = process.env.PORT || 3001;
 const ADMIN_ID = '1143133778512986122';
 const SHOP_CHANNEL_ID = '1487785562222891078';
@@ -697,7 +701,7 @@ var MATCHES = [
   { id: 17, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '🔴', away: 'Lyon', af: '🔴', time: '20:45', odds: { h: 2.30, n: 3.20, a: 3.00 }, result: null, settled: false }
 ];
 
-app.listen(PORT, function() {
+server.listen(PORT, function() {
   console.log('BET0TALL sur port ' + PORT);
 });
 
@@ -707,6 +711,28 @@ const botClient = new Client({
 });
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
+
+var chatSockets = {}; // uid -> socket
+
+io.on('connection', function(socket) {
+  socket.on('join', function(uid) {
+    chatSockets[uid] = socket;
+    socket.uid = uid;
+  });
+  socket.on('disconnect', function() {
+    if(socket.uid) delete chatSockets[socket.uid];
+  });
+  socket.on('user_message', async function(data) {
+    var uid = data.uid;
+    var message = data.message;
+    var username = data.username;
+    try {
+      var channel = await botClient.channels.fetch(SHOP_CHANNEL_ID);
+      await channel.send('💬 **CHAT SUPPORT** — **' + (username||'Anonyme') + '** (ID: ' + (uid||'?') + ')\n> ' + message + '\n_Pour repondre tape :_ `!reply ' + uid + ' ton message`');
+    } catch(e) { console.error('Erreur chat:', e.message); }
+  });
+});
 
 botClient.once('ready', async function() {
   console.log('Bot connecte : ' + botClient.user.tag);
@@ -833,6 +859,21 @@ botClient.on('messageCreate', async function(message) {
     targetUser.shuffleDeposit = true;
     await targetUser.save();
     message.channel.send('Bonus depot valide ! **' + targetUser.username + '** a recu **+5000 Tall** sur BET0TALL !');
+    return;
+  }
+
+  if (content.startsWith('!reply')) {
+    var parts = content.split(' ');
+    if (parts.length < 3) { message.channel.send('Format : !reply DISCORD_ID ton message'); return; }
+    var targetUid = parts[1];
+    var replyMsg = parts.slice(2).join(' ');
+    var targetSocket = chatSockets[targetUid];
+    if (targetSocket) {
+      targetSocket.emit('admin_reply', { message: replyMsg });
+      message.channel.send('✅ Message envoye a ' + targetUid);
+    } else {
+      message.channel.send('❌ Ce membre n\'est plus connecte au chat');
+    }
     return;
   }
 
