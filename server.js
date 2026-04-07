@@ -254,6 +254,18 @@ app.get('/auth/discord/callback', async function(req, res) {
   }
 });
 
+app.post('/api/chat', async function(req, res) {
+  var uid = req.body.uid;
+  var message = req.body.message;
+  var username = req.body.username;
+  if (!message) return res.status(400).json({ error: 'Message vide' });
+  try {
+    var channel = await botClient.channels.fetch(SHOP_CHANNEL_ID);
+    await channel.send('💬 **MESSAGE SUPPORT**\n\n👤 **' + (username||'Anonyme') + '** (ID: ' + (uid||'?') + ')\n📩 ' + message + '\n📅 ' + new Date().toLocaleString('fr-FR'));
+  } catch(e) { console.error('Erreur chat:', e.message); }
+  res.json({ ok: true });
+});
+
 app.get('/api/online', function(req, res) {
   var uid = req.query.uid;
   if (uid) updateOnline(uid);
