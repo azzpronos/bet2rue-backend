@@ -375,7 +375,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
       <div style="background:linear-gradient(135deg,#1a1200,#2a1e00);border:1px solid rgba(245,166,35,0.3);border-radius:14px;padding:20px;margin-bottom:14px;text-align:center">
         <div style="font-size:32px;margin-bottom:8px">🏆</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--or);letter-spacing:2px">TOURNOI DE LA SEMAINE</div>
-        <div style="font-size:13px;color:var(--gris);margin-top:6px;line-height:1.7">Chaque semaine le membre avec le meilleur ratio victoires/defaites remporte <b style="color:var(--or)">10 000 Tall</b> !<br><span style="font-size:11px;opacity:.7">Resultat annonce chaque dimanche soir — Bonne chance !</span></div>
+        <div style="font-size:13px;color:var(--gris);margin-top:6px;line-height:1.7">Chaque semaine le membre qui a mise le plus de Tall remporte <b style="color:var(--or)">10 000 Tall</b> !<br><span style="font-size:11px;opacity:.7">Resultat annonce chaque dimanche soir — Bonne chance !</span></div>
         <div style="margin-top:12px;font-size:11px;color:var(--gris);letter-spacing:1px" id="tournoi-week">Semaine en cours : ...</div>
       </div>
       <div id="tournoi-list"></div>
@@ -896,8 +896,8 @@ function loadTournoi(){
       html+="<div style='background:"+(isTop?"linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))":"var(--noir2)")+";border:1px solid "+(isTop?"rgba(245,166,35,0.3)":"var(--border)")+";border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px'>";
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:20px;width:32px;text-align:center;color:var(--gris)'>"+( medal||i+1)+"</div>";
       html+=av;
-      html+="<div style='flex:1'><div style='font-weight:600;font-size:13px'>"+p.username+"</div><div style='font-size:11px;color:var(--gris);margin-top:2px'>"+p.wins+" V / "+p.losses+" D / "+p.total+" matchs</div></div>";
-      html+="<div style='text-align:right'><div style='font-family:Bebas Neue,sans-serif;font-size:22px;color:"+(isTop?"var(--or)":"var(--blanc)")+"'>"+p.ratio+"%</div><div style='font-size:10px;color:var(--gris)'>ratio</div></div>";
+      html+="<div style='flex:1'><div style='font-weight:600;font-size:13px'>"+p.username+"</div><div style='font-size:11px;color:var(--gris);margin-top:2px'>"+p.wins+" V / "+p.losses+" D / "+p.total+" paris</div></div>";
+      html+="<div style='text-align:right'><div style='font-family:Bebas Neue,sans-serif;font-size:18px;color:"+(isTop?"var(--or)":"var(--blanc)")+"'>"+p.wagered.toLocaleString()+"</div><div style='font-size:10px;color:var(--gris)'>Tall mises</div></div>";
       if(isTop){html+="<div style='font-family:Bebas Neue,sans-serif;font-size:12px;color:var(--or);background:rgba(245,166,35,0.1);padding:4px 8px;border-radius:5px;border:1px solid rgba(245,166,35,0.2)'>LEADER</div>";}
       html+="</div>";
       if(user&&user.isAdmin&&i===0){
