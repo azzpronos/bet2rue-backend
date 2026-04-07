@@ -216,7 +216,7 @@ app.get('/auth/discord/callback', async function(req, res) {
     var user = await getOrCreateUser(userRes.data, refId);
     var bonusInfo = await checkBonus(user);
     var bonusParam = bonusInfo ? bonusInfo.bonus + '_' + bonusInfo.streak : 'none';
-    res.redirect('/?uid=' + user.id + '&login=success&bonus=' + bonusParam);
+    res.redirect('https://bet0tall.fr/?uid=' + user.id + '&login=success&bonus=' + bonusParam);' + user.id + '&login=success&bonus=' + bonusParam);
   } catch (err) {
     console.error('OAuth error:', err.message);
     res.redirect('/?error=oauth_failed');
