@@ -658,6 +658,15 @@ function renderBets(){
   fetch("/api/me?uid="+uid).then(function(r){return r.json();}).then(function(data){
     user=data;
     if(!data.bets||!data.bets.length){el.innerHTML="<div class='empty'>Aucun pari pour l'instant</div>";return;}
+    var settled=data.bets.filter(function(b){return b.status!=='pending';});
+    var streak=0;
+    for(var i=0;i<settled.length;i++){if(settled[i].status==='win')streak++;else break;}
+    var streakHtml="";
+    if(streak>0){
+      var streakColor=streak>=3?"#4ade80":streak>=2?"#fbbf24":"var(--or)";
+      streakHtml="<div style='background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between'><div><div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:"+streakColor+"'>🔥 STREAK : "+streak+" VICTOIRE"+(streak>1?"S":"")+" DE SUITE</div><div style='font-size:11px;color:var(--gris);margin-top:2px'>"+(streak>=3?"Bonus +500 Tall deja recu !":"Encore "+(3-streak)+" victoire"+(3-streak>1?"s":"")+" pour +500 Tall bonus !")+"</div></div><div style='font-family:Bebas Neue,sans-serif;font-size:28px;color:"+streakColor+"'>"+streak+"/3</div></div>";
+    }
+    el.innerHTML=streakHtml+data.bets.map
     el.innerHTML=data.bets.map(function(b){
       return "<div class='br'><div style='flex:1;min-width:0'><div style='font-size:13px;font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap'>"+b.picks.map(function(p){return p.pick;}).join(" + ")+"</div><div style='font-size:11px;color:var(--gris)'>Mise "+b.stake+" Tall x"+b.totalOdd+" = "+b.potentialGain+" Tall</div></div><span class='bs "+b.status+"'>"+(b.status==="win"?"GAGNE":b.status==="loss"?"PERDU":"EN ATTENTE")+"</span></div>";
     }).join("");
