@@ -301,17 +301,26 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('roulette',this)">ROULETTE</button>
     <button class="nb" onclick="sw('mines',this)">MINES</button>
     <button class="nb" onclick="sw('course',this)">COURSE</button>
-    <button class="nb" onclick="sw('tournoi',this)">TOURNOI</button>
     <button class="nb" onclick="sw('feed',this)">FEED</button>
     <button class="nb" onclick="sw('offres',this)">OFFRES</button>
-    <button class="nb" onclick="sw('results',this)">RESULTATS</button>
     <button class="nb" onclick="sw('profile',this)">PROFIL</button>
   </div>
 </nav>
 <main>
   <div>
 <div id="tab-matches" class="tab active"><div id="ml"></div></div>
-    <div id="tab-leaderboard" class="tab"><div class="stitle">CLASSEMENT BET0TALL</div><div id="lb"></div></div>
+    <div id="tab-leaderboard" class="tab">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap">
+        <div>
+          <div class="stitle">CLASSEMENT GENERAL</div>
+          <div id="lb"></div>
+        </div>
+        <div>
+          <div class="stitle">CLASSEMENT SEMAINE</div>
+          <div id="lb-week"></div>
+        </div>
+      </div>
+    </div>
     <div id="tab-mybets" class="tab"><div class="stitle">MES PARIS</div><div id="bh"></div></div>
     <div id="tab-shop" class="tab">
       <div class="stitle">BOUTIQUE BET0TALL</div>
@@ -422,17 +431,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
         </div>
       </div>
     </div>
-        <div id="tab-tournoi" class="tab">
-      <div class="stitle">TOURNOI HEBDOMADAIRE</div>
-      <div style="background:linear-gradient(135deg,#1a1200,#2a1e00);border:1px solid rgba(245,166,35,0.3);border-radius:14px;padding:20px;margin-bottom:14px;text-align:center">
-        <div style="font-size:32px;margin-bottom:8px">🏆</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--or);letter-spacing:2px">TOURNOI DE LA SEMAINE</div>
-        <div style="font-size:13px;color:var(--gris);margin-top:6px;line-height:1.7">Chaque semaine le membre qui a mise le plus de Tall remporte <b style="color:var(--or)">10 000 Tall</b> !<br><span style="font-size:11px;opacity:.7">Resultat annonce chaque dimanche soir — Bonne chance !</span></div>
-        <div style="margin-top:12px;font-size:11px;color:var(--gris);letter-spacing:1px" id="tournoi-week">Semaine en cours : ...</div>
-      </div>
-      <div id="tournoi-list"></div>
-    </div>
-    <div id="tab-roulette" class="tab">
+        <div id="tab-roulette" class="tab">
       <div class="stitle">ROULETTE — MISE MIN 10 TALL</div>
       <div style="background:var(--noir2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px">
         <div class="rl-wheel-wrap">
@@ -513,7 +512,6 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
         <a href="https://discord.gg/rCUkaqBV" target="_blank" style="background:#5865F2;color:#fff;padding:10px 22px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;text-decoration:none">VOIR LE TUTO</a>
       </div>
     </div>
-    <div id="tab-results" class="tab"><div class="stitle">HISTORIQUE DES RESULTATS</div><div id="results-list"></div></div>
     <div id="tab-profile" class="tab"><div class="stitle">MON PROFIL</div><div id="pc"></div></div>
     <div id="tab-admin" class="tab"><div class="stitle" style="color:var(--or)">PANEL ADMIN</div>
       <div style="background:var(--noir2);border:1px solid var(--or);border-radius:10px;padding:16px;margin-bottom:16px">
@@ -691,6 +689,18 @@ function loadLB(){
       var av=p.avatar?"<img src='"+p.avatar+"' style='width:34px;height:34px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
       return "<div class='lb-row'><div class='lb-rank'>"+(medals[i]||i+1)+"</div>"+av+"<div><div class='lb-name'>"+p.username+(user&&p.id===uid?" (toi)":"")+"</div><div class='lb-sub'>"+p.betsCount+" paris</div></div><div class='lb-bal'>"+p.balance.toLocaleString()+" Tall</div></div>";
     }).join(""):"<div class='empty'>Aucun membre</div>";
+  }).catch(function(){});
+  // Load weekly ranking
+  fetch("/api/tournament").then(function(r){return r.json();}).then(function(data){
+    var el=document.getElementById("lb-week");
+    if(!el)return;
+    if(!data.rankings.length){el.innerHTML="<div class='empty'>Aucun pari cette semaine</div>";return;}
+    el.innerHTML=data.rankings.map(function(p,i){
+      var medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+      var initials=p.username.slice(0,2).toUpperCase();
+      var av=p.avatar?"<img src='"+p.avatar+"' style='width:34px;height:34px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
+      return "<div class='lb-row'><div class='lb-rank'>"+(medal||i+1)+"</div>"+av+"<div><div class='lb-name'>"+p.username+"</div><div class='lb-sub'>"+p.total+" paris</div></div><div class='lb-bal' style='font-size:14px'>"+p.wagered.toLocaleString()+" T</div></div>";
+    }).join("");
   }).catch(function(){});
 }
 function renderBets(){
