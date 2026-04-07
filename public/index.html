@@ -248,6 +248,12 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 .wheel-spin-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(245,166,35,0.3)}
 .wheel-spin-btn:disabled{background:var(--gris);cursor:not-allowed;transform:none;box-shadow:none}
 .wheel-result{font-family:'Bebas Neue',sans-serif;font-size:22px;padding:10px 20px;border-radius:8px;margin-top:12px;display:inline-block}
+
+.course-track{background:var(--noir3);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;position:relative;overflow:hidden;height:52px;display:flex;align-items:center}
+.course-cat{position:absolute;font-size:24px;transition:left 0.05s linear;left:0px}
+.course-finish{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:20px}
+.course-name{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gris);position:absolute;left:12px;letter-spacing:.5px}
+.course-btn-sel{background:rgba(245,166,35,0.15) !important;border-color:var(--or) !important;color:var(--or) !important}
 </style>
 </head>
 <body>
@@ -294,6 +300,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('crash',this)">CRASH</button>
     <button class="nb" onclick="sw('roulette',this)">ROULETTE</button>
     <button class="nb" onclick="sw('mines',this)">MINES</button>
+    <button class="nb" onclick="sw('course',this)">COURSE</button>
     <button class="nb" onclick="sw('tournoi',this)">TOURNOI</button>
     <button class="nb" onclick="sw('feed',this)">FEED</button>
     <button class="nb" onclick="sw('offres',this)">OFFRES</button>
@@ -338,7 +345,41 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
       </div>
       <div id="bj-actions"><button onclick="bjDeal()" style="background:var(--or);border:none;color:#000;padding:12px 32px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer">DISTRIBUER</button></div>
     </div>
-            <div id="tab-mines" class="tab">
+                <div id="tab-course" class="tab">
+      <div class="stitle">COURSE DE CHATS — MISE MIN 10 TALL</div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px">
+        <div id="course-tracks">
+          <div class="course-track" id="track-0"><span class="course-name">ZINA</span><span class="course-cat" id="cat-0" style="left:40px">🐱</span><span class="course-finish">🏁</span></div>
+          <div class="course-track" id="track-1"><span class="course-name">FRAISIA</span><span class="course-cat" id="cat-1" style="left:40px">🐱</span><span class="course-finish">🏁</span></div>
+          <div class="course-track" id="track-2"><span class="course-name">PASTANETE</span><span class="course-cat" id="cat-2" style="left:40px">🐱</span><span class="course-finish">🏁</span></div>
+          <div class="course-track" id="track-3"><span class="course-name">BINOCLARA</span><span class="course-cat" id="cat-3" style="left:40px">🐱</span><span class="course-finish">🏁</span></div>
+        </div>
+        <div id="course-result-box"></div>
+      </div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gris);margin-bottom:10px;letter-spacing:1px">CHOISIR TON CHAT</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <button id="ccat-0" onclick="cSelectCat(0,this)" style="background:var(--noir3);border:1px solid var(--border);color:var(--blanc);padding:10px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer;transition:all .2s">🐱 ZINA <span style="color:var(--or)">x5.00</span></button>
+          <button id="ccat-1" onclick="cSelectCat(1,this)" style="background:var(--noir3);border:1px solid var(--border);color:var(--blanc);padding:10px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer;transition:all .2s">🐱 FRAISIA <span style="color:var(--or)">x2.50</span></button>
+          <button id="ccat-2" onclick="cSelectCat(2,this)" style="background:var(--noir3);border:1px solid var(--border);color:var(--blanc);padding:10px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer;transition:all .2s">🐱 PASTANETE <span style="color:var(--or)">x2.80</span></button>
+          <button id="ccat-3" onclick="cSelectCat(3,this)" style="background:var(--noir3);border:1px solid var(--border);color:var(--blanc);padding:10px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:14px;cursor:pointer;transition:all .2s">🐱 BINOCLARA <span style="color:var(--or)">x4.00</span></button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="font-size:13px;color:var(--gris)">Mise :</span>
+          <input id="course-stake" type="number" value="10" min="10" style="background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:16px;width:100px">
+          <span style="font-size:12px;color:var(--gris)">Tall</span>
+          <button onclick="cStake(10)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">10</button>
+          <button onclick="cStake(50)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">50</button>
+          <button onclick="cStake(100)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">100</button>
+          <button onclick="cStake(500)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">500</button>
+        </div>
+        <div id="course-actions">
+          <button onclick="cStart()" style="background:var(--grad-or);border:none;color:#000;padding:12px 40px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%">LANCER LA COURSE !</button>
+        </div>
+      </div>
+      <div id="course-history" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+    </div>
+    <div id="tab-mines" class="tab">
       <div class="stitle">MINES — MISE MIN 10 TALL</div>
       <div style="background:var(--noir2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px">
         <div class="mines-mult" id="mines-mult">1.00x</div>
@@ -1245,6 +1286,129 @@ function rlShowResult(result,stake){
 
 
 var mGrid=[],mBombs=3,mStakeVal=10,mActive=false,mDiamonds=0,mRevealed=0;
+
+
+var CATS=[
+  {name:"ZINA", odd:5.00, emoji:"🐱"},
+  {name:"FRAISIA", odd:2.50, emoji:"🐱"},
+  {name:"PASTANETE", odd:2.80, emoji:"🐱"},
+  {name:"BINOCLARA", odd:4.00, emoji:"😺"}
+];
+var cSelectedCat=null, cRunning=false, cStakeVal=10, cHistory=[];
+
+function cSelectCat(idx,btn){
+  cSelectedCat=idx;
+  document.querySelectorAll("[id^='ccat-']").forEach(function(b){b.classList.remove("course-btn-sel");});
+  btn.classList.add("course-btn-sel");
+}
+
+function cStake(v){document.getElementById("course-stake").value=v;}
+
+function cResetTracks(){
+  for(var i=0;i<4;i++){
+    var cat=document.getElementById("cat-"+i);
+    if(cat)cat.style.left="40px";
+  }
+}
+
+function cStart(){
+  if(!user){showToast("Connecte-toi !","err");return;}
+  if(cRunning)return;
+  if(cSelectedCat===null){showToast("Choisis un chat !","err");return;}
+  cStakeVal=parseInt(document.getElementById("course-stake").value)||10;
+  if(cStakeVal<10){showToast("Mise min : 10 Tall","err");return;}
+  if(cStakeVal>user.balance){showToast("Solde insuffisant !","err");return;}
+  user.balance-=cStakeVal;renderUB();
+  cRunning=true;
+  cResetTracks();
+  document.getElementById("course-result-box").innerHTML="";
+  document.getElementById("course-actions").innerHTML="<div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:var(--or);text-align:center;letter-spacing:2px'>EN COURSE...</div>";
+
+  // Winner determined by weights
+  var weights=[CATS[0].odd,CATS[1].odd,CATS[2].odd,CATS[3].odd];
+  var invWeights=weights.map(function(w){return 1/w;});
+  var total=invWeights.reduce(function(a,b){return a+b;},0);
+  var rand=Math.random()*total;
+  var winner=0;var cum=0;
+  for(var i=0;i<invWeights.length;i++){cum+=invWeights[i];if(rand<=cum){winner=i;break;}}
+
+  // Animate cats
+  var positions=[40,40,40,40];
+  var speeds=[0,0,0,0];
+  // Winner gets better average speed
+  for(var i=0;i<4;i++){
+    speeds[i]=i===winner?(2.5+Math.random()*1.5):(1.0+Math.random()*2.0);
+  }
+
+  var trackWidth=document.getElementById("track-0").offsetWidth-60;
+  var finishLine=trackWidth||250;
+  var finished=[];
+  var frameCount=0;
+
+  function animateCats(){
+    if(!cRunning)return;
+    frameCount++;
+    var allDone=true;
+    for(var i=0;i<4;i++){
+      if(finished.includes(i))continue;
+      allDone=false;
+      // Add some randomness
+      var speed=speeds[i]*(0.7+Math.random()*0.6);
+      positions[i]+=speed;
+      var cat=document.getElementById("cat-"+i);
+      if(cat)cat.style.left=Math.min(positions[i],finishLine)+"px";
+      if(positions[i]>=finishLine){
+        finished.push(i);
+        if(i===winner){
+          // Make sure winner finishes first
+          finished=finished.filter(function(f){return f===winner;});
+          for(var j=0;j<4;j++){
+            if(j!==winner)speeds[j]=0;
+          }
+        }
+      }
+    }
+    // Force winner to finish last among non-finished if needed
+    if(frameCount>300&&!finished.includes(winner)){
+      positions[winner]=finishLine;
+      finished.push(winner);
+    }
+    if(finished.length===1&&finished[0]===winner){
+      setTimeout(function(){
+        cEnd(winner);
+      },500);
+      return;
+    }
+    if(allDone||finished.length>=4){
+      cEnd(winner);
+      return;
+    }
+    requestAnimationFrame(animateCats);
+  }
+  requestAnimationFrame(animateCats);
+}
+
+function cEnd(winner){
+  cRunning=false;
+  var won=winner===cSelectedCat;
+  var gain=won?Math.floor(cStakeVal*CATS[winner].odd):0;
+  if(won){user.balance+=gain;renderUB();}
+  var catName=CATS[winner].name;
+  var box=document.getElementById("course-result-box");
+  box.innerHTML="<div style='text-align:center;padding:14px;background:"+(won?"rgba(16,185,129,0.1)":"rgba(232,19,42,0.1)")+";border:1px solid "+(won?"rgba(16,185,129,0.3)":"rgba(232,19,42,0.3)")+";border-radius:8px;margin-top:10px'>"
+    +"<div style='font-size:28px;margin-bottom:4px'>🏆</div>"
+    +"<div style='font-family:Bebas Neue,sans-serif;font-size:22px;color:"+(won?"#4ade80":"#f87171")+"'>"+(won?"TU GAGNES ! +"+gain+" TALL":"PERDU..."+cStakeVal+" TALL")+"</div>"
+    +"<div style='font-size:13px;color:var(--gris);margin-top:4px'>"+CATS[winner].emoji+" "+catName+" A GAGNE !</div>"
+    +"</div>";
+  cHistory.unshift({name:catName,won:won});
+  if(cHistory.length>8)cHistory=cHistory.slice(0,8);
+  document.getElementById("course-history").innerHTML=cHistory.map(function(h){
+    return "<span style='background:"+(h.won?"rgba(16,185,129,0.1)":"rgba(232,19,42,0.1)")+";color:"+(h.won?"#4ade80":"#f87171")+";padding:4px 10px;border-radius:5px;font-family:Bebas Neue,sans-serif;font-size:12px;border:1px solid "+(h.won?"rgba(16,185,129,0.2)":"rgba(232,19,42,0.2)")+"'>"+h.name+"</span>";
+  }).join("");
+  document.getElementById("course-actions").innerHTML="<button onclick='cStart()' style='background:var(--grad-or);border:none;color:#000;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>RELANCER !</button>";
+  if(won)launchConfetti();
+  saveBalance({type:"course",label:"Course — "+CATS[winner].name,stake:cStakeVal,gain:gain,status:won?"win":"loss",placedAt:new Date().toISOString()});
+}
 
 function mSetBombs(n){
   mBombs=n;
