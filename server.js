@@ -627,26 +627,32 @@ var SHOP_ITEMS = [
   { id: 7, name: 'Maillot de foot au choix', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
   { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' }
 ];
-
 var MATCHES = [
-  { id: 1, date: '2026-03-29', day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 }, result: null, settled: false },
-  { id: 2, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Algerie', hf: '🇩🇿', away: 'Uruguay', af: '🇺🇾', time: '20:30', odds: { h: 2.40, n: 3.10, a: 2.90 }, result: null, settled: false },
-  { id: 3, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Angleterre', hf: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', away: 'Japon', af: '🇯🇵', time: '20:45', odds: { h: 1.75, n: 3.50, a: 4.20 }, result: null, settled: false },
-  { id: 4, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Maroc', hf: '🇲🇦', away: 'Paraguay', af: '🇵🇾', time: '20:00', odds: { h: 1.85, n: 3.20, a: 4.00 }, result: null, settled: false },
-  { id: 5, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Senegal', hf: '🇸🇳', away: 'Gambie', af: '🇬🇲', time: '21:00', odds: { h: 1.70, n: 3.40, a: 4.80 }, result: null, settled: false },
-  { id: 6, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Pays-Bas', hf: '🇳🇱', away: 'Equateur', af: '🇪🇨', time: '20:45', odds: { h: 1.80, n: 3.30, a: 4.20 }, result: null, settled: false },
-  { id: 7, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Ecosse', hf: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', away: 'Cote Ivoire', af: '🇨🇮', time: '20:30', odds: { h: 2.60, n: 3.20, a: 2.70 }, result: null, settled: false },
-  { id: 8, date: '2026-04-03', day: 'Vendredi 3 avril', league: 'Ligue 1 - J27', home: 'PSG', hf: '🔵', away: 'Nantes', af: '🟡', time: '20:45', odds: { h: 1.25, n: 5.50, a: 10.0 }, result: null, settled: false },
-  { id: 9, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Arsenal', hf: '🔴', away: 'Fulham', af: '⚪', time: '13:30', odds: { h: 1.55, n: 4.00, a: 5.50 }, result: null, settled: false },
-  { id: 10, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Liverpool', hf: '🔴', away: 'Everton', af: '🔵', time: '16:00', odds: { h: 1.50, n: 4.20, a: 6.00 }, result: null, settled: false },
-  { id: 11, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Chelsea', hf: '🔵', away: 'Manchester Utd', af: '🔴', time: '16:00', odds: { h: 1.80, n: 3.50, a: 4.20 }, result: null, settled: false },
-  { id: 12, date: '2026-04-04', day: 'Samedi 4 avril', league: 'Premier League', home: 'Tottenham', hf: '⚪', away: 'Newcastle', af: '⚫', time: '18:30', odds: { h: 2.10, n: 3.30, a: 3.40 }, result: null, settled: false },
-  { id: 13, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Premier League', home: 'Manchester City', hf: '🔵', away: 'Aston Villa', af: '🟣', time: '15:00', odds: { h: 1.60, n: 3.80, a: 5.00 }, result: null, settled: false },
-  { id: 14, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Monaco', hf: '🔴', away: 'Brest', af: '⚽', time: '15:00', odds: { h: 1.70, n: 3.50, a: 4.50 }, result: null, settled: false },
-  { id: 15, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Strasbourg', hf: '🔵', away: 'Marseille', af: '🔵', time: '17:15', odds: { h: 3.20, n: 3.10, a: 2.20 }, result: null, settled: false },
-  { id: 16, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Lille', hf: '🔴', away: 'Lens', af: '🟡', time: '20:45', odds: { h: 1.90, n: 3.40, a: 3.80 }, result: null, settled: false },
-  { id: 17, date: '2026-04-05', day: 'Dimanche 5 avril', league: 'Ligue 1 - J28', home: 'Rennes', hf: '🔴', away: 'Lyon', af: '🔴', time: '20:45', odds: { h: 2.30, n: 3.20, a: 3.00 }, result: null, settled: false }
+  // LIGUE DES CHAMPIONS - Quarts retour
+  { id: 1, home: "Liverpool", away: "PSG", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🇫🇷", league: "Ligue des Champions", time: "21:00", day: "Mardi 14 Avril", date: "2026-04-14", odds: { h: 2.10, n: 3.90, a: 2.90 }, locked: false, settled: false, result: null },
+  { id: 2, home: "Atletico Madrid", away: "Barcelone", hf: "🇪🇸", af: "🇪🇸", league: "Ligue des Champions", time: "21:00", day: "Mardi 14 Avril", date: "2026-04-14", odds: { h: 3.20, n: 3.80, a: 2.00 }, locked: false, settled: false, result: null },
+  { id: 3, home: "Bayern Munich", away: "Real Madrid", hf: "🇩🇪", af: "🇪🇸", league: "Ligue des Champions", time: "21:00", day: "Mercredi 15 Avril", date: "2026-04-15", odds: { h: 2.30, n: 3.80, a: 2.70 }, locked: false, settled: false, result: null },
+  { id: 4, home: "Arsenal", away: "Sporting", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🇵🇹", league: "Ligue des Champions", time: "21:00", day: "Mercredi 15 Avril", date: "2026-04-15", odds: { h: 1.55, n: 4.20, a: 5.00 }, locked: false, settled: false, result: null },
+  // PREMIER LEAGUE - Journee 32
+  { id: 5, home: "West Ham", away: "Wolves", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "16:00", day: "Jeudi 10 Avril", date: "2026-04-10", odds: { h: 1.95, n: 3.40, a: 3.80 }, locked: false, settled: false, result: null },
+  { id: 6, home: "Arsenal", away: "Bournemouth", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "16:00", day: "Vendredi 11 Avril", date: "2026-04-11", odds: { h: 1.45, n: 4.50, a: 6.50 }, locked: false, settled: false, result: null },
+  { id: 7, home: "Liverpool", away: "Fulham", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "16:00", day: "Vendredi 11 Avril", date: "2026-04-11", odds: { h: 1.40, n: 4.80, a: 7.00 }, locked: false, settled: false, result: null },
+  { id: 8, home: "Brentford", away: "Everton", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "16:00", day: "Vendredi 11 Avril", date: "2026-04-11", odds: { h: 1.80, n: 3.60, a: 4.20 }, locked: false, settled: false, result: null },
+  { id: 9, home: "Burnley", away: "Brighton", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "16:00", day: "Vendredi 11 Avril", date: "2026-04-11", odds: { h: 2.90, n: 3.30, a: 2.40 }, locked: false, settled: false, result: null },
+  { id: 10, home: "Chelsea", away: "Manchester City", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "17:30", day: "Samedi 12 Avril", date: "2026-04-12", odds: { h: 2.20, n: 3.50, a: 3.10 }, locked: false, settled: false, result: null },
+  { id: 11, home: "Crystal Palace", away: "Newcastle", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "15:00", day: "Dimanche 12 Avril", date: "2026-04-12", odds: { h: 3.10, n: 3.30, a: 2.25 }, locked: false, settled: false, result: null },
+  { id: 12, home: "Sunderland", away: "Tottenham", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "15:00", day: "Dimanche 12 Avril", date: "2026-04-12", odds: { h: 3.50, n: 3.40, a: 2.00 }, locked: false, settled: false, result: null },
+  { id: 13, home: "Nottingham", away: "Aston Villa", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "15:00", day: "Dimanche 12 Avril", date: "2026-04-12", odds: { h: 2.80, n: 3.20, a: 2.60 }, locked: false, settled: false, result: null },
+  { id: 14, home: "Manchester Utd", away: "Leeds", hf: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", af: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", league: "Premier League", time: "21:00", day: "Lundi 13 Avril", date: "2026-04-13", odds: { h: 1.85, n: 3.60, a: 4.00 }, locked: false, settled: false, result: null },
+  // LIGUE 1 - Journee 30
+  { id: 15, home: "Paris FC", away: "Monaco", hf: "🇫🇷", af: "🇲🇨", league: "Ligue 1", time: "17:15", day: "Samedi 12 Avril", date: "2026-04-12", odds: { h: 2.80, n: 3.20, a: 2.40 }, locked: false, settled: false, result: null },
+  { id: 16, home: "Marseille", away: "Metz", hf: "🇫🇷", af: "🇫🇷", league: "Ligue 1", time: "17:15", day: "Samedi 12 Avril", date: "2026-04-12", odds: { h: 1.55, n: 4.10, a: 5.50 }, locked: false, settled: false, result: null },
+  { id: 17, home: "Toulouse", away: "Lille", hf: "🇫🇷", af: "🇫🇷", league: "Ligue 1", time: "17:15", day: "Dimanche 12 Avril", date: "2026-04-12", odds: { h: 3.00, n: 3.25, a: 2.33 }, locked: false, settled: false, result: null },
+  { id: 18, home: "Nice", away: "Le Havre", hf: "🇫🇷", af: "🇫🇷", league: "Ligue 1", time: "17:15", day: "Dimanche 12 Avril", date: "2026-04-12", odds: { h: 1.91, n: 3.22, a: 3.98 }, locked: false, settled: false, result: null },
+  { id: 19, home: "Lyon", away: "Lorient", hf: "🇫🇷", af: "🇫🇷", league: "Ligue 1", time: "20:45", day: "Dimanche 12 Avril", date: "2026-04-12", odds: { h: 1.70, n: 3.73, a: 4.70 }, locked: false, settled: false, result: null },
+  { id: 20, home: "Lens", away: "PSG", hf: "🇫🇷", af: "🇫🇷", league: "Ligue 1", time: "20:45", day: "Dimanche 12 Avril", date: "2026-04-12", odds: { h: 3.25, n: 3.63, a: 1.86 }, locked: false, settled: false, result: null },
 ];
+
 
 app.listen(PORT, function() {
   console.log('BET0TALL sur port ' + PORT);
