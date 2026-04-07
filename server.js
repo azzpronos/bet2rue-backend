@@ -632,7 +632,7 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-var SHOP_ITEMS = [
+  var SHOP_ITEMS = [
   { id: 1, name: '10 euros Shuffle', cost: 25000, description: 'Bon de 10 euros sur Shuffle.com — voir tuto Discord' },
   { id: 2, name: '20 euros Shuffle', cost: 50000, description: 'Bon de 20 euros sur Shuffle.com — voir tuto Discord' },
   { id: 3, name: '50 euros Shuffle', cost: 125000, description: 'Bon de 50 euros sur Shuffle.com — voir tuto Discord' },
@@ -640,9 +640,14 @@ var SHOP_ITEMS = [
   { id: 5, name: 'Prono VIP en MP', cost: 5000, description: 'Azzpronos envoie son meilleur prono du jour en message prive !' },
   { id: 6, name: 'Shoutout Discord', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET0TALL !' },
   { id: 7, name: 'Maillot de foot au choix', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
-  { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' }
+  { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' },
+  { id: 9, name: '20€ PSN', cost: 60000, description: 'Carte cadeau PlayStation Network 20€ — Azzpronos te contacte en MP.' },
+  { id: 10, name: 'Commande Uber Eats', cost: 60000, description: 'Azzpronos te commande un repas Uber Eats ! Contacte-le en MP.' },
+  { id: 11, name: 'iPhone 17', cost: 1500000, description: 'Un iPhone 17 offert par Azzpronos ! Azzpronos te contacte en MP.' },
+  { id: 12, name: 'Defi Azzpronos', cost: 20000, description: 'Azzpronos te lance un defi personnel a relever ! Contacte-le en MP.' },
+  { id: 13, name: 'Montante Colab', cost: 15000, description: 'Azzpronos te fait une montante en collaboration ! Contacte-le en MP.' },
+  { id: 14, name: 'Place match Ligue 1', cost: 150000, description: 'Une place pour voir un match de Ligue 1 en live ! Azzpronos te contacte en MP.' },
 ];
-
 var MATCHES = [
   { id: 1, date: '2026-03-29', day: 'Dimanche 29 mars', league: 'Amical International', home: 'Colombie', hf: '🇨🇴', away: 'France', af: '🇫🇷', time: '21:00', odds: { h: 3.20, n: 3.30, a: 2.10 }, result: null, settled: false },
   { id: 2, date: '2026-03-31', day: 'Mardi 31 mars', league: 'Amical International', home: 'Algerie', hf: '🇩🇿', away: 'Uruguay', af: '🇺🇾', time: '20:30', odds: { h: 2.40, n: 3.10, a: 2.90 }, result: null, settled: false },
