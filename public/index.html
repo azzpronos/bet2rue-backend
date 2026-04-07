@@ -438,28 +438,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     </div>
   </div>
   <div>
-    <div class="coupon">
-      <div class="ct">COUPON <span class="cbadge" id="cc">0</span></div>
-      <div id="cb"><div class="cempty">Connecte-toi avec Discord<br>puis clique sur une cote !</div></div>
-      <div id="cf" style="display:none">
-        <hr class="div">
-        <div class="sr">
-          <span class="sl">Mise</span>
-          <input class="si" type="number" id="stake" value="10" min="1" max="1000" oninput="upd()">
-          <span style="font-size:11px;color:var(--gris)">Tall</span>
-        </div>
-        <div class="qs">
-          <button class="qb" onclick="ss(5)">5</button>
-          <button class="qb" onclick="ss(10)">10</button>
-          <button class="qb" onclick="ss(25)">25</button>
-          <button class="qb" onclick="ss(50)">50</button>
-        </div>
-        <div class="gr"><span style="color:var(--gris)">Cote totale</span><span id="to" style="font-family:'Bebas Neue',sans-serif;font-size:17px">-</span></div>
-        <div class="gr"><span style="color:var(--gris)">Gain potentiel</span><span class="gv" id="pg">-</span></div>
-        <button class="bbtn" onclick="placeBet()">VALIDER MON PARI</button>
-        <button class="clearbtn" onclick="clearC()">Vider le coupon</button>
-      </div>
-    </div>
+    
   </div>
 </main>
 <div class="toast" id="toast"></div>
@@ -631,7 +610,7 @@ function renderProfile(){
   var total=user.bets?user.bets.length:0;
   var wr=total?Math.round(wins/total*100):0;
   var initials=user.username.slice(0,2).toUpperCase();
-  var refLink="https://bet2rue-backend.onrender.com?ref="+user.id;
+  var refLink="https://bet0tall.fr?ref="+user.id;
   var html="<div class='pcard'>";
   html+="<div style='width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;margin-bottom:12px'>"+initials+"</div>";
   html+="<div style='font-family:Bebas Neue,sans-serif;font-size:24px'>"+user.username+"</div>";
