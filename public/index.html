@@ -805,7 +805,7 @@ function loadLB(){
     document.getElementById("lb").innerHTML=data.length?data.map(function(p,i){
       var initials=p.username.slice(0,2).toUpperCase();
       var av=p.avatar?"<img src='"+p.avatar+"' style='width:34px;height:34px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
-      return "<div class='lb-row'><div class='lb-rank'>"+(medals[i]||i+1)+"</div>"+av+"<div><div class='lb-name'>"+p.username+(user&&p.id===uid?" (toi)":"")+"</div><div class='lb-sub'>"+p.betsCount+" paris</div></div><div class='lb-bal'>"+p.balance.toLocaleString()+" Tall</div></div>";
+      var b=getBadge(p.balance);return "<div class='lb-row'><div class='lb-rank'>"+(medals[i]||i+1)+"</div>"+av+"<div style='flex:1'><div class='lb-name'>"+p.username+(user&&p.id===uid?" (toi)":"")+" <span style='font-size:12px'>"+b.icon+"</span></div><div class='lb-sub'>"+p.betsCount+" paris</div></div><div class='lb-bal'>"+p.balance.toLocaleString()+" Tall</div></div>";
     }).join(""):"<div class='empty'>Aucun membre</div>";
   }).catch(function(){});
   // Load weekly ranking
@@ -892,6 +892,22 @@ function renderProfile(){
   html+="<div style='width:60px;height:60px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:26px;color:#fff;margin-bottom:12px'>"+initials+"</div>";
   html+="<div style='font-family:Bebas Neue,sans-serif;font-size:24px'>"+user.username+"</div>";
   html+="<div style='font-size:12px;color:var(--gris);margin-top:3px'>Membre BET0TALL - Streak : "+user.streak+" jours</div>";
+  var badge=getBadge(user.balance);
+  var nextBadge=getNextBadge(user.balance);
+  var progress=nextBadge?Math.min(100,Math.round((user.balance/nextBadge.need)*100)):100;
+  html+="<div style='margin-top:12px'>";
+  html+="<div style='display:inline-flex;align-items:center;gap:6px;background:"+badge.bg+";border:1px solid "+badge.border+";border-radius:20px;padding:4px 14px;margin-bottom:10px'>";
+  html+="<span style='font-size:16px'>"+badge.icon+"</span>";
+  html+="<span style='font-family:Bebas Neue,sans-serif;font-size:14px;color:"+badge.color+";letter-spacing:1px'>"+badge.label+"</span>";
+  html+="</div>";
+  if(nextBadge){
+    html+="<div style='font-size:11px;color:var(--gris);margin-bottom:6px'>Prochain niveau : "+nextBadge.icon+" "+nextBadge.label+" — "+nextBadge.need.toLocaleString()+" Tall</div>";
+    html+="<div style='background:var(--noir3);border-radius:4px;height:6px;overflow:hidden'><div style='height:100%;background:"+badge.color+";border-radius:4px;width:"+progress+"%'></div></div>";
+    html+="<div style='font-size:10px;color:var(--gris);margin-top:4px;text-align:right'>"+progress+"%</div>";
+  } else {
+    html+="<div style='font-size:11px;color:var(--or)'>Niveau maximum atteint 👑</div>";
+  }
+  html+="</div>";
   html+="<div class='sg'><div class='sc'><div class='sn'>"+Math.round(user.balance).toLocaleString()+"</div><div class='slb'>Solde Tall</div></div><div class='sc'><div class='sn'>"+total+"</div><div class='slb'>Paris</div></div><div class='sc'><div class='sn' style='color:#4ade80'>"+wins+"</div><div class='slb'>Victoires</div></div><div class='sc'><div class='sn'>"+wr+"%</div><div class='slb'>Reussite</div></div></div>";
   html+="<div style='margin-top:16px;border-top:1px solid var(--border);padding-top:14px'>";
   html+="<div style='font-family:Bebas Neue,sans-serif;font-size:15px;color:#5865F2;margin-bottom:10px'>BONUS SHUFFLE</div>";
@@ -1910,6 +1926,24 @@ function updateOnlineCounter(){
       el.style.alignItems="center";
     }
   }).catch(function(){});
+}
+
+
+function getBadge(balance){
+  if(balance>=1000000) return {label:"LEGENDE",icon:"👑",color:"#f5a623",bg:"rgba(245,166,35,0.15)",border:"rgba(245,166,35,0.4)"};
+  if(balance>=200000) return {label:"DIAMOND",icon:"💎",color:"#5865F2",bg:"rgba(88,101,242,0.15)",border:"rgba(88,101,242,0.4)"};
+  if(balance>=50000) return {label:"GOLD",icon:"🥇",color:"#f5a623",bg:"rgba(245,166,35,0.1)",border:"rgba(245,166,35,0.3)"};
+  if(balance>=10000) return {label:"SILVER",icon:"🥈",color:"#b0b8d4",bg:"rgba(176,184,212,0.1)",border:"rgba(176,184,212,0.3)"};
+  return {label:"BRONZE",icon:"🥉",color:"#cd7f32",bg:"rgba(205,127,50,0.1)",border:"rgba(205,127,50,0.3)"};
+}
+
+function getNextBadge(balance){
+  if(balance>=1000000) return null;
+  if(balance>=200000) return {label:"LEGENDE",need:1000000,icon:"👑"};
+  if(balance>=50000) return {label:"DIAMOND",need:200000,icon:"💎"};
+  if(balance>=10000) return {label:"GOLD",need:50000,icon:"🥇"};
+  if(balance>=0) return {label:"SILVER",need:10000,icon:"🥈"};
+  return null;
 }
 
 function showToast(msg,type){
