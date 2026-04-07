@@ -255,6 +255,22 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 .course-finish{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:20px}
 .course-name{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gris);position:absolute;left:12px;letter-spacing:.5px}
 .course-btn-sel{background:rgba(245,166,35,0.15) !important;border-color:var(--or) !important;color:var(--or) !important}
+
+.chat-bubble{position:fixed;bottom:20px;right:20px;width:52px;height:52px;background:var(--grad-or);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:999;box-shadow:0 4px 16px rgba(245,166,35,0.4);transition:all .2s;font-size:22px}
+.chat-bubble:hover{transform:scale(1.1)}
+.chat-bubble .chat-notif{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:var(--rouge);border-radius:50%;font-size:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif}
+.chat-box{position:fixed;bottom:82px;right:20px;width:300px;background:var(--noir2);border:1px solid var(--border);border-radius:14px;z-index:998;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;flex-direction:column}
+.chat-box.open{display:flex}
+.chat-header{background:linear-gradient(135deg,#0a0e2e,#0f1535);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.chat-header-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--or);letter-spacing:1px}
+.chat-close{background:none;border:none;color:var(--gris);cursor:pointer;font-size:18px;line-height:1}
+.chat-messages{padding:14px;flex:1;min-height:180px;max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.chat-msg{padding:8px 12px;border-radius:8px;font-size:12px;line-height:1.5;max-width:85%}
+.chat-msg.bot{background:var(--noir3);color:var(--gris);align-self:flex-start;border:1px solid var(--border)}
+.chat-msg.user{background:rgba(245,166,35,0.15);color:var(--blanc);align-self:flex-end;border:1px solid rgba(245,166,35,0.2)}
+.chat-input-area{padding:10px;border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-input{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-size:12px;outline:none}
+.chat-send{background:var(--or);border:none;color:#000;padding:8px 12px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:12px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -647,6 +663,29 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     
   </div>
 </main>
+
+<div class="chat-bubble" onclick="toggleChat()" id="chat-bubble">💬</div>
+<div class="chat-box" id="chat-box">
+  <div class="chat-header">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--noir3);display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid var(--or)">🐱</div>
+      <div>
+        <div class="chat-header-title">ZINA — SERVICE CLIENT</div>
+        <div style="font-size:10px;color:#4ade80">🟢 En ligne</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-msg bot">Salut ! Je suis Zina du service client 🐱 Comment puis-je t'aider ?</div>
+    <div class="chat-msg bot">Decris ton probleme et je m'en occupe ! 🐱</div>
+  </div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chat-input" placeholder="Ecris ton message..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">ENVOYER</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <script>
 
@@ -1791,6 +1830,39 @@ function spinWheel(){
   requestAnimationFrame(animate);
 }
 
+
+
+var chatOpen=false;
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  var box=document.getElementById("chat-box");
+  if(chatOpen){box.classList.add("open");}else{box.classList.remove("open");}
+}
+
+function sendChat(){
+  if(!user){showToast("Connecte-toi pour envoyer un message !","err");return;}
+  var input=document.getElementById("chat-input");
+  var msg=input.value.trim();
+  if(!msg)return;
+  var messages=document.getElementById("chat-messages");
+  var userMsg=document.createElement("div");
+  userMsg.className="chat-msg user";
+  userMsg.textContent=msg;
+  messages.appendChild(userMsg);
+  messages.scrollTop=messages.scrollHeight;
+  input.value="";
+  fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({uid:uid,message:msg,username:user.username})})
+    .then(function(r){return r.json();}).then(function(data){
+      setTimeout(function(){
+        var botMsg=document.createElement("div");
+        botMsg.className="chat-msg bot";
+        botMsg.textContent="Merci ! Zina a bien transmis ton message a Azzpronos 🐱 Il te repondra sur Discord !";
+        messages.appendChild(botMsg);
+        messages.scrollTop=messages.scrollHeight;
+      },800);
+    }).catch(function(){});
+}
 
 function updateOnlineCounter(){
   var url="/api/online"+(uid?"?uid="+uid:"");
