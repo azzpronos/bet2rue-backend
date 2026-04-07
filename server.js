@@ -867,13 +867,20 @@ botClient.on('messageCreate', async function(message) {
     if (parts.length < 3) { message.channel.send('Format : !reply DISCORD_ID ton message'); return; }
     var targetUid = parts[1];
     var replyMsg = parts.slice(2).join(' ');
+    var sent = false;
+    // Try socket first
     var targetSocket = chatSockets[targetUid];
     if (targetSocket) {
       targetSocket.emit('admin_reply', { message: replyMsg });
-      message.channel.send('✅ Message envoye a ' + targetUid);
-    } else {
-      message.channel.send('❌ Ce membre n\'est plus connecte au chat');
+      sent = true;
     }
+    // Always send Discord MP as backup
+    try {
+      var dmUser = await botClient.users.fetch(targetUid);
+      await dmUser.send('🐱 **Zina - Service Client BET0TALL**\n\n' + replyMsg);
+      sent = true;
+    } catch(e) {}
+    message.channel.send(sent ? '✅ Reponse envoyee !' : '❌ Impossible d\'envoyer le message');
     return;
   }
 
