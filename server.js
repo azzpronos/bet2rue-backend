@@ -667,7 +667,7 @@ app.get('/api/admin/matches', function(req, res) {
 });
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 var SHOP_ITEMS = [
