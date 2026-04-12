@@ -252,13 +252,11 @@ app.get('/auth/discord/callback', async function(req, res) {
     var bonusInfo = await checkBonus(user);
     var bonusParam = bonusInfo ? bonusInfo.bonus + '_' + bonusInfo.streak : 'none';
     res.redirect('/?uid=' + user.id + '&login=success&bonus=' + bonusParam);
-} catch (err) {
+  } catch (err) {
     console.error('OAuth error:', err.message);
-    if (err.response && err.response.status === 429) {
-      return res.redirect('/?error=rate_limit');
-    }
     res.redirect('/?error=oauth_failed');
-}
+  }
+});
 
 app.post('/api/chat', async function(req, res) {
   var uid = req.body.uid;
