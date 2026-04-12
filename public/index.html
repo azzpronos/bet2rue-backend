@@ -271,6 +271,20 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 .chat-input-area{padding:10px;border-top:1px solid var(--border);display:flex;gap:8px}
 .chat-input{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-size:12px;outline:none}
 .chat-send{background:var(--or);border:none;color:#000;padding:8px 12px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:12px;cursor:pointer}
+
+.projet-bar-container{background:var(--noir3);border-radius:8px;height:18px;overflow:hidden;margin:10px 0;position:relative}
+.projet-bar{height:100%;border-radius:8px;transition:width .3s;background:linear-gradient(90deg,#4ade80,#f5a623)}
+.projet-trust{font-family:'Bebas Neue',sans-serif;font-size:64px;text-align:center;letter-spacing:2px;margin:10px 0;transition:all .3s}
+.projet-status{font-size:13px;color:var(--gris);text-align:center;margin-bottom:8px;min-height:20px}
+@keyframes betrayal{0%{transform:scale(1)}25%{transform:scale(1.3) rotate(-5deg)}50%{transform:scale(0.8)}75%{transform:scale(1.1) rotate(3deg)}100%{transform:scale(1)}}
+
+.bj-strategy{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+.bj-strategy th{background:rgba(16,185,129,0.15);color:#4ade80;padding:5px 8px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:.5px;border:1px solid rgba(16,185,129,0.2)}
+.bj-strategy td{padding:4px 6px;border:1px solid rgba(255,255,255,0.05);text-align:center;font-size:11px;font-family:'Bebas Neue',sans-serif}
+.bj-s-hit{background:rgba(16,185,129,0.15);color:#4ade80}
+.bj-s-stand{background:rgba(232,19,42,0.12);color:#f87171}
+.bj-s-double{background:rgba(245,166,35,0.15);color:var(--or)}
+.bj-s-split{background:rgba(88,101,242,0.15);color:#818cf8}
 </style>
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
@@ -327,6 +341,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('mines',this)">MINES</button>
     <button class="nb" onclick="sw('course',this)">COURSE</button>
     <button class="nb" onclick="sw('combat',this)">COMBAT</button>
+    <button class="nb" onclick="sw('projet',this)">LE PROJET</button>
     <button class="nb" onclick="sw('feed',this)">FEED</button>
     <button class="nb" onclick="sw('offres',this)">OFFRES</button>
     <button class="nb" onclick="sw('profile',this)">PROFIL</button>
@@ -357,6 +372,31 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     </div>
     <div id="tab-blackjack" class="tab">
       <div class="stitle">BLACKJACK - MISE MIN 10 TALL</div>
+      <details style="background:var(--noir3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:14px;cursor:pointer">
+        <summary style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--or);letter-spacing:1px;list-style:none">📊 TABLEAU DE STRATEGIE ▼</summary>
+        <div style="margin-top:12px;overflow-x:auto">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+            <span style="font-size:10px;color:#4ade80">🟢 TIRER</span>
+            <span style="font-size:10px;color:#f87171">🔴 RESTER</span>
+            <span style="font-size:10px;color:var(--or)">🟡 DOUBLER</span>
+            <span style="font-size:10px;color:#818cf8">🟣 SPLIT</span>
+          </div>
+          <table class="bj-strategy">
+            <tr><th>TON JEU</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th></tr>
+            <tr><td>5-8</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td></tr>
+            <tr><td>9</td><td class="bj-s-hit">T</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td></tr>
+            <tr><td>10</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td></tr>
+            <tr><td>11</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-double">D</td><td class="bj-s-hit">T</td></tr>
+            <tr><td>12</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td></tr>
+            <tr><td>13-14</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td></tr>
+            <tr><td>15-16</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td><td class="bj-s-hit">T</td></tr>
+            <tr><td>17+</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td><td class="bj-s-stand">R</td></tr>
+            <tr><td>A-A</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td></tr>
+            <tr><td>8-8</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td><td class="bj-s-split">SP</td></tr>
+          </table>
+          <div style="font-size:10px;color:var(--gris);margin-top:8px">T=Tirer | R=Rester | D=Doubler | SP=Split — Croupier affiché en colonne</div>
+        </div>
+      </details>
       <div class="bj-table">
         <div class="bj-label">DEALER</div>
         <div class="bj-score" id="bj-dealer-score">?</div>
@@ -380,7 +420,38 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
       </div>
       <div id="bj-actions"><button onclick="bjDeal()" style="background:var(--or);border:none;color:#000;padding:12px 32px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer">DISTRIBUER</button></div>
     </div>
-                    <div id="tab-combat" class="tab">
+                        <div id="tab-projet" class="tab">
+      <div class="stitle">LE PROJET — MISE MIN 10 TALL</div>
+      <div style="background:linear-gradient(135deg,#0a0e1a,#0f1525);border:1px solid rgba(245,166,35,0.2);border-radius:14px;padding:20px;margin-bottom:14px">
+        <div style="text-align:center;margin-bottom:8px">
+          <div id="projet-scene" style="font-size:56px;margin-bottom:4px">🤝</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gris);letter-spacing:2px" id="projet-phase">EN ATTENTE...</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--gris);margin-bottom:4px">
+          <span>CONFIANCE</span>
+          <span id="projet-trust-pct">0%</span>
+        </div>
+        <div class="projet-bar-container"><div class="projet-bar" id="projet-bar" style="width:0%"></div></div>
+        <div class="projet-trust" id="projet-mult">1.00x</div>
+        <div class="projet-status" id="projet-status">Lance le projet pour commencer...</div>
+        <div id="projet-result-box"></div>
+      </div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="font-size:13px;color:var(--gris)">Mise :</span>
+          <input id="projet-stake" type="number" value="10" min="10" style="background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:16px;width:100px">
+          <span style="font-size:12px;color:var(--gris)">Tall</span>
+          <button onclick="pjStake(10)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">10</button>
+          <button onclick="pjStake(50)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">50</button>
+          <button onclick="pjStake(100)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">100</button>
+          <button onclick="pjStake(500)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:7px 12px;border-radius:5px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">500</button>
+        </div>
+        <div id="projet-actions">
+          <button onclick="pjStart()" style="background:var(--grad-or);border:none;color:#000;padding:12px 40px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%">LANCER LE PROJET</button>
+        </div>
+      </div>
+    </div>
+    <div id="tab-combat" class="tab">
       <div class="stitle">COMBAT DE COQ — MISE MIN 10 TALL</div>
       <div style="background:var(--noir2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px">
         <div id="combat-arena" style="background:linear-gradient(135deg,#1a0a00,#2a1000);border:1px solid rgba(232,19,42,0.2);border-radius:12px;padding:20px;margin-bottom:14px;text-align:center;min-height:120px;display:flex;align-items:center;justify-content:center;gap:20px">
@@ -1456,6 +1527,101 @@ var COQS=[
   {name:"TITOU", odd:3.50, emoji:"🐓", power:40}
 ];
 var cbSelected=null, cbRunning=false, cbStakeVal=10;
+
+
+var pjRunning=false, pjStakeVal=10, pjMult=1.00, pjInterval=null, pjBetrayed=false;
+
+var pjMessages=[
+  "Le projet demarre...",
+  "Ca marche, les gains arrivent !",
+  "Tout se passe bien...",
+  "Les benefices grossissent !",
+  "On est au top ensemble...",
+  "Il commence a agir bizarrement...",
+  "Il te cache quelque chose...",
+  "Il negocie dans ton dos...",
+  "Il a tout pris sans toi...",
+  "TRAHISON TOTALE !"
+];
+
+function pjStake(v){document.getElementById("projet-stake").value=v;}
+
+function pjStart(){
+  if(!user){showToast("Connecte-toi !","err");return;}
+  if(pjRunning)return;
+  pjStakeVal=parseInt(document.getElementById("projet-stake").value)||10;
+  if(pjStakeVal<10){showToast("Mise min : 10 Tall","err");return;}
+  if(pjStakeVal>user.balance){showToast("Solde insuffisant !","err");return;}
+  user.balance-=pjStakeVal;renderUB();
+  pjRunning=true;pjMult=1.00;pjBetrayed=false;
+  document.getElementById("projet-result-box").innerHTML="";
+  document.getElementById("projet-scene").textContent="🤝";
+  document.getElementById("projet-phase").textContent="PROJET EN COURS...";
+  document.getElementById("projet-mult").style.color="var(--or)";
+  document.getElementById("projet-actions").innerHTML="<button onclick='pjCashout()' style='background:var(--vert);border:none;color:#fff;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>RETIRER MA PART</button>";
+
+  // Random betrayal point between 1.2x and 10x
+  var betrayalPoint=1.2+Math.random()*8.8;
+
+  pjInterval=setInterval(function(){
+    pjMult+=0.03+Math.random()*0.04;
+    var pct=Math.min(100,Math.round((pjMult/10)*100));
+    document.getElementById("projet-mult").textContent=pjMult.toFixed(2)+"x";
+    document.getElementById("projet-bar").style.width=pct+"%";
+    document.getElementById("projet-trust-pct").textContent=pct+"%";
+    var msgIdx=Math.min(pjMessages.length-1,Math.floor(pct/11));
+    document.getElementById("projet-status").textContent=pjMessages[msgIdx];
+    // Change scene emoji based on progress
+    if(pct<30){document.getElementById("projet-scene").textContent="🤝";}
+    else if(pct<60){document.getElementById("projet-scene").textContent="💼";}
+    else if(pct<80){document.getElementById("projet-scene").textContent="👀";}
+    else{document.getElementById("projet-scene").textContent="😬";}
+    if(pjMult>=betrayalPoint){
+      pjBetrayal();
+    }
+  },150);
+}
+
+function pjBetrayal(){
+  clearInterval(pjInterval);
+  pjRunning=false;
+  pjBetrayed=true;
+  document.getElementById("projet-scene").textContent="🔪";
+  document.getElementById("projet-scene").style.animation="betrayal 0.5s ease";
+  document.getElementById("projet-phase").textContent="IL T'A NEGOCIEE DANS TON DOS !";
+  document.getElementById("projet-mult").style.color="#f87171";
+  document.getElementById("projet-status").textContent="Il a negocie 100% de l'affiliation dans ton dos 😈";
+  document.getElementById("projet-bar").style.background="var(--rouge)";
+  document.getElementById("projet-actions").innerHTML="<div style='font-family:Bebas Neue,sans-serif;font-size:13px;color:#f87171;text-align:center;letter-spacing:1px'>IL ENCAISSE SANS TOI...</div>";
+  saveBalance({type:"projet",label:"Le Projet x"+pjMult.toFixed(2),stake:pjStakeVal,gain:0,status:"loss",placedAt:new Date().toISOString()});
+  // Multiplicateur continue d'exploser en rouge pendant 4 secondes
+  var explodeInterval=setInterval(function(){
+    pjMult+=0.15+Math.random()*0.25;
+    document.getElementById("projet-mult").textContent=pjMult.toFixed(2)+"x";
+    document.getElementById("projet-status").textContent="Il negocie son pourcentage pendant que le projet explose... 💸";
+    document.getElementById("projet-scene").textContent=pjMult>5?"🤑":"😈";
+  },120);
+  setTimeout(function(){
+    clearInterval(explodeInterval);
+    document.getElementById("projet-result-box").innerHTML="<div style='text-align:center;padding:16px;background:rgba(232,19,42,0.1);border:1px solid rgba(232,19,42,0.3);border-radius:8px;margin-top:10px'><div style='font-size:32px;margin-bottom:6px'>🔪</div><div style='font-family:Bebas Neue,sans-serif;font-size:24px;color:#f87171;letter-spacing:1px'>IL T'A VENDU</div><div style='font-size:13px;color:var(--gris);margin-top:6px'>Le projet a atteint x"+pjMult.toFixed(2)+"... sans toi</div><div style='font-size:11px;color:#f87171;margin-top:4px'>La confiance ca coute cher 🔪</div></div>";
+    document.getElementById("projet-actions").innerHTML="<button onclick='pjStart()' style='background:var(--grad-or);border:none;color:#000;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>NOUVEAU PROJET</button>";
+  },4000);
+}
+
+function pjCashout(){
+  if(!pjRunning)return;
+  clearInterval(pjInterval);
+  pjRunning=false;
+  var gain=Math.floor(pjStakeVal*pjMult);
+  user.balance+=gain;renderUB();
+  document.getElementById("projet-scene").textContent="💰";
+  document.getElementById("projet-phase").textContent="T'AS VU VENIR !";
+  document.getElementById("projet-status").textContent="Tu as recupere ta part avant qu'il agisse... 💰";
+  document.getElementById("projet-result-box").innerHTML="<div style='text-align:center;padding:16px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:8px;margin-top:10px'><div style='font-size:32px;margin-bottom:6px'>💰</div><div style='font-family:Bebas Neue,sans-serif;font-size:24px;color:#4ade80;letter-spacing:1px'>T'AS VU VENIR !</div><div style='font-size:13px;color:var(--gris);margin-top:6px'>+"+gain+" Tall — x"+pjMult.toFixed(2)+"</div></div>";
+  document.getElementById("projet-actions").innerHTML="<button onclick='pjStart()' style='background:var(--grad-or);border:none;color:#000;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>NOUVEAU PROJET</button>";
+  if(gain>pjStakeVal)launchConfetti();
+  saveBalance({type:"projet",label:"Le Projet x"+pjMult.toFixed(2),stake:pjStakeVal,gain:gain,status:"win",placedAt:new Date().toISOString()});
+}
 
 function cbSelectCoq(idx,btn){
   cbSelected=idx;
