@@ -16,7 +16,7 @@ const SHOP_CHANNEL_ID = '1487785562222891078';
 
 app.use(express.json());
 app.use(cors({ origin: '*' }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(function() { console.log('MongoDB connecte !'); })
