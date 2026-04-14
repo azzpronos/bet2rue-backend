@@ -327,6 +327,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('mines',this)">MINES</button>
     <button class="nb" onclick="sw('course',this)">COURSE</button>
     <button class="nb" onclick="sw('combat',this)">COMBAT</button>
+    <button class="nb" onclick="sw('trahison',this)">TRAHISON</button>
     <button class="nb" onclick="sw('feed',this)">FEED</button>
     <button class="nb" onclick="sw('offres',this)">OFFRES</button>
     <button class="nb" onclick="sw('profile',this)">PROFIL</button>
@@ -593,7 +594,37 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
       </div>
       <div id="crash-history" style="margin-top:16px"></div>
     </div>
-            <div id="tab-feed" class="tab">
+                <div id="tab-trahison" class="tab">
+      <div class="stitle">TRAHISON — L IMMEUBLE MAUDIT</div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px">
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gris);letter-spacing:2px;margin-bottom:4px">ETAGE ACTUEL</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--or);line-height:1" id="tr-floor">0</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gris);letter-spacing:1px" id="tr-mult">1.00x</div>
+        </div>
+        <!-- Immeuble -->
+        <div id="tr-building" style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px"></div>
+        <div id="tr-result-box"></div>
+      </div>
+      <div style="background:var(--noir2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="font-size:13px;color:var(--gris)">Difficulte :</span>
+          <button id="trd-facile" onclick="trSetDiff('facile',this)" style="background:rgba(16,185,129,0.15);border:1px solid #10b981;color:#4ade80;padding:6px 12px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">FACILE</button>
+          <button id="trd-normal" onclick="trSetDiff('normal',this)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:6px 12px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">NORMAL</button>
+          <button id="trd-hard" onclick="trSetDiff('hard',this)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:6px 12px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">HARD</button>
+          <button id="trd-extreme" onclick="trSetDiff('extreme',this)" style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:6px 12px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:13px;cursor:pointer">EXTREME</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="font-size:13px;color:var(--gris)">Mise :</span>
+          <input id="tr-stake" type="number" value="10" min="10" style="background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:7px 10px;color:var(--or);font-family:'Bebas Neue',sans-serif;font-size:16px;width:100px">
+          <span style="font-size:12px;color:var(--gris)">Tall</span>
+        </div>
+        <div id="tr-actions">
+          <button onclick="trStart()" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:12px 40px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%">ENTRER DANS L IMMEUBLE</button>
+        </div>
+      </div>
+    </div>
+<div id="tab-feed" class="tab">
       <div class="stitle">FEED — PARIS EN DIRECT</div>
       <div id="feed-list"></div>
     </div>
@@ -1981,6 +2012,145 @@ function showToast(msg,type){
   setTimeout(function(){t.className="toast";},3500);
 }
 setInterval(function(){fetch("/api/matches").then(function(r){return r.json();}).then(function(d){matches=d;renderMatches();}).catch(function(){});},60000);
+// ==================== TRAHISON ====================
+var TR_DIFF={
+  facile:{portes:3,traites:1,mult:1.20},
+  normal:{portes:3,traites:1,mult:1.40},
+  hard:{portes:2,traites:1,mult:1.80},
+  extreme:{portes:2,traites:1,mult:2.50}
+};
+var trDiff='facile',trFloor=0,trActive=false,trStakeVal=10,trGrid=[],trMaxFloors=8;
+
+function trSetDiff(diff,btn){
+  trDiff=diff;
+  ['facile','normal','hard','extreme'].forEach(function(d){
+    var b=document.getElementById('trd-'+d);
+    if(b){b.style.background='var(--noir3)';b.style.borderColor='var(--border)';b.style.color='var(--gris)';}
+  });
+  var colors={facile:{bg:'rgba(16,185,129,0.15)',border:'#10b981',color:'#4ade80'},normal:{bg:'rgba(245,166,35,0.15)',border:'#f5a623',color:'#f5a623'},hard:{bg:'rgba(232,19,42,0.15)',border:'#e8132a',color:'#f87171'},extreme:{bg:'rgba(139,0,255,0.15)',border:'#7c3aed',color:'#c084fc'}};
+  var c=colors[diff];
+  if(btn){btn.style.background=c.bg;btn.style.borderColor=c.border;btn.style.color=c.color;}
+}
+
+function trCalcMult(floor){
+  var base=TR_DIFF[trDiff].mult;
+  return parseFloat(Math.pow(base,floor).toFixed(2));
+}
+
+function trBuildFloors(){
+  var cfg=TR_DIFF[trDiff];
+  trGrid=[];
+  for(var f=0;f<trMaxFloors;f++){
+    var doors=[];
+    var traitorPos=Math.floor(Math.random()*cfg.portes);
+    for(var d=0;d<cfg.portes;d++){
+      doors.push({traitor:d===traitorPos,revealed:false});
+    }
+    trGrid.push(doors);
+  }
+}
+
+function trRenderBuilding(){
+  var el=document.getElementById('tr-building');
+  if(!el)return;
+  var html='';
+  for(var f=trMaxFloors-1;f>=0;f--){
+    var floor=trGrid[f];
+    var isCurrentFloor=trActive&&f===trFloor;
+    var isPastFloor=f<trFloor;
+    var floorBg=isPastFloor?'rgba(16,185,129,0.08)':isCurrentFloor?'rgba(139,0,255,0.1)':'var(--noir3)';
+    var floorBd=isPastFloor?'rgba(16,185,129,0.3)':isCurrentFloor?'rgba(124,58,237,0.5)':'var(--border)';
+    html+='<div style="background:'+floorBg+';border:1px solid '+floorBd+';border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:8px">';
+    html+='<div style="font-family:Bebas Neue,sans-serif;font-size:11px;color:var(--gris);width:36px;flex-shrink:0">ETG '+(f+1)+'</div>';
+    html+='<div style="font-family:Bebas Neue,sans-serif;font-size:11px;color:'+(isPastFloor?'#4ade80':'var(--or)')+';width:36px;flex-shrink:0">x'+trCalcMult(f+1)+'</div>';
+    html+='<div style="display:flex;gap:6px;flex:1;justify-content:center">';
+    for(var di=0;di<floor.length;di++){
+      var door=floor[di];
+      if(door.revealed){
+        if(door.traitor){
+          html+='<div style="background:rgba(232,19,42,0.2);border:1px solid rgba(232,19,42,0.4);border-radius:6px;padding:6px 10px;font-size:18px;min-width:36px;text-align:center">🔪</div>';
+        } else {
+          html+='<div style="background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4);border-radius:6px;padding:6px 10px;font-size:18px;min-width:36px;text-align:center">✅</div>';
+        }
+      } else if(isCurrentFloor){
+        html+='<div onclick="trChoose('+f+','+di+')" style="background:rgba(124,58,237,0.15);border:2px solid rgba(124,58,237,0.5);border-radius:6px;padding:6px 10px;font-size:18px;min-width:36px;text-align:center;cursor:pointer">🚪</div>';
+      } else if(isPastFloor){
+        html+='<div style="background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.1);border-radius:6px;padding:6px 10px;font-size:18px;min-width:36px;text-align:center;opacity:0.5">🚪</div>';
+      } else {
+        html+='<div style="background:var(--noir3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:18px;min-width:36px;text-align:center;opacity:0.3">🚪</div>';
+      }
+    }
+    html+='</div></div>';
+  }
+  el.innerHTML=html;
+}
+function trStart(){
+  if(!user){showToast('Connecte-toi !','err');return;}
+  trStakeVal=parseInt(document.getElementById('tr-stake').value)||10;
+  if(trStakeVal<10){showToast('Mise min : 10 Tall','err');return;}
+  if(trStakeVal>user.balance){showToast('Solde insuffisant !','err');return;}
+  user.balance-=trStakeVal;renderUB();
+  trActive=true;trFloor=0;
+  trBuildFloors();
+  trRenderBuilding();
+  document.getElementById('tr-floor').textContent='1';
+  document.getElementById('tr-mult').textContent='x'+trCalcMult(1);
+  document.getElementById('tr-result-box').innerHTML='';
+  document.getElementById('tr-actions').innerHTML="<button onclick='trCashout()' style='background:linear-gradient(135deg,#10b981,#059669);border:none;color:#fff;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>ENCAISSER</button>";
+  showToast('Choisis ta porte au etage 1 !');
+}
+
+function trChoose(floor,door){
+  if(!trActive||floor!==trFloor)return;
+  var chosen=trGrid[floor][door];
+  chosen.revealed=true;
+  // Reveal all other doors after choice
+  trGrid[floor].forEach(function(d){d.revealed=true;});
+  trRenderBuilding();
+  if(chosen.traitor){
+    // TRAHISON !
+    trActive=false;
+    setTimeout(function(){
+      document.getElementById('tr-building').querySelectorAll('div').forEach(function(){});
+      document.getElementById('tr-result-box').innerHTML="<div style='text-align:center;padding:16px;background:rgba(232,19,42,0.1);border:1px solid rgba(232,19,42,0.3);border-radius:10px;margin-top:10px'><div style='font-size:40px;margin-bottom:8px'>🔪</div><div style='font-family:Bebas Neue,sans-serif;font-size:28px;color:#f87171;letter-spacing:2px'>T AS ETE TRAHI !</div><div style='font-size:13px;color:var(--gris);margin-top:6px'>Le traître t a eu à l étage "+(floor+1)+"...</div><div style='font-family:Bebas Neue,sans-serif;font-size:18px;color:#f87171;margin-top:8px'>-"+trStakeVal+" TALL</div></div>";
+      document.getElementById('tr-actions').innerHTML="<button onclick='trStart()' style='background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>RETENTER SA CHANCE</button>";
+      saveBalance({type:'trahison',label:'Trahison etage '+(floor+1),stake:trStakeVal,gain:0,status:'loss',placedAt:new Date().toISOString()});
+    },600);
+  } else {
+    trFloor++;
+    if(trFloor>=trMaxFloors){
+      // Victoire totale !
+      trActive=false;
+      var gain=Math.floor(trStakeVal*trCalcMult(trMaxFloors));
+      user.balance+=gain;renderUB();
+      document.getElementById('tr-result-box').innerHTML="<div style='text-align:center;padding:16px;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);border-radius:10px;margin-top:10px'><div style='font-size:40px;margin-bottom:8px'>🏆</div><div style='font-family:Bebas Neue,sans-serif;font-size:28px;color:#c084fc;letter-spacing:2px'>IMMEUBLE TERMINE !</div><div style='font-size:13px;color:var(--gris);margin-top:6px'>Tu as survecu a tous les traîtres !</div><div style='font-family:Bebas Neue,sans-serif;font-size:22px;color:#4ade80;margin-top:8px'>+"+gain+" TALL !</div></div>";
+      document.getElementById('tr-actions').innerHTML="<button onclick='trStart()' style='background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>REJOUER</button>";
+      launchConfetti();
+      saveBalance({type:'trahison',label:'Trahison VICTOIRE x'+trCalcMult(trMaxFloors),stake:trStakeVal,gain:gain,status:'win',placedAt:new Date().toISOString()});
+    } else {
+      document.getElementById('tr-floor').textContent=trFloor+1;
+      document.getElementById('tr-mult').textContent='x'+trCalcMult(trFloor+1);
+      trRenderBuilding();
+      showToast('Etage '+(trFloor+1)+' ! Continue ou encaisse !');
+    }
+  }
+}
+
+function trCashout(){
+  if(!trActive||trFloor===0){showToast('Monte au moins un etage !','err');return;}
+  trActive=false;
+  var gain=Math.floor(trStakeVal*trCalcMult(trFloor));
+  user.balance+=gain;renderUB();
+  // Reveal all remaining traitors
+  trGrid.forEach(function(floor){floor.forEach(function(d){d.revealed=true;});});
+  trRenderBuilding();
+  document.getElementById('tr-result-box').innerHTML="<div style='text-align:center;padding:16px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;margin-top:10px'><div style='font-size:40px;margin-bottom:8px'>💰</div><div style='font-family:Bebas Neue,sans-serif;font-size:28px;color:#4ade80;letter-spacing:2px'>ENCAISSE !</div><div style='font-size:13px;color:var(--gris);margin-top:6px'>Sorti a l etage "+trFloor+" — x"+trCalcMult(trFloor)+"</div><div style='font-family:Bebas Neue,sans-serif;font-size:22px;color:#4ade80;margin-top:8px'>+"+gain+" TALL !</div></div>";
+  document.getElementById('tr-actions').innerHTML="<button onclick='trStart()' style='background:linear-gradient(135deg,#7c3aed,#5b21b6);border:none;color:#fff;padding:12px 40px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:18px;cursor:pointer;letter-spacing:1px;width:100%'>REJOUER</button>";
+  if(gain>trStakeVal)launchConfetti();
+  saveBalance({type:'trahison',label:'Trahison x'+trCalcMult(trFloor),stake:trStakeVal,gain:gain,status:'win',placedAt:new Date().toISOString()});
+}
+
+trSetDiff('facile',document.getElementById('trd-facile'));
 init();
 
 </script>
