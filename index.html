@@ -65,10 +65,11 @@ header{background:rgba(6,7,14,0.95);backdrop-filter:blur(20px);border-bottom:1px
 .hstat-lbl{font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px}
 
 /* NAV */
-nav{background:rgba(6,7,14,0.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);overflow-x:auto;position:sticky;top:60px;z-index:99;scrollbar-width:none;-ms-overflow-style:none}nav::-webkit-scrollbar{display:none}
+nav{background:rgba(6,7,14,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:99;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
 nav::-webkit-scrollbar{display:none}
-.ni{display:flex;padding:0 8px;white-space:nowrap;min-width:max-content}
-.nb{background:none;border:none;color:var(--gris);padding:12px 13px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;border-bottom:2px solid transparent;flex-shrink:0;transition:all .2s;position:relative}
+nav::-webkit-scrollbar{display:none}
+.ni{max-width:1200px;margin:0 auto;display:flex;padding:0 20px;white-space:nowrap;min-width:max-content;gap:2px}
+.nb{background:none;border:none;color:var(--gris);padding:13px 15px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;border-bottom:2px solid transparent;transition:all .2s;flex-shrink:0;border-radius:0;transition:all .2s;position:relative}
 .nb:hover{color:var(--blanc)}
 .nb.active{color:var(--or);border-bottom-color:var(--or)}
 
@@ -317,20 +318,22 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 </div>
 <nav>
   <div class="ni" id="nav">
-    <button class="nb active" onclick="sw('matches',this)">PARIS</button>
-    <button class="nb" onclick="sw('leaderboard',this)">CLASSEMENT</button>
-    <button class="nb" onclick="sw('mybets',this)">MES PARIS</button>
-    <button class="nb" onclick="sw('shop',this)">BOUTIQUE</button>
-    <button class="nb" onclick="sw('blackjack',this)">BLACKJACK</button>
-    <button class="nb" onclick="sw('crash',this)">CRASH</button>
-    <button class="nb" onclick="sw('roulette',this)">ROULETTE</button>
-    <button class="nb" onclick="sw('mines',this)">MINES</button>
-    <button class="nb" onclick="sw('course',this)">COURSE</button>
-    <button class="nb" onclick="sw('combat',this)">COMBAT</button>
-    <button class="nb" onclick="sw('trahison',this)">TRAHISON</button>
-    <button class="nb" onclick="sw('feed',this)">FEED</button>
-    <button class="nb" onclick="sw('offres',this)">OFFRES</button>
-    <button class="nb" onclick="sw('profile',this)">PROFIL</button>
+    <button class="nb active" onclick="sw('matches',this)">⚽ PARIS</button>
+    <button class="nb" onclick="sw('leaderboard',this)">🏆 CLASSEMENT</button>
+    <button class="nb" onclick="sw('mybets',this)">📋 MES PARIS</button>
+    <button class="nb" onclick="sw('shop',this)">🛒 BOUTIQUE</button>
+    <div style="width:1px;background:var(--border);margin:8px 4px;flex-shrink:0"></div>
+    <button class="nb" onclick="sw('blackjack',this)">🃏 BLACKJACK</button>
+    <button class="nb" onclick="sw('crash',this)">🚀 CRASH</button>
+    <button class="nb" onclick="sw('roulette',this)">🎡 ROULETTE</button>
+    <button class="nb" onclick="sw('mines',this)">💣 MINES</button>
+    <button class="nb" onclick="sw('course',this)">🐱 COURSE</button>
+    <button class="nb" onclick="sw('combat',this)">🐓 COMBAT</button>
+    <button class="nb" onclick="sw('trahison',this)">🔪 TRAHISON</button>
+    <div style="width:1px;background:var(--border);margin:8px 4px;flex-shrink:0"></div>
+    <button class="nb" onclick="sw('feed',this)">📡 FEED</button>
+    <button class="nb" onclick="sw('offres',this)">🎁 OFFRES</button>
+    <button class="nb" onclick="sw('profile',this)">👤 PROFIL</button>
   </div>
 </nav>
 <main>
