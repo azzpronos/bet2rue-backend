@@ -2305,24 +2305,24 @@ init();
   ov.addEventListener("click",closeSheet);
   cl.addEventListener("click",closeSheet);
   function setVal(v){
-    var si=document.getElementById("stake-input");
+    var si=document.getElementById("stake");
     if(si){si.value=v;si.dispatchEvent(new Event("input"));}
     setTimeout(function(){
       var mt=document.getElementById("mt");
       var mg=document.getElementById("mg");
-      var to=document.getElementById("total-odd");
-      var po=document.getElementById("potential-gain");
+      var to=document.getElementById("to");
+      var po=document.getElementById("pg");
       if(mt&&to)mt.textContent=to.textContent;
       if(mg&&po)mg.textContent=po.textContent;
     },150);
   }
   function buildSheet(){
-    var cb=document.getElementById("coupon-body");
+    var cb=document.getElementById("cb");
     var mi=document.getElementById("mi");
     if(cb&&mi)mi.innerHTML=cb.innerHTML;
-    var si=document.getElementById("stake-input");
-    var to=document.getElementById("total-odd");
-    var po=document.getElementById("potential-gain");
+    var si=document.getElementById("stake");
+    var to=document.getElementById("to");
+    var po=document.getElementById("pg");
     var stake=si?si.value:"10";
     var tot=to?to.textContent:"-";
     var gain=po?po.textContent:"-";
@@ -2363,13 +2363,13 @@ init();
   }
   function update(){
     if(!isMob())return;
-    var ce=document.getElementById("coupon-count");
+    var ce=document.getElementById("cc");
     var count=ce?parseInt(ce.textContent)||0:0;
     var badge=document.getElementById("mbc");
     var info=document.getElementById("mbi");
     if(!badge||!info)return;
     badge.textContent=count;
-    if(count>0){bar.classList.add("on");var to=document.getElementById("total-odd");info.textContent=count+" sel. x"+(to?to.textContent:"-")+" - Voir";}
+    if(count>0){bar.classList.add("on");var to=document.getElementById("to");var to2=document.getElementById("to");info.textContent=count+" sel. x"+(to2?to2.textContent:"-")+" - Voir";}
     else{bar.classList.remove("on");info.textContent="Clique sur une cote";}
   }
   setInterval(update,400);
@@ -2380,4 +2380,3 @@ init();
 
 </body>
 </html>
-
