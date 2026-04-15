@@ -1004,7 +1004,7 @@ function refC(){
   if(!coupon.length){body.innerHTML="<div class='cempty'>Clique sur une cote<br>pour l'ajouter !</div>";footer.style.display="none";return;}
   footer.style.display="block";
   body.innerHTML=coupon.map(function(c,i){return "<div class='ci'><button class='cr' onclick='rp("+i+")'>x</button><div class='cm'>"+c.match+"</div><div class='cp'>"+c.pick+"</div><div class='co'>Cote : "+c.odd.toFixed(2)+"</div></div>";}).join("");
-  upd();
+  upd();   // SYNC MOBILE BAR   var cmbCount=document.getElementById("cmb-count");   var cmbInfo=document.getElementById("cmb-info");   var cmb=document.getElementById("cmb");   if(cmbCount) cmbCount.textContent=coupon.length;   if(cmb){     if(coupon.length>0){       cmb.classList.add("has-items");       var tot=coupon.reduce(function(a,c){return a*c.odd;},1);       if(cmbInfo) cmbInfo.textContent=coupon.length+" sel. x"+tot.toFixed(2)+" — Voir ▲";     } else {       cmb.classList.remove("has-items");       if(cmbInfo) cmbInfo.textContent="Clique sur une cote ▲";     }   }   // SYNC SHEET SI OUVERT   var sheet=document.getElementById("coupon-sheet");   if(sheet&&sheet.classList.contains("open")) syncMobileSheet();
 }
 function rp(i){coupon.splice(i,1);refC();renderMatches();}
 function clearC(){coupon=[];refC();renderMatches();}
