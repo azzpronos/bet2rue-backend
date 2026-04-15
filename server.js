@@ -284,7 +284,7 @@ app.get('/api/me', async function(req, res) {
   res.json({
     id: user.id,
     username: user.username,
-    avatar: user.avatar ? 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png' : 'https://cdn.discordapp.com/embed/avatars/0.png',
+    avatar: user.avatar ? 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png?size=128' : 'https://cdn.discordapp.com/embed/avatars/0.png',
     balance: user.balance,
     bets: user.bets,
     streak: user.streak || 0,
