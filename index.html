@@ -273,10 +273,10 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 .chat-input{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-size:12px;outline:none}
 .chat-send{background:var(--or);border:none;color:#000;padding:8px 12px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:12px;cursor:pointer}
 
-/* MOBILE */
+/* ===== MOBILE ===== */
 @media(max-width:600px){
   html,body{overflow-x:hidden}
-  body{padding-bottom:58px}
+  body{padding-bottom:60px}
   header{padding:0 10px}
   .hi{height:46px;gap:6px}
   .logo{font-size:22px;letter-spacing:2px}
@@ -285,37 +285,53 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
   .bal b{font-size:12px;margin-left:2px}
   .btn-dc{padding:6px 10px;font-size:11px}
   .btn-out{padding:4px 8px;font-size:10px}
+  .streak-badge{font-size:10px;padding:2px 6px}
+  .ub{gap:5px}
   .hero{display:none!important}
   nav{top:46px!important}
-  .ni{padding:0 6px}
-  .nb{padding:9px 9px;font-size:11px;letter-spacing:.3px}
+  .ni{padding:0 4px}
+  .nb{padding:9px 8px;font-size:11px;letter-spacing:.2px}
   main{grid-template-columns:1fr!important;padding:8px!important;gap:10px!important}
   .coupon{display:none!important}
-  .mc{padding:10px;border-radius:10px;margin-bottom:7px}
+  .mc{padding:10px 11px;border-radius:10px;margin-bottom:7px}
   .mteams{gap:4px}
   .team{font-size:13px;gap:3px;min-width:0;flex:1;overflow:hidden;max-width:40%}
   .flag{font-size:15px;flex-shrink:0}
-  .vsbox{min-width:32px;padding:3px 5px;font-size:10px;flex-shrink:0}
-  .ov{font-size:15px}
+  .vsbox{min-width:30px;padding:3px 4px;font-size:10px;flex-shrink:0}
+  .ov{font-size:16px}
   .ol{font-size:8px}
-  .ob{padding:9px 3px;border-radius:7px;min-height:46px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-  .odds-row{gap:4px}
-  .bj-card{width:38px!important;height:56px!important;font-size:13px!important}
+  .ob{padding:9px 3px;border-radius:7px;min-height:48px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .odds-row{gap:5px}
+  .bj-table{padding:14px 10px}
+  .bj-card{width:38px!important;height:56px!important;font-size:13px!important;padding:3px 4px!important}
+  .bj-cards{gap:4px!important;min-height:62px!important}
+  table{font-size:9px!important;width:100%!important}
+  table td,table th{padding:2px!important}
   .mines-grid{gap:4px}
   .mine-cell{font-size:16px}
   .mines-mult{font-size:32px}
-  .rl-nums{grid-template-columns:repeat(6,1fr);gap:3px}
-  .rl-num-btn{font-size:10px;padding:5px 1px}
+  .mines-info{flex-wrap:wrap;gap:8px}
+  .rl-nums{grid-template-columns:repeat(6,1fr)!important;gap:3px}
+  .rl-num-btn{font-size:10px!important;padding:5px 1px!important}
+  .rl-bets{gap:6px}
+  .rl-bet-btn{padding:10px 4px;font-size:13px}
   .shop-item{flex-direction:column;align-items:flex-start;gap:8px}
   .shop-btn{width:100%;text-align:center}
   .lb-row{padding:9px 10px;gap:8px}
   .lb-bal{font-size:13px}
+  .lb-name{font-size:12px}
   .pcard{max-width:100%;padding:14px}
-  .chat-bubble{bottom:68px!important;right:10px!important;width:42px!important;height:42px!important;font-size:16px!important}
-  .chat-box{bottom:120px!important;right:6px!important;width:calc(100vw - 12px)!important}
-  #fortune-canvas{width:180px!important;height:180px!important}
+  .sg{gap:7px}
+  .sn{font-size:18px}
+  .chat-bubble{bottom:70px!important;right:10px!important;width:42px!important;height:42px!important;font-size:16px!important}
+  .chat-box{bottom:124px!important;right:6px!important;width:calc(100vw - 12px)!important;max-width:340px!important}
   .course-track{height:44px}
+  .crash-mult{font-size:56px!important}
+  #fortune-canvas{width:180px!important;height:180px!important}
+  .admin-btns{gap:4px}
+  .abtn{padding:6px;font-size:11px}
 }
+/* MOB BAR */
 .mob-bar{display:none}
 @media(max-width:600px){
   .mob-bar{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--noir2);border-top:2px solid var(--border);padding:10px 14px;align-items:center;justify-content:space-between;z-index:500;cursor:pointer}
@@ -323,7 +339,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
   .mob-bar-l{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;display:flex;align-items:center;gap:10px;color:#fff}
   .mob-bar-b{background:#fff;color:var(--rouge);border-radius:10px;padding:1px 9px;font-size:13px;font-weight:700}
   .mob-bar-r{font-family:'Bebas Neue',sans-serif;font-size:12px;color:rgba(255,255,255,.8)}
-  .mob-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;display:none}
+  .mob-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:600;display:none}
   .mob-ov.on{display:block}
   .mob-sh{position:fixed;bottom:0;left:0;right:0;background:var(--noir2);border-radius:18px 18px 0 0;border-top:2px solid var(--rouge);z-index:601;padding:16px 14px 28px;max-height:88vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s ease}
   .mob-sh.on{transform:translateY(0)}
@@ -331,6 +347,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
   .mob-ti{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;color:var(--blanc)}
   .mob-cl{background:none;border:none;color:var(--gris);font-size:22px;cursor:pointer;line-height:1;padding:4px}
 }
+/* ===== FIN MOBILE ===== */
 </style>
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
@@ -875,7 +892,7 @@ function renderMatches(){
       html+="<div class='mteams'><span class='team'><span class='flag'>"+m.hf+"</span>"+m.home+"</span><span class='vsbox'>"+(m.settled?(m.result==="h"?"1":m.result==="n"?"N":"2"):"VS")+"</span><span class='team r'><span class='flag'>"+m.af+"</span>"+m.away+"</span></div>";
       if(!m.settled){
         html+="<div class='odds-row'>";
-        html+="<button class='ob"+(s1?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>"; html+="<button class='ob"+(sN?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>N</span><span class='ov'>"+m.odds.n.toFixed(2)+"</span></button>"; html+="<button class='ob"+(s2?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>2</span><span class='ov'>"+m.odds.a.toFixed(2)+"</span></button>";"+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>";
+        html+="<button class='ob"+(s1?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>";
         html+="<button class='ob"+(sN?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>N</span><span class='ov'>"+m.odds.n.toFixed(2)+"</span></button>";
         html+="<button class='ob"+(s2?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>2</span><span class='ov'>"+m.odds.a.toFixed(2)+"</span></button>";
         html+="</div>";
@@ -901,7 +918,7 @@ function refC(){
   if(!coupon.length){body.innerHTML="<div class='cempty'>Clique sur une cote<br>pour l'ajouter !</div>";footer.style.display="none";return;}
   footer.style.display="block";
   body.innerHTML=coupon.map(function(c,i){return "<div class='ci'><button class='cr' onclick='rp("+i+")'>x</button><div class='cm'>"+c.match+"</div><div class='cp'>"+c.pick+"</div><div class='co'>Cote : "+c.odd.toFixed(2)+"</div></div>";}).join("");
-  upd();   // SYNC MOBILE BAR   var cmbCount=document.getElementById("cmb-count");   var cmbInfo=document.getElementById("cmb-info");   var cmb=document.getElementById("cmb");   if(cmbCount) cmbCount.textContent=coupon.length;   if(cmb){     if(coupon.length>0){       cmb.classList.add("has-items");       var tot=coupon.reduce(function(a,c){return a*c.odd;},1);       if(cmbInfo) cmbInfo.textContent=coupon.length+" sel. x"+tot.toFixed(2)+" — Voir ▲";     } else {       cmb.classList.remove("has-items");       if(cmbInfo) cmbInfo.textContent="Clique sur une cote ▲";     }   }   // SYNC SHEET SI OUVERT   var sheet=document.getElementById("coupon-sheet");   if(sheet&&sheet.classList.contains("open")) syncMobileSheet();
+  upd();
 }
 function rp(i){coupon.splice(i,1);refC();renderMatches();}
 function clearC(){coupon=[];refC();renderMatches();}
@@ -2257,6 +2274,8 @@ trSetDiff('facile',document.getElementById('trd-facile'));
 init();
 
 </script>
+
+<!-- MOB BAR -->
 <div class="mob-bar" id="mb"></div>
 <div class="mob-ov" id="mo"></div>
 <div class="mob-sh" id="ms">
@@ -2304,14 +2323,10 @@ init();
     var mk=document.getElementById("mk");
     if(!mk)return;
     mk.innerHTML="";
-    var hr=document.createElement("hr");
-    hr.style.cssText="border:none;border-top:1px solid var(--border);margin:12px 0";
-    mk.appendChild(hr);
-    var sr=document.createElement("div");
-    sr.style.cssText="display:flex;align-items:center;gap:8px;margin-bottom:10px";
+    var hr=document.createElement("hr");hr.style.cssText="border:none;border-top:1px solid var(--border);margin:12px 0";mk.appendChild(hr);
+    var sr=document.createElement("div");sr.style.cssText="display:flex;align-items:center;gap:8px;margin-bottom:10px";
     var sl=document.createElement("span");sl.style.cssText="font-size:12px;color:var(--gris);white-space:nowrap";sl.textContent="Mise";
-    var si2=document.createElement("input");
-    si2.id="si2";si2.type="number";si2.inputMode="numeric";si2.value=stake;si2.min="1";si2.max="10000";
+    var si2=document.createElement("input");si2.id="si2";si2.type="number";si2.inputMode="numeric";si2.value=stake;si2.min="1";si2.max="10000";
     si2.style.cssText="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--blanc);font-size:16px;font-family:Bebas Neue,sans-serif;width:100%";
     si2.addEventListener("input",function(){setVal(this.value);});
     var su=document.createElement("span");su.style.cssText="font-size:11px;color:var(--gris)";su.textContent="Tall";
@@ -2337,7 +2352,7 @@ init();
     mk.appendChild(vb);
     var cb2=document.createElement("button");cb2.textContent="Vider le coupon";
     cb2.style.cssText="width:100%;background:none;border:1px solid var(--border);color:var(--gris);padding:8px;border-radius:8px;font-size:11px;cursor:pointer;margin-top:6px";
-    cb2.addEventListener("click",function(){var cb3=document.querySelector(".clearbtn");if(cb3)cb3.click();closeSheet();});
+    cb2.addEventListener("click",function(){var x=document.querySelector(".clearbtn");if(x)x.click();closeSheet();});
     mk.appendChild(cb2);
   }
   function update(){
@@ -2355,6 +2370,7 @@ init();
   window.addEventListener("load",update);
 })();
 </script>
+<!-- FIN MOB BAR -->
 
 </body>
 </html>
