@@ -413,6 +413,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('combat',this)">🐓 COMBAT</button>
     <button class="nb" onclick="sw('trahison',this)">🔪 TRAHISON</button>
     <div style="width:1px;background:var(--border);margin:8px 4px;flex-shrink:0"></div>
+   <button class="nb" onclick="sw('market',this)">🎯 PARIS</button>
     <button class="nb" onclick="sw('feed',this)">📡 FEED</button>
     <button class="nb" onclick="sw('offres',this)">🎁 OFFRES</button>
     <button class="nb" onclick="sw('profile',this)">👤 PROFIL</button>
@@ -709,6 +710,10 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
         </div>
       </div>
     </div>
+    <div id="tab-market" class="tab">
+  <div class="stitle">MARCHE DES PARIS</div>
+  <div id="market-list"></div>
+</div>
 <div id="tab-feed" class="tab">
       <div class="stitle">FEED — PARIS EN DIRECT</div>
       <div id="feed-list"></div>
