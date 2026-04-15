@@ -683,7 +683,8 @@ var SHOP_ITEMS = [
   { id: 10, name: 'iPhone 17', icon: '📱', cost: 3000000, description: 'Un iPhone 17 offert par Azzpronos ! Le jackpot absolu. Contacte-le en MP.' },
   { id: 11, name: 'Place match Ligue 1', icon: '🏟️', cost: 150000, description: 'Un ticket pour un match de Ligue 1 de ton choix ! Azzpronos te contacte en MP.' },
   { id: 12, name: 'Defi Azzpronos', icon: '⚡', cost: 20000, description: 'Azzpronos te lance un defi personnel ! Contacte-le en MP pour les details.' },
-  { id: 13, name: 'Montante Collab Azzpronos', icon: '📈', cost: 40000, description: 'Azzpronos fait une montante en collaboration avec toi ! Contacte-le en MP.' }
+  { id: 13, name: 'Montante Collab Azzpronos', icon: '📈', cost: 40000, description: 'Azzpronos fait une montante en collaboration avec toi ! Contacte-le en MP.' },
+  { id: 14, name: 'J insulte Yoshi sur X', icon: '💀', cost: 10000, description: 'Azzpronos insulte publiquement Yoshi sur X (Twitter) en ton nom. Il va souffrir 😈' }
 ];
 
 var MATCHES = [
