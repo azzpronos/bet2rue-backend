@@ -413,8 +413,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('combat',this)">🐓 COMBAT</button>
     <button class="nb" onclick="sw('trahison',this)">🔪 TRAHISON</button>
     <div style="width:1px;background:var(--border);margin:8px 4px;flex-shrink:0"></div>
-    <button class="nb" onclick="sw('market',this)">🎯 PARIS</button>
-<button class="nb" onclick="sw('feed',this)">📡 FEED</button>
+    <button class="nb" onclick="sw('feed',this)">📡 FEED</button>
     <button class="nb" onclick="sw('offres',this)">🎁 OFFRES</button>
     <button class="nb" onclick="sw('profile',this)">👤 PROFIL</button>
   </div>
@@ -1439,19 +1438,20 @@ function loadAdminMarkets(){
     var html="";
     markets.forEach(function(m){
       html+="<div style='background:var(--noir2);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:10px'>";
-      html+="<div style='font-family:Bebas Neue,sans-serif;font-size:15px;margin-bottom:6px'>"+m.question+"</div>";
-      html+="<div style='font-size:12px;color:var(--gris);margin-bottom:10px'>"+m.optionA+" x"+m.oddsA+" vs "+m.optionB+" x"+m.oddsB+" | "+m.bets.length+" paris | Statut: "+m.status+"</div>";
+      html+="<div style='font-family:Bebas Neue,sans-serif;font-size:15px;margin-bottom:4px'>"+m.question+"</div>";
+      html+="<div style='font-size:12px;color:var(--gris);margin-bottom:8px'>"+m.optionA+" x"+m.oddsA+" vs "+m.optionB+" x"+m.oddsB+" — "+m.bets.length+" paris — <span style='color:var(--or)'>"+m.status+"</span></div>";
+      html+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
       if(m.status==="open"){
-        html+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
-        html+="<button onclick=\"closeMarket(this)\" data-id='"+m.id+"' style='background:#1c1400;border:1px solid #fbbf24;color:#fbbf24;padding:7px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer'>FERMER LES PARIS</button>";
-        html+="</div>";
-      } else if(m.status==="closed_betting"){
-        html+="<div style='display:flex;gap:8px;flex-wrap:wrap'>";
-        html+="<button data-id='"+m.id+"' data-opt='A' onclick='rmkt(this)' style='background:#052e16;border:1px solid #10b981;color:#4ade80;padding:7px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer'>" + m.optionA + " GAGNE</button>";
-        html+="<button data-id='"+m.id+"' data-opt='B' onclick='rmkt(this)' style='background:#3b0808;border:1px solid var(--rouge);color:#f87171;padding:7px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer'>" + m.optionB + " GAGNE</button>";
-        html+="</div>";
+        html+="<button data-id='"+m.id+"' onclick='closeMarket(this)' style='background:#1c1400;border:1px solid #fbbf24;color:#fbbf24;padding:7px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer'>🔒 FERMER LES PARIS</button>";
       }
-      html+="</div>";
+      if(m.status==="open"||m.status==="closed_betting"){
+        html+="<button data-id='"+m.id+"' data-opt='A' onclick='rmkt(this)' style='background:#052e16;border:1px solid #10b981;color:#4ade80;padding:7px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer'>✅ "+m.optionA+" GAGNE</button>";
+        html+="<button data-id='"+m.id+"' data-opt='B' onclick='rmkt(this)' style='background:#3b0808;border:1px solid #f87171;color:#f87171;padding:7px 14px;border-radius:7px;font-family:Bebas Neue,sans-serif;font-size:13px;cursor:pointer'>✅ "+m.optionB+" GAGNE</button>";
+      }
+      if(m.status==="closed"){
+        html+="<span style='background:#064e3b;color:#4ade80;padding:5px 12px;border-radius:6px;font-family:Bebas Neue,sans-serif;font-size:12px'>RESOLU — "+m.result+" GAGNE</span>";
+      }
+      html+="</div></div>";
     });
     el.innerHTML=html;
   }).catch(function(){});
