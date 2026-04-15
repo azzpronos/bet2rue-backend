@@ -273,167 +273,64 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 .chat-input{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:7px;padding:8px 10px;color:var(--blanc);font-size:12px;outline:none}
 .chat-send{background:var(--or);border:none;color:#000;padding:8px 12px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:12px;cursor:pointer}
 
-/* ========== MOBILE PORTRAIT FIX ========== */
+/* MOBILE */
 @media(max-width:600px){
-  /* FORCE PAS DE SCROLL HORIZONTAL */
-  html,body{overflow-x:hidden!important;max-width:100vw!important;width:100%!important}
-  *{max-width:100%!important}
-  img,canvas,table,iframe{max-width:100%!important;width:100%!important}
-
-  /* HEADER */
+  html,body{overflow-x:hidden}
+  body{padding-bottom:58px}
   header{padding:0 10px}
   .hi{height:46px;gap:6px}
   .logo{font-size:22px;letter-spacing:2px}
   #online-counter{display:none!important}
   .bal{padding:4px 8px;font-size:10px}
   .bal b{font-size:12px;margin-left:2px}
-  .btn-dc{padding:6px 10px;font-size:11px;letter-spacing:.5px}
+  .btn-dc{padding:6px 10px;font-size:11px}
   .btn-out{padding:4px 8px;font-size:10px}
-  .streak-badge{font-size:10px;padding:2px 6px}
-  .ub{gap:6px}
-
-  /* HERO MASQUÉ */
   .hero{display:none!important}
-
-  /* NAV */
-  nav{top:46px!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch}
-  .ni{padding:0 6px;gap:0;width:max-content}
+  nav{top:46px!important}
+  .ni{padding:0 6px}
   .nb{padding:9px 9px;font-size:11px;letter-spacing:.3px}
-
-  /* MAIN */
-  main{
-    grid-template-columns:1fr!important;
-    padding:8px!important;
-    gap:10px!important;
-    width:100%!important;
-    max-width:100vw!important;
-  }
-
-  /* COUPON MASQUÉ SUR MOBILE */
+  main{grid-template-columns:1fr!important;padding:8px!important;gap:10px!important}
   .coupon{display:none!important}
-
-  /* MATCH CARDS */
-  .mc{padding:10px;border-radius:10px;margin-bottom:7px;width:100%}
+  .mc{padding:10px;border-radius:10px;margin-bottom:7px}
   .mteams{gap:4px}
-  .team{font-size:13px;gap:3px;min-width:0;flex:1;overflow:hidden}
+  .team{font-size:13px;gap:3px;min-width:0;flex:1;overflow:hidden;max-width:40%}
   .flag{font-size:15px;flex-shrink:0}
   .vsbox{min-width:32px;padding:3px 5px;font-size:10px;flex-shrink:0}
   .ov{font-size:15px}
   .ol{font-size:8px}
-  .ob{padding:7px 2px;border-radius:7px}
+  .ob{padding:9px 3px;border-radius:7px;min-height:46px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .odds-row{gap:4px}
-
-  /* BLACKJACK */
-  .bj-card{width:38px!important;height:56px!important;font-size:13px!important;padding:3px 4px!important}
-  .bj-cards{gap:4px!important;min-height:60px!important;flex-wrap:wrap}
-  .bj-table{padding:14px 12px}
-  table{font-size:10px!important;width:100%!important}
-  table td,table th{padding:3px 2px!important;font-size:9px!important}
-
-  /* MINES */
-  .mines-grid{gap:4px!important;width:100%}
-  .mine-cell{font-size:16px!important}
-  .mines-mult{font-size:32px!important}
-  .mines-info{flex-wrap:wrap;gap:8px}
-
-  /* ROULETTE */
-  .rl-nums{grid-template-columns:repeat(6,1fr)!important;gap:3px!important}
-  .rl-num-btn{font-size:10px!important;padding:5px 1px!important}
-  .rl-bets{gap:6px}
-  .rl-bet-btn{padding:10px 4px;font-size:13px}
-
-  /* SHOP */
-  .shop-item{flex-direction:column!important;align-items:flex-start!important;gap:8px!important}
-  .shop-btn{width:100%!important;text-align:center!important}
-
-  /* LEADERBOARD */
+  .bj-card{width:38px!important;height:56px!important;font-size:13px!important}
+  .mines-grid{gap:4px}
+  .mine-cell{font-size:16px}
+  .mines-mult{font-size:32px}
+  .rl-nums{grid-template-columns:repeat(6,1fr);gap:3px}
+  .rl-num-btn{font-size:10px;padding:5px 1px}
+  .shop-item{flex-direction:column;align-items:flex-start;gap:8px}
+  .shop-btn{width:100%;text-align:center}
   .lb-row{padding:9px 10px;gap:8px}
   .lb-bal{font-size:13px}
-  .lb-name{font-size:12px}
-
-  /* PROFILE */
-  .pcard{max-width:100%!important;padding:14px!important}
-  .sg{gap:7px!important}
-  .sn{font-size:18px!important}
-
-  /* CHAT */
+  .pcard{max-width:100%;padding:14px}
   .chat-bubble{bottom:68px!important;right:10px!important;width:42px!important;height:42px!important;font-size:16px!important}
-  .chat-box{bottom:120px!important;right:6px!important;width:calc(100vw - 12px)!important;max-width:100%!important}
-
-  /* COURSE */
-  .course-track{height:44px!important}
-  .course-cat{font-size:20px!important}
-
-  /* WHEEL */
+  .chat-box{bottom:120px!important;right:6px!important;width:calc(100vw - 12px)!important}
   #fortune-canvas{width:180px!important;height:180px!important}
-  .wheel-container{width:100%;display:flex;justify-content:center}
-
-  /* CRASH */
-  canvas{max-width:100%!important}
-
-  /* ADMIN */
-  .admin-btns{grid-template-columns:1fr 1fr 1fr!important;gap:4px!important}
-  .abtn{padding:6px!important;font-size:11px!important}
-
-  /* PADDING BAS POUR BARRE COUPON */
-  body{padding-bottom:54px!important}
+  .course-track{height:44px}
 }
-
-/* BARRE COUPON MOBILE */
-.coupon-mobile-bar{display:none}
+.mob-bar{display:none}
 @media(max-width:600px){
-  .coupon-mobile-bar{
-    position:fixed!important;bottom:0!important;left:0!important;right:0!important;
-    background:var(--noir2);
-    border-top:2px solid var(--border);
-    padding:10px 14px;
-    display:flex!important;align-items:center;justify-content:space-between;
-    z-index:500;cursor:pointer;
-    width:100vw;
-  }
-  .coupon-mobile-bar.has-items{background:var(--rouge);border-top-color:rgba(255,255,255,0.15)}
-  .cmb-left{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;display:flex;align-items:center;gap:10px;color:#fff}
-  .cmb-badge{background:#fff;color:var(--rouge);border-radius:10px;padding:1px 9px;font-size:13px;font-weight:700}
-  .cmb-right{font-family:'Bebas Neue',sans-serif;font-size:12px;color:rgba(255,255,255,0.8)}
-
-  /* OVERLAY */
-  .coupon-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:600;display:none}
-  .coupon-overlay.open{display:block}
-
-  /* SHEET */
-  .coupon-sheet{
-    position:fixed;bottom:0;left:0;right:0;
-    background:var(--noir2);
-    border-radius:18px 18px 0 0;
-    border-top:2px solid var(--rouge);
-    z-index:601;
-    padding:16px 14px 24px;
-    max-height:88vh;overflow-y:auto;
-    transform:translateY(100%);
-    transition:transform .3s cubic-bezier(.4,0,.2,1);
-  }
-  .coupon-sheet.open{transform:translateY(0)!important}
-  .cs-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
-  .cs-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;color:var(--blanc)}
-  .cs-close{background:none;border:none;color:var(--gris);font-size:22px;cursor:pointer;line-height:1;padding:4px}
-  .cs-item{background:var(--noir3);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid var(--rouge)}
-  .cs-empty{text-align:center;padding:24px 0;color:var(--gris);font-size:13px;line-height:1.7}
-  .cs-divider{border:none;border-top:1px solid var(--border);margin:12px 0}
-  .cs-stake-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-  .cs-stake-lbl{font-size:12px;color:var(--gris);white-space:nowrap}
-  .cs-stake-inp{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--blanc);font-size:16px;font-family:'Bebas Neue',sans-serif;width:100%;outline:none}
-  .cs-stake-inp:focus{border-color:var(--rouge)}
-  .cs-qs{display:flex;gap:6px;margin-bottom:10px}
-  .cs-qb{flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:6px;padding:8px 2px;font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gris);cursor:pointer}
-  .cs-gr{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;align-items:center}
-  .cs-gv{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--vert)}
-  .cs-bbtn{width:100%;background:var(--grad-rouge);border:none;color:#fff;padding:13px;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:16px;cursor:pointer;margin-top:8px;letter-spacing:1px}
-  .cs-clearbtn{width:100%;background:none;border:1px solid var(--border);color:var(--gris);padding:8px;border-radius:8px;font-size:11px;cursor:pointer;margin-top:6px}
-  .cs-totlbl{color:var(--gris)}
-  .cs-totval{font-family:'Bebas Neue',sans-serif;font-size:17px}
+  .mob-bar{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--noir2);border-top:2px solid var(--border);padding:10px 14px;align-items:center;justify-content:space-between;z-index:500;cursor:pointer}
+  .mob-bar.on{background:var(--rouge);border-top-color:rgba(255,255,255,.15)}
+  .mob-bar-l{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;display:flex;align-items:center;gap:10px;color:#fff}
+  .mob-bar-b{background:#fff;color:var(--rouge);border-radius:10px;padding:1px 9px;font-size:13px;font-weight:700}
+  .mob-bar-r{font-family:'Bebas Neue',sans-serif;font-size:12px;color:rgba(255,255,255,.8)}
+  .mob-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:600;display:none}
+  .mob-ov.on{display:block}
+  .mob-sh{position:fixed;bottom:0;left:0;right:0;background:var(--noir2);border-radius:18px 18px 0 0;border-top:2px solid var(--rouge);z-index:601;padding:16px 14px 28px;max-height:88vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s ease}
+  .mob-sh.on{transform:translateY(0)}
+  .mob-hd{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+  .mob-ti{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;color:var(--blanc)}
+  .mob-cl{background:none;border:none;color:var(--gris);font-size:22px;cursor:pointer;line-height:1;padding:4px}
 }
-/* ========== FIN MOBILE ========== */
-
 </style>
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
@@ -978,7 +875,7 @@ function renderMatches(){
       html+="<div class='mteams'><span class='team'><span class='flag'>"+m.hf+"</span>"+m.home+"</span><span class='vsbox'>"+(m.settled?(m.result==="h"?"1":m.result==="n"?"N":"2"):"VS")+"</span><span class='team r'><span class='flag'>"+m.af+"</span>"+m.away+"</span></div>";
       if(!m.settled){
         html+="<div class='odds-row'>";
-        html+="<button class='ob"+(s1?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>";
+        html+="<button class='ob"+(s1?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>"; html+="<button class='ob"+(sN?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>N</span><span class='ov'>"+m.odds.n.toFixed(2)+"</span></button>"; html+="<button class='ob"+(s2?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>2</span><span class='ov'>"+m.odds.a.toFixed(2)+"</span></button>";"+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>";
         html+="<button class='ob"+(sN?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>N</span><span class='ov'>"+m.odds.n.toFixed(2)+"</span></button>";
         html+="<button class='ob"+(s2?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>2</span><span class='ov'>"+m.odds.a.toFixed(2)+"</span></button>";
         html+="</div>";
@@ -1004,7 +901,7 @@ function refC(){
   if(!coupon.length){body.innerHTML="<div class='cempty'>Clique sur une cote<br>pour l'ajouter !</div>";footer.style.display="none";return;}
   footer.style.display="block";
   body.innerHTML=coupon.map(function(c,i){return "<div class='ci'><button class='cr' onclick='rp("+i+")'>x</button><div class='cm'>"+c.match+"</div><div class='cp'>"+c.pick+"</div><div class='co'>Cote : "+c.odd.toFixed(2)+"</div></div>";}).join("");
-  upd();
+  upd();   // SYNC MOBILE BAR   var cmbCount=document.getElementById("cmb-count");   var cmbInfo=document.getElementById("cmb-info");   var cmb=document.getElementById("cmb");   if(cmbCount) cmbCount.textContent=coupon.length;   if(cmb){     if(coupon.length>0){       cmb.classList.add("has-items");       var tot=coupon.reduce(function(a,c){return a*c.odd;},1);       if(cmbInfo) cmbInfo.textContent=coupon.length+" sel. x"+tot.toFixed(2)+" — Voir ▲";     } else {       cmb.classList.remove("has-items");       if(cmbInfo) cmbInfo.textContent="Clique sur une cote ▲";     }   }   // SYNC SHEET SI OUVERT   var sheet=document.getElementById("coupon-sheet");   if(sheet&&sheet.classList.contains("open")) syncMobileSheet();
 }
 function rp(i){coupon.splice(i,1);refC();renderMatches();}
 function clearC(){coupon=[];refC();renderMatches();}
@@ -2360,114 +2257,104 @@ trSetDiff('facile',document.getElementById('trd-facile'));
 init();
 
 </script>
-
-<!-- ===== MOBILE COUPON BAR ===== -->
-<div class="coupon-mobile-bar" id="cmb" onclick="openMobileCoupon()">
-  <div class="cmb-left">COUPON <span class="cmb-badge" id="cmb-count">0</span></div>
-  <div class="cmb-right" id="cmb-info">Voir le coupon ▲</div>
-</div>
-<div class="coupon-overlay" id="coupon-overlay" onclick="closeMobileCoupon()"></div>
-<div class="coupon-sheet" id="coupon-sheet">
-  <div class="cs-handle"></div>
-  <div class="cs-title">MON COUPON <button class="cs-close" onclick="closeMobileCoupon()">✕</button></div>
-  <div id="cs-items"></div>
-  <div id="cs-controls"></div>
+<div class="mob-bar" id="mb"></div>
+<div class="mob-ov" id="mo"></div>
+<div class="mob-sh" id="ms">
+  <div class="mob-hd"></div>
+  <div class="mob-ti">MON COUPON <button class="mob-cl" id="mc2"></button></div>
+  <div id="mi"></div>
+  <div id="mk"></div>
 </div>
 <script>
 (function(){
-  function isMobile(){return window.innerWidth<=600;}
-
-  function openMobileCoupon(){
-    if(!isMobile())return;
-    syncSheet();
-    document.getElementById('coupon-sheet').classList.add('open');
-    document.getElementById('coupon-overlay').classList.add('open');
-  }
-  function closeMobileCoupon(){
-    document.getElementById('coupon-sheet').classList.remove('open');
-    document.getElementById('coupon-overlay').classList.remove('open');
-  }
-  window.openMobileCoupon=openMobileCoupon;
-  window.closeMobileCoupon=closeMobileCoupon;
-
-  function syncSheet(){
-    var itemsEl=document.getElementById('coupon-body');
-    var ctrlEl=document.getElementById('coupon-footer');
-    var csItems=document.getElementById('cs-items');
-    var csCtrl=document.getElementById('cs-controls');
-    if(itemsEl&&csItems) csItems.innerHTML=itemsEl.innerHTML;
-    if(ctrlEl&&csCtrl){
-      var stake=document.getElementById('stake-input')?document.getElementById('stake-input').value:'10';
-      var totOdd=document.getElementById('total-odd')?document.getElementById('total-odd').textContent:'-';
-      var potGain=document.getElementById('potential-gain')?document.getElementById('potential-gain').textContent:'-';
-      csCtrl.innerHTML=
-        '<hr class="cs-divider">'
-        +'<div class="cs-stake-row"><span class="cs-stake-lbl">Mise</span>'
-        +'<input class="cs-stake-inp" type="number" value="'+stake+'" min="1" max="10000" inputmode="numeric" id="cs-stake-inp" oninput="syncStake(this.value)">'
-        +'<span style="font-size:11px;color:var(--gris)">Tall</span></div>'
-        +'<div class="cs-qs">'
-        +'<button class="cs-qb" onclick="syncStake(5);document.getElementById('cs-stake-inp').value=5">5</button>'
-        +'<button class="cs-qb" onclick="syncStake(10);document.getElementById('cs-stake-inp').value=10">10</button>'
-        +'<button class="cs-qb" onclick="syncStake(25);document.getElementById('cs-stake-inp').value=25">25</button>'
-        +'<button class="cs-qb" onclick="syncStake(50);document.getElementById('cs-stake-inp').value=50">50</button>'
-        +'</div>'
-        +'<div class="cs-gr"><span class="cs-totlbl">Cote totale</span><span class="cs-totval">'+totOdd+'</span></div>'
-        +'<div class="cs-gr"><span class="cs-totlbl">Gain potentiel</span><span class="cs-gv">'+potGain+'</span></div>'
-        +'<button class="cs-bbtn" onclick="closeMobileCoupon();placeBetMobile()">VALIDER MON PARI</button>'
-        +'<button class="cs-clearbtn" onclick="clearCouponMobile()">Vider le coupon</button>';
-    }
-  }
-
-  window.syncStake=function(v){
-    var inp=document.getElementById('stake-input');
-    if(inp){inp.value=v;inp.dispatchEvent(new Event('input'));}
+  var bar=document.getElementById("mb");
+  var ov=document.getElementById("mo");
+  var sh=document.getElementById("ms");
+  var cl=document.getElementById("mc2");
+  bar.innerHTML="<div class='mob-bar-l'>COUPON <span class='mob-bar-b' id='mbc'>0</span></div><div class='mob-bar-r' id='mbi'>Clique sur une cote</div>";
+  cl.textContent="X";
+  function isMob(){return window.innerWidth<=600;}
+  function openSheet(){if(!isMob())return;buildSheet();sh.classList.add("on");ov.classList.add("on");}
+  function closeSheet(){sh.classList.remove("on");ov.classList.remove("on");}
+  bar.addEventListener("click",openSheet);
+  ov.addEventListener("click",closeSheet);
+  cl.addEventListener("click",closeSheet);
+  function setVal(v){
+    var si=document.getElementById("stake-input");
+    if(si){si.value=v;si.dispatchEvent(new Event("input"));}
     setTimeout(function(){
-      var totOdd=document.getElementById('total-odd')?document.getElementById('total-odd').textContent:'-';
-      var potGain=document.getElementById('potential-gain')?document.getElementById('potential-gain').textContent:'-';
-      var totEl=document.querySelector('.cs-totval');
-      var gainEl=document.querySelector('.cs-gv');
-      if(totEl)totEl.textContent=totOdd;
-      if(gainEl)gainEl.textContent=potGain;
-    },100);
-  };
-
-  window.placeBetMobile=function(){
-    var btn=document.querySelector('.bbtn');
-    if(btn)btn.click();
-  };
-
-  window.clearCouponMobile=function(){
-    var btn=document.querySelector('.clearbtn');
-    if(btn)btn.click();
-    closeMobileCoupon();
-  };
-
-  function updateBar(){
-    if(!isMobile())return;
-    var countEl=document.getElementById('coupon-count');
-    var count=countEl?parseInt(countEl.textContent)||0:0;
-    var bar=document.getElementById('cmb');
-    var badge=document.getElementById('cmb-count');
-    var info=document.getElementById('cmb-info');
-    if(!bar)return;
-    badge.textContent=count;
-    if(count>0){
-      bar.classList.add('has-items');
-      var tot=document.getElementById('total-odd')?document.getElementById('total-odd').textContent:'-';
-      info.textContent=count+' sel. x'+tot+' — Voir ▲';
-    } else {
-      bar.classList.remove('has-items');
-      info.textContent='Clique sur une cote ▲';
-    }
+      var mt=document.getElementById("mt");
+      var mg=document.getElementById("mg");
+      var to=document.getElementById("total-odd");
+      var po=document.getElementById("potential-gain");
+      if(mt&&to)mt.textContent=to.textContent;
+      if(mg&&po)mg.textContent=po.textContent;
+    },150);
   }
-
-  document.addEventListener('DOMContentLoaded',function(){
-    setInterval(updateBar,400);
-    updateBar();
-  });
+  function buildSheet(){
+    var cb=document.getElementById("coupon-body");
+    var mi=document.getElementById("mi");
+    if(cb&&mi)mi.innerHTML=cb.innerHTML;
+    var si=document.getElementById("stake-input");
+    var to=document.getElementById("total-odd");
+    var po=document.getElementById("potential-gain");
+    var stake=si?si.value:"10";
+    var tot=to?to.textContent:"-";
+    var gain=po?po.textContent:"-";
+    var mk=document.getElementById("mk");
+    if(!mk)return;
+    mk.innerHTML="";
+    var hr=document.createElement("hr");
+    hr.style.cssText="border:none;border-top:1px solid var(--border);margin:12px 0";
+    mk.appendChild(hr);
+    var sr=document.createElement("div");
+    sr.style.cssText="display:flex;align-items:center;gap:8px;margin-bottom:10px";
+    var sl=document.createElement("span");sl.style.cssText="font-size:12px;color:var(--gris);white-space:nowrap";sl.textContent="Mise";
+    var si2=document.createElement("input");
+    si2.id="si2";si2.type="number";si2.inputMode="numeric";si2.value=stake;si2.min="1";si2.max="10000";
+    si2.style.cssText="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:8px;padding:9px 10px;color:var(--blanc);font-size:16px;font-family:Bebas Neue,sans-serif;width:100%";
+    si2.addEventListener("input",function(){setVal(this.value);});
+    var su=document.createElement("span");su.style.cssText="font-size:11px;color:var(--gris)";su.textContent="Tall";
+    sr.appendChild(sl);sr.appendChild(si2);sr.appendChild(su);mk.appendChild(sr);
+    var qr=document.createElement("div");qr.style.cssText="display:flex;gap:6px;margin-bottom:10px";
+    [5,10,25,50].forEach(function(v){
+      var b=document.createElement("button");b.textContent=v;
+      b.style.cssText="flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:6px;padding:8px 2px;font-family:Bebas Neue,sans-serif;font-size:14px;color:var(--gris);cursor:pointer";
+      b.addEventListener("click",function(){setVal(v);var i=document.getElementById("si2");if(i)i.value=v;});
+      qr.appendChild(b);
+    });mk.appendChild(qr);
+    var g1=document.createElement("div");g1.style.cssText="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px";
+    var g1l=document.createElement("span");g1l.style.color="var(--gris)";g1l.textContent="Cote totale";
+    var g1v=document.createElement("span");g1v.id="mt";g1v.style.cssText="font-family:Bebas Neue,sans-serif;font-size:17px";g1v.textContent=tot;
+    g1.appendChild(g1l);g1.appendChild(g1v);mk.appendChild(g1);
+    var g2=document.createElement("div");g2.style.cssText="display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px";
+    var g2l=document.createElement("span");g2l.style.color="var(--gris)";g2l.textContent="Gain potentiel";
+    var g2v=document.createElement("span");g2v.id="mg";g2v.style.cssText="font-family:Bebas Neue,sans-serif;font-size:18px;color:var(--vert)";g2v.textContent=gain;
+    g2.appendChild(g2l);g2.appendChild(g2v);mk.appendChild(g2);
+    var vb=document.createElement("button");vb.textContent="VALIDER MON PARI";
+    vb.style.cssText="width:100%;background:var(--grad-rouge);border:none;color:#fff;padding:13px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:16px;cursor:pointer;margin-top:4px;letter-spacing:1px";
+    vb.addEventListener("click",function(){closeSheet();var bb=document.querySelector(".bbtn");if(bb)bb.click();});
+    mk.appendChild(vb);
+    var cb2=document.createElement("button");cb2.textContent="Vider le coupon";
+    cb2.style.cssText="width:100%;background:none;border:1px solid var(--border);color:var(--gris);padding:8px;border-radius:8px;font-size:11px;cursor:pointer;margin-top:6px";
+    cb2.addEventListener("click",function(){var cb3=document.querySelector(".clearbtn");if(cb3)cb3.click();closeSheet();});
+    mk.appendChild(cb2);
+  }
+  function update(){
+    if(!isMob())return;
+    var ce=document.getElementById("coupon-count");
+    var count=ce?parseInt(ce.textContent)||0:0;
+    var badge=document.getElementById("mbc");
+    var info=document.getElementById("mbi");
+    if(!badge||!info)return;
+    badge.textContent=count;
+    if(count>0){bar.classList.add("on");var to=document.getElementById("total-odd");info.textContent=count+" sel. x"+(to?to.textContent:"-")+" - Voir";}
+    else{bar.classList.remove("on");info.textContent="Clique sur une cote";}
+  }
+  setInterval(update,400);
+  window.addEventListener("load",update);
 })();
 </script>
-<!-- ===== FIN MOBILE COUPON BAR ===== -->
 
 </body>
 </html>
