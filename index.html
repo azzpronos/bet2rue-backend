@@ -1467,7 +1467,7 @@ function loadMarket(){
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:#4ade80'>"+m.optionA+"</div>";
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:22px;color:var(--or)'>x"+m.oddsA.toFixed(2)+"</div>";
       html+="<div style='font-size:11px;color:var(--gris)'>"+totalA+" Tall mises</div>";
-      if(isOpen&&!alreadyBet){html+="<div style='display:flex;gap:4px;margin-top:8px'><input id='sA"+m.id+"' type='number' min='10' placeholder='Mise' style='flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:5px;padding:5px;color:var(--or);font-size:13px'><button onclick='betMarket(\"'+m.id+'\",\"A\")' style='background:#10b981;border:none;color:#fff;padding:5px 10px;border-radius:5px;font-family:Bebas Neue,sans-serif;font-size:12px;cursor:pointer'>MISER</button></div>";}
+      if(isOpen&&!alreadyBet){html+="<div style='display:flex;gap:4px;margin-top:8px'><input id='sA"+m.id+"' type='number' min='10' placeholder='Mise' style='flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:5px;padding:5px;color:var(--or);font-size:13px'><button onclick='betMarket(this.dataset.mid,\"A\")' data-mid='"+m.id+"' style='background:#10b981;border:none;color:#fff;padding:5px 10px;border-radius:5px;font-family:Bebas Neue,sans-serif;font-size:12px;cursor:pointer'>MISER</button></div>";}
       html+="</div>";
       html+="<div style='background:#3b0808;border:1px solid var(--rouge);border-radius:8px;padding:10px;text-align:center'>";
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:#f87171'>"+m.optionB+"</div>";
@@ -1487,7 +1487,7 @@ function betMarket(btn,option){
   var marketId=btn;
   var inputId=option==="A"?"sA"+marketId:"sB"+marketId;
   var inp=document.getElementById(inputId);
-  if(!inp)return;
+  if(!inp){showToast("Entre une mise !","err");return;}
   var stake=parseInt(inp.value)||0;
   if(stake<10){showToast("Mise minimum 10 Tall","err");return;}
   fetch("/api/market/bet?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({marketId:marketId,option:option,stake:stake,uid:uid})})
