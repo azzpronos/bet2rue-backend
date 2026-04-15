@@ -1147,6 +1147,7 @@ function sendTransfer(){
 }
 function loadAdmin(){
   if(!user||!user.isAdmin){document.getElementById("admin-list").innerHTML="<div class='empty'>Acces refuse</div>";return;}
+  loadAdminMarkets();
   fetch("/api/admin/matches?uid="+uid).then(function(r){return r.json();}).then(function(data){
     var html="";
     data.forEach(function(m){
