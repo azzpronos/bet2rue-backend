@@ -126,13 +126,13 @@ async function checkBonus(user) {
 
 function isMatchLocked(match) {
   // Render is UTC, France is UTC+2 - add 2 hours to now for comparison
-  var now = new Date(Date.now() + 2 * 60 * 60 * 1000);
+  var now = new Date();
   var parts = match.time.split(':');
   var hours = parseInt(parts[0]);
   var minutes = parseInt(parts[1]);
   if (match.date) {
     var dateParts = match.date.split('-');
-    var matchDate = new Date(Date.UTC(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), hours - 2, minutes, 0, 0));
+    var matchDate = new Date(Date.UTC(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]), hours, minutes, 0, 0));
     return now >= matchDate || (match.forceLocked === true);
   }
   var matchDate = new Date();
