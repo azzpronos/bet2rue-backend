@@ -671,14 +671,19 @@ app.get('/', function(req, res) {
 });
 
 var SHOP_ITEMS = [
-  { id: 1, name: '10 euros Shuffle', cost: 25000, description: 'Bon de 10 euros sur Shuffle.com — voir tuto Discord' },
-  { id: 2, name: '20 euros Shuffle', cost: 50000, description: 'Bon de 20 euros sur Shuffle.com — voir tuto Discord' },
-  { id: 3, name: '50 euros Shuffle', cost: 125000, description: 'Bon de 50 euros sur Shuffle.com — voir tuto Discord' },
-  { id: 4, name: '1v1 FIFA vs Azzpronos', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h.' },
-  { id: 5, name: 'Prono VIP en MP', cost: 5000, description: 'Azzpronos envoie son meilleur prono du jour en message prive !' },
-  { id: 6, name: 'Shoutout Discord', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET0TALL !' },
-  { id: 7, name: 'Maillot de foot au choix', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
-  { id: 8, name: 'Jeu video au choix', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' }
+  { id: 1, name: '10 euros Shuffle', icon: '🃏', cost: 25000, description: 'Bon de 10 euros sur Shuffle.com — voir tuto Discord' },
+  { id: 2, name: '20 euros Shuffle', icon: '🃏', cost: 50000, description: 'Bon de 20 euros sur Shuffle.com — voir tuto Discord' },
+  { id: 3, name: '50 euros Shuffle', icon: '🃏', cost: 125000, description: 'Bon de 50 euros sur Shuffle.com — voir tuto Discord' },
+  { id: 4, name: '1v1 FIFA vs Azzpronos', icon: '🎮', cost: 10000, description: 'Defie Azzpronos en 1v1 FIFA ! Notification Discord dans les 24h.' },
+  { id: 5, name: 'Prono VIP en MP', icon: '🔮', cost: 5000, description: 'Azzpronos envoie son meilleur prono du jour en message prive !' },
+  { id: 6, name: 'Shoutout Discord', icon: '📢', cost: 12000, description: 'Azzpronos te mentionne devant toute la communaute BET0TALL !' },
+  { id: 7, name: 'Maillot de foot au choix', icon: '👕', cost: 250000, description: 'Un vrai maillot de foot au choix ! Azzpronos te contacte en MP.' },
+  { id: 8, name: 'Jeu video au choix', icon: '🕹️', cost: 200000, description: 'Choisis nimporte quel jeu video ! Azzpronos te contacte en MP.' },
+  { id: 9, name: 'Commande Uber Eats', icon: '🍔', cost: 60000, description: 'Azzpronos te commande ce que tu veux sur Uber Eats ! Contacte-le en MP.' },
+  { id: 10, name: 'iPhone 17', icon: '📱', cost: 3000000, description: 'Un iPhone 17 offert par Azzpronos ! Le jackpot absolu. Contacte-le en MP.' },
+  { id: 11, name: 'Place match Ligue 1', icon: '🏟️', cost: 150000, description: 'Un ticket pour un match de Ligue 1 de ton choix ! Azzpronos te contacte en MP.' },
+  { id: 12, name: 'Defi Azzpronos', icon: '⚡', cost: 20000, description: 'Azzpronos te lance un defi personnel ! Contacte-le en MP pour les details.' },
+  { id: 13, name: 'Montante Collab Azzpronos', icon: '📈', cost: 40000, description: 'Azzpronos fait une montante en collaboration avec toi ! Contacte-le en MP.' }
 ];
 
 var MATCHES = [
