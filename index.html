@@ -413,7 +413,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
     <button class="nb" onclick="sw('combat',this)">🐓 COMBAT</button>
     <button class="nb" onclick="sw('trahison',this)">🔪 TRAHISON</button>
     <div style="width:1px;background:var(--border);margin:8px 4px;flex-shrink:0"></div>
-    <button class="nb" onclick="sw('market',this)">🎯 MARCHE</button>
+    <button class="nb" onclick="sw('market',this)">🎯 PARIS</button>
 <button class="nb" onclick="sw('feed',this)">📡 FEED</button>
     <button class="nb" onclick="sw('offres',this)">🎁 OFFRES</button>
     <button class="nb" onclick="sw('profile',this)">👤 PROFIL</button>
@@ -421,7 +421,8 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 </nav>
 <main>
   <div>
-<div id="tab-matches" class="tab active"><div id="ml"></div></div>
+<div id="tab-matches" class="tab active"><div id="ml"></div>
+<div id="market-section-wrap" style="display:none;margin-top:20px"><div class="stitle">🎯 PARIS PERSONNALISES</div><div id="market-section"></div></div></div>
     <div id="tab-leaderboard" class="tab">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;flex-wrap:wrap">
         <div>
@@ -710,10 +711,6 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
         </div>
       </div>
     </div>
-<div id="tab-market" class="tab">
-  <div class="stitle">MARCHE DES PARIS</div>
-  <div id="market-list"></div>
-</div>
 <div id="tab-feed" class="tab">
       <div class="stitle">FEED — PARIS EN DIRECT</div>
       <div id="feed-list"></div>
@@ -868,6 +865,7 @@ function init(){
     }).then(function(data){user=data;renderUB();}).catch(function(){});
   }
   fetch("/api/matches").then(function(r){return r.json();}).then(function(data){matches=data;renderMatches();wheelInit();}).catch(function(){});
+  loadMarket();
   updateOnlineCounter();
   setInterval(updateOnlineCounter,30000);
   loadStats();
@@ -1380,10 +1378,13 @@ function createMarket(){
 }
 
 function loadMarket(){
-  var el=document.getElementById("market-list");
+  var wrap=document.getElementById("market-section-wrap");
+  var el=document.getElementById("market-section");
+  if(!el)el=document.getElementById("market-list");
   if(!el)return;
   fetch("/api/market").then(function(r){return r.json();}).then(function(markets){
-    if(!markets.length){el.innerHTML="<div class='empty'>Aucun pari ouvert</div>";return;}
+    if(!markets.length){if(wrap)wrap.style.display="none";return;}
+    if(wrap)wrap.style.display="block";
     var html="";
     markets.forEach(function(m){
       var totalA=m.bets.filter(function(b){return b.option==="A";}).reduce(function(s,b){return s+b.stake;},0);
