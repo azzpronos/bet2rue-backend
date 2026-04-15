@@ -276,10 +276,9 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 /* ========== MOBILE PORTRAIT FIX ========== */
 @media(max-width:600px){
   /* FORCE PAS DE SCROLL HORIZONTAL */
-  html{overflow-x:hidden!important} body{overflow-x:clip!important;max-width:100vw!important;width:100%!important}
-  img,canvas,table,iframe,video{max-width:100%!important;width:100%!important}
-  .ob{touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:44px;cursor:pointer}
-.odds-row{touch-action:manipulation}
+  html,body{overflow-x:hidden!important;max-width:100vw!important;width:100%!important}
+  *{max-width:100%!important}
+  img,canvas,table,iframe{max-width:100%!important;width:100%!important}
 
   /* HEADER */
   header{padding:0 10px}
@@ -979,7 +978,7 @@ function renderMatches(){
       html+="<div class='mteams'><span class='team'><span class='flag'>"+m.hf+"</span>"+m.home+"</span><span class='vsbox'>"+(m.settled?(m.result==="h"?"1":m.result==="n"?"N":"2"):"VS")+"</span><span class='team r'><span class='flag'>"+m.af+"</span>"+m.away+"</span></div>";
       if(!m.settled){
         html+="<div class='odds-row'>";
-        html+="<button class='ob"+(s1?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>"; html+="<button class='ob"+(sN?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>N</span><span class='ov'>"+m.odds.n.toFixed(2)+"</span></button>"; html+="<button class='ob"+(s2?" sel":"")+(locked?" disabled":"")+"' ontouchend='event.preventDefault();tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")' onclick='tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>2</span><span class='ov'>"+m.odds.a.toFixed(2)+"</span></button>";"+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>";
+        html+="<button class='ob"+(s1?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"h\",\""+m.home+"\","+m.odds.h+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>1</span><span class='ov'>"+m.odds.h.toFixed(2)+"</span></button>";
         html+="<button class='ob"+(sN?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"n\",\"Nul\","+m.odds.n+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>N</span><span class='ov'>"+m.odds.n.toFixed(2)+"</span></button>";
         html+="<button class='ob"+(s2?" sel":"")+(locked?" disabled":"")+"' onclick='tog("+m.id+",\"a\",\""+m.away+"\","+m.odds.a+",\""+m.home+" vs "+m.away+"\")'><span class='ol'>2</span><span class='ov'>"+m.odds.a.toFixed(2)+"</span></button>";
         html+="</div>";
@@ -1005,7 +1004,7 @@ function refC(){
   if(!coupon.length){body.innerHTML="<div class='cempty'>Clique sur une cote<br>pour l'ajouter !</div>";footer.style.display="none";return;}
   footer.style.display="block";
   body.innerHTML=coupon.map(function(c,i){return "<div class='ci'><button class='cr' onclick='rp("+i+")'>x</button><div class='cm'>"+c.match+"</div><div class='cp'>"+c.pick+"</div><div class='co'>Cote : "+c.odd.toFixed(2)+"</div></div>";}).join("");
-  upd();   // SYNC MOBILE BAR   var cmbCount=document.getElementById("cmb-count");   var cmbInfo=document.getElementById("cmb-info");   var cmb=document.getElementById("cmb");   if(cmbCount) cmbCount.textContent=coupon.length;   if(cmb){     if(coupon.length>0){       cmb.classList.add("has-items");       var tot=coupon.reduce(function(a,c){return a*c.odd;},1);       if(cmbInfo) cmbInfo.textContent=coupon.length+" sel. x"+tot.toFixed(2)+" — Voir ▲";     } else {       cmb.classList.remove("has-items");       if(cmbInfo) cmbInfo.textContent="Clique sur une cote ▲";     }   }   // SYNC SHEET SI OUVERT   var sheet=document.getElementById("coupon-sheet");   if(sheet&&sheet.classList.contains("open")) syncMobileSheet();
+  upd();
 }
 function rp(i){coupon.splice(i,1);refC();renderMatches();}
 function clearC(){coupon=[];refC();renderMatches();}
