@@ -1537,7 +1537,7 @@ function closeMarket(btn){
 
 function resolveMarket(btn,result){
   if(!confirm("Confirmer le resultat ?"))return;
-  var marketId=btn.dataset?btn.dataset.id:btn;
+  var marketId=btn;
   fetch("/api/market/resolve?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({marketId:marketId,result:result,uid:uid})})
     .then(function(r){return r.json();}).then(function(data){
       if(data.ok){showToast("Pari resolu ! "+data.winners+" gagnants payes !");launchConfetti();loadAdminMarkets();loadMarket();}
