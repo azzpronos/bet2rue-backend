@@ -1049,7 +1049,7 @@ function renderBets(){
       var streakColor=streak>=3?"#4ade80":streak>=2?"#fbbf24":"var(--or)";
       streakHtml="<div style='background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between'><div><div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:"+streakColor+"'>🔥 STREAK : "+streak+" VICTOIRE"+(streak>1?"S":"")+" DE SUITE</div><div style='font-size:11px;color:var(--gris);margin-top:2px'>"+(streak>=3?"Bonus +500 Tall deja recu !":"Encore "+(3-streak)+" victoire"+(3-streak>1?"s":"")+" pour +500 Tall bonus !")+"</div></div><div style='font-family:Bebas Neue,sans-serif;font-size:28px;color:"+streakColor+"'>"+streak+"/3</div></div>";
     }
-    el.innerHTML=streakHtml+data.bets.map
+    var allHistory=[];
     // Merge bets + games
     var allHistory=[];
     if(data.bets){data.bets.forEach(function(b){allHistory.push({type:"sport",label:b.picks?b.picks.map(function(p){return p.pick;}).join(" + "):"Pari",stake:b.stake,odd:b.totalOdd,gain:b.potentialGain,status:b.status,date:b.placedAt});});}
