@@ -688,28 +688,85 @@ var SHOP_ITEMS = [
 ];
 
 var MATCHES=[
-  // LDC QUARTS RETOUR - 15 avril
-  {id:1,home:'Bayern Munich',away:'Real Madrid',hf:'🇩🇪',af:'🇪🇸',league:'🏆 LDC — Quart retour',time:'21:00',day:'Mercredi 15 Avril',date:'2026-04-15',odds:{h:1.54,n:5.30,a:4.20},locked:false,settled:false,result:null},
-  {id:2,home:'Arsenal',away:'Sporting',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🇵🇹',league:'🏆 LDC — Quart retour',time:'21:00',day:'Mercredi 15 Avril',date:'2026-04-15',odds:{h:1.45,n:4.50,a:6.00},locked:false,settled:false,result:null},
-  // LIGUE 1 J30 - 17-19 avril
-  {id:3,home:'Lens',away:'Toulouse',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'20:45',day:'Vendredi 17 Avril',date:'2026-04-17',odds:{h:1.53,n:4.25,a:5.50},locked:false,settled:false,result:null},
-  {id:4,home:'Lorient',away:'Marseille',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'17:00',day:'Samedi 18 Avril',date:'2026-04-18',odds:{h:4.30,n:3.88,a:1.72},locked:false,settled:false,result:null},
-  {id:5,home:'Lille',away:'Nice',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'21:05',day:'Samedi 18 Avril',date:'2026-04-18',odds:{h:1.55,n:4.05,a:5.60},locked:false,settled:false,result:null},
-  {id:6,home:'Monaco',away:'Auxerre',hf:'🇲🇨',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'15:00',day:'Dimanche 19 Avril',date:'2026-04-19',odds:{h:1.54,n:4.20,a:5.50},locked:false,settled:false,result:null},
-  {id:7,home:'Strasbourg',away:'Rennes',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'17:15',day:'Dimanche 19 Avril',date:'2026-04-19',odds:{h:2.48,n:3.63,a:2.45},locked:false,settled:false,result:null},
-  {id:8,home:'Nantes',away:'Brest',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'17:15',day:'Dimanche 19 Avril',date:'2026-04-19',odds:{h:2.33,n:3.28,a:2.98},locked:false,settled:false,result:null},
-  // PREMIER LEAGUE J33 - 18-19 avril
-  {id:9,home:'Chelsea',away:'Manchester Utd',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'17:00',day:'Samedi 18 Avril',date:'2026-04-18',odds:{h:1.90,n:3.50,a:3.80},locked:false,settled:false,result:null},
-  {id:10,home:'Tottenham',away:'Brighton',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'17:00',day:'Samedi 18 Avril',date:'2026-04-18',odds:{h:2.10,n:3.40,a:3.20},locked:false,settled:false,result:null},
-  {id:11,home:'Everton',away:'Liverpool',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'15:00',day:'Dimanche 19 Avril',date:'2026-04-19',odds:{h:4.50,n:3.60,a:1.75},locked:false,settled:false,result:null},
-  {id:12,home:'Manchester City',away:'Arsenal',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'17:30',day:'Dimanche 19 Avril',date:'2026-04-19',odds:{h:2.40,n:3.50,a:2.80},locked:false,settled:false,result:null},
-  // LDC DEMI-FINALES ALLER - 28-29 avril
-  {id:13,home:'PSG',away:'Bayern Munich',hf:'🇫🇷',af:'🇩🇪',league:'🏆 LDC — Demi-finale aller',time:'21:00',day:'Mardi 28 Avril',date:'2026-04-28',odds:{h:2.10,n:3.80,a:3.20},locked:false,settled:false,result:null},
-  {id:14,home:'Atletico Madrid',away:'Arsenal',hf:'🇪🇸',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏆 LDC — Demi-finale aller',time:'21:00',day:'Mercredi 29 Avril',date:'2026-04-29',odds:{h:2.50,n:3.50,a:2.60},locked:false,settled:false,result:null},
-  // PREMIER LEAGUE J34 - 25 avril
-  {id:15,home:'Arsenal',away:'Newcastle',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J34',time:'17:00',day:'Samedi 25 Avril',date:'2026-04-25',odds:{h:1.70,n:3.80,a:4.50},locked:false,settled:false,result:null},
-  {id:16,home:'Liverpool',away:'Crystal Palace',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J34',time:'17:00',day:'Samedi 25 Avril',date:'2026-04-25',odds:{h:1.45,n:4.20,a:6.00},locked:false,settled:false,result:null},
-  {id:17,home:'Burnley',away:'Manchester City',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J34',time:'17:00',day:'Samedi 25 Avril',date:'2026-04-25',odds:{h:5.50,n:4.00,a:1.55},locked:false,settled:false,result:null}
+  // ===== LDC QUARTS RETOUR - 15 AVRIL =====
+  {id:1,home:'Bayern Munich',away:'Real Madrid',hf:'🇩🇪',af:'🇪🇸',league:'🏆 LDC Quart retour',time:'21:00',day:'Mer 15 Avril',date:'2026-04-15',odds:{h:1.54,n:5.30,a:4.20},locked:false,settled:false,result:null},
+  {id:2,home:'Arsenal',away:'Sporting',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🇵🇹',league:'🏆 LDC Quart retour',time:'21:00',day:'Mer 15 Avril',date:'2026-04-15',odds:{h:1.45,n:4.50,a:6.00},locked:false,settled:false,result:null},
+
+  // ===== LIGUE 1 J30 - 17-19 AVRIL =====
+  {id:3,home:'Lens',away:'Toulouse',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'20:45',day:'Ven 17 Avril',date:'2026-04-17',odds:{h:1.53,n:4.25,a:5.50},locked:false,settled:false,result:null},
+  {id:4,home:'Lorient',away:'Marseille',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'17:00',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:4.30,n:3.88,a:1.72},locked:false,settled:false,result:null},
+  {id:5,home:'Angers',away:'Le Havre',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'19:00',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:2.77,n:3.07,a:2.60},locked:false,settled:false,result:null},
+  {id:6,home:'Lille',away:'Nice',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'21:05',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:1.55,n:4.05,a:5.60},locked:false,settled:false,result:null},
+  {id:7,home:'Monaco',away:'Auxerre',hf:'🇲🇨',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'15:00',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:1.54,n:4.20,a:5.50},locked:false,settled:false,result:null},
+  {id:8,home:'Metz',away:'Paris FC',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'17:15',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:3.25,n:3.35,a:2.15},locked:false,settled:false,result:null},
+  {id:9,home:'Strasbourg',away:'Rennes',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'17:15',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:2.48,n:3.63,a:2.45},locked:false,settled:false,result:null},
+  {id:10,home:'Nantes',away:'Brest',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'17:15',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:2.33,n:3.28,a:2.98},locked:false,settled:false,result:null},
+  {id:11,home:'PSG',away:'Lyon',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J30',time:'20:45',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:1.30,n:5.75,a:8.25},locked:false,settled:false,result:null},
+
+  // ===== BUNDESLIGA J30 - 17-19 AVRIL =====
+  {id:12,home:'Mayence',away:'Fribourg',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J30',time:'19:30',day:'Ven 17 Avril',date:'2026-04-17',odds:{h:2.30,n:3.40,a:2.90},locked:false,settled:false,result:null},
+  {id:13,home:'St Pauli',away:'Cologne',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J30',time:'20:30',day:'Ven 17 Avril',date:'2026-04-17',odds:{h:2.10,n:3.30,a:3.20},locked:false,settled:false,result:null},
+  {id:14,home:'Leverkusen',away:'Augsburg',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J30',time:'15:30',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:1.45,n:4.50,a:6.50},locked:false,settled:false,result:null},
+  {id:15,home:'Werder Bremen',away:'Hambourg',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J30',time:'15:30',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:2.20,n:3.30,a:3.10},locked:false,settled:false,result:null},
+  {id:16,home:'Hoffenheim',away:'Dortmund',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J30',time:'15:30',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:3.20,n:3.50,a:2.10},locked:false,settled:false,result:null},
+  {id:17,home:'Eint. Francfort',away:'RB Leipzig',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J30',time:'18:30',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:2.80,n:3.30,a:2.40},locked:false,settled:false,result:null},
+  {id:18,home:'Bayern Munich',away:'Stuttgart',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J30',time:'17:30',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:1.35,n:5.00,a:8.00},locked:false,settled:false,result:null},
+
+  // ===== PREMIER LEAGUE J33 - 18-20 AVRIL =====
+  {id:19,home:'Brentford',away:'Fulham',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'13:30',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:2.10,n:3.30,a:3.40},locked:false,settled:false,result:null},
+  {id:20,home:'Chelsea',away:'Man United',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'21:00',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:1.90,n:3.50,a:3.80},locked:false,settled:false,result:null},
+  {id:21,home:'Tottenham',away:'Brighton',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'18:30',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:2.10,n:3.40,a:3.20},locked:false,settled:false,result:null},
+  {id:22,home:'Everton',away:'Liverpool',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'15:00',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:4.50,n:3.60,a:1.75},locked:false,settled:false,result:null},
+  {id:23,home:'Man City',away:'Arsenal',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'17:30',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:2.40,n:3.50,a:2.80},locked:false,settled:false,result:null},
+  {id:24,home:'Aston Villa',away:'Sunderland',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J33',time:'15:00',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:1.65,n:3.80,a:5.00},locked:false,settled:false,result:null},
+
+  // ===== LA LIGA J33 - 18-20 AVRIL =====
+  {id:25,home:'Real Sociedad',away:'Levante',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J33',time:'14:00',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:1.60,n:4.00,a:5.50},locked:false,settled:false,result:null},
+  {id:26,home:'Real Madrid',away:'Barcelone',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J33',time:'21:00',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:2.30,n:3.50,a:2.90},locked:false,settled:false,result:null},
+  {id:27,home:'Atletico Madrid',away:'Villarreal',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J33',time:'16:15',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:1.70,n:3.80,a:4.80},locked:false,settled:false,result:null},
+  {id:28,home:'Osasuna',away:'Betis',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J33',time:'14:00',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:2.50,n:3.40,a:2.70},locked:false,settled:false,result:null},
+  {id:29,home:'Bilbao',away:'Majorque',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J33',time:'16:15',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:1.80,n:3.50,a:4.50},locked:false,settled:false,result:null},
+  {id:30,home:'Valence',away:'Celta Vigo',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J33',time:'18:30',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:2.10,n:3.20,a:3.40},locked:false,settled:false,result:null},
+
+  // ===== SERIE A J32 - 18-19 AVRIL =====
+  {id:31,home:'Atalanta',away:'Inter Milan',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J32',time:'18:00',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:3.20,n:3.40,a:2.10},locked:false,settled:false,result:null},
+  {id:32,home:'Juventus',away:'Naples',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J32',time:'20:45',day:'Sam 18 Avril',date:'2026-04-18',odds:{h:2.30,n:3.30,a:3.00},locked:false,settled:false,result:null},
+  {id:33,home:'Rome',away:'Lazio',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J32',time:'18:00',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:2.50,n:3.30,a:2.80},locked:false,settled:false,result:null},
+  {id:34,home:'Milan',away:'Fiorentina',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J32',time:'20:45',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:1.95,n:3.50,a:3.80},locked:false,settled:false,result:null},
+  {id:35,home:'Torino',away:'Bologna',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J32',time:'15:00',day:'Dim 19 Avril',date:'2026-04-19',odds:{h:2.40,n:3.20,a:2.90},locked:false,settled:false,result:null},
+
+  // ===== LIGUE 1 J31 - 24-26 AVRIL =====
+  {id:36,home:'Metz',away:'Strasbourg',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J31',time:'20:45',day:'Ven 24 Avril',date:'2026-04-24',odds:{h:2.80,n:3.20,a:2.50},locked:false,settled:false,result:null},
+  {id:37,home:'Rennes',away:'Angers',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J31',time:'17:15',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:1.90,n:3.50,a:4.20},locked:false,settled:false,result:null},
+  {id:38,home:'Marseille',away:'Nantes',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J31',time:'17:15',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:1.65,n:3.80,a:5.50},locked:false,settled:false,result:null},
+  {id:39,home:'PSG',away:'Metz',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J31',time:'20:45',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:1.20,n:6.50,a:12.00},locked:false,settled:false,result:null},
+  {id:40,home:'Nice',away:'Lorient',hf:'🇫🇷',af:'🇫🇷',league:'🇫🇷 Ligue 1 J31',time:'17:15',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:1.50,n:4.00,a:6.00},locked:false,settled:false,result:null},
+
+  // ===== BUNDESLIGA J31 - 24-27 AVRIL =====
+  {id:41,home:'RB Leipzig',away:'Union Berlin',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J31',time:'20:30',day:'Ven 24 Avril',date:'2026-04-24',odds:{h:1.70,n:3.80,a:5.00},locked:false,settled:false,result:null},
+  {id:42,home:'Cologne',away:'Leverkusen',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J31',time:'15:30',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:4.50,n:3.80,a:1.75},locked:false,settled:false,result:null},
+  {id:43,home:'Mayence',away:'Bayern Munich',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J31',time:'15:30',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:6.00,n:4.20,a:1.40},locked:false,settled:false,result:null},
+  {id:44,home:'Dortmund',away:'Werder Bremen',hf:'🇩🇪',af:'🇩🇪',league:'🇩🇪 Bundesliga J31',time:'18:30',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:1.80,n:3.50,a:4.50},locked:false,settled:false,result:null},
+
+  // ===== PREMIER LEAGUE J34 - 25 AVRIL =====
+  {id:45,home:'Arsenal',away:'Newcastle',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J34',time:'17:00',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:1.70,n:3.80,a:4.50},locked:false,settled:false,result:null},
+  {id:46,home:'Liverpool',away:'Crystal Palace',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J34',time:'17:00',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:1.45,n:4.20,a:6.00},locked:false,settled:false,result:null},
+  {id:47,home:'Burnley',away:'Man City',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J34',time:'17:00',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:5.50,n:4.00,a:1.55},locked:false,settled:false,result:null},
+  {id:48,home:'Man United',away:'Brentford',hf:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League J34',time:'17:00',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:2.20,n:3.40,a:3.10},locked:false,settled:false,result:null},
+
+  // ===== LA LIGA J34 - 25-26 AVRIL =====
+  {id:49,home:'Barcelone',away:'Alavés',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J34',time:'21:00',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:1.18,n:7.00,a:14.00},locked:false,settled:false,result:null},
+  {id:50,home:'Getafe',away:'Real Madrid',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J34',time:'16:15',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:6.50,n:4.20,a:1.42},locked:false,settled:false,result:null},
+  {id:51,home:'Séville',away:'Atletico Madrid',hf:'🇪🇸',af:'🇪🇸',league:'🇪🇸 La Liga J34',time:'18:30',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:3.20,n:3.50,a:2.20},locked:false,settled:false,result:null},
+
+  // ===== SERIE A J33 - 25-26 AVRIL =====
+  {id:52,home:'Inter Milan',away:'Sassuolo',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J33',time:'20:45',day:'Sam 25 Avril',date:'2026-04-25',odds:{h:1.30,n:5.50,a:9.00},locked:false,settled:false,result:null},
+  {id:53,home:'Milan',away:'Juventus',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J33',time:'20:45',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:2.20,n:3.30,a:3.10},locked:false,settled:false,result:null},
+  {id:54,home:'Naples',away:'Lazio',hf:'🇮🇹',af:'🇮🇹',league:'🇮🇹 Serie A J33',time:'18:00',day:'Dim 26 Avril',date:'2026-04-26',odds:{h:1.80,n:3.50,a:4.50},locked:false,settled:false,result:null},
+
+  // ===== LDC DEMI-FINALES ALLER - 28-29 AVRIL =====
+  {id:55,home:'PSG',away:'Bayern Munich',hf:'🇫🇷',af:'🇩🇪',league:'🏆 LDC Demi-finale aller',time:'21:00',day:'Mar 28 Avril',date:'2026-04-28',odds:{h:2.10,n:3.80,a:3.20},locked:false,settled:false,result:null},
+  {id:56,home:'Atletico Madrid',away:'Arsenal',hf:'🇪🇸',af:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',league:'🏆 LDC Demi-finale aller',time:'21:00',day:'Mer 29 Avril',date:'2026-04-29',odds:{h:2.50,n:3.50,a:2.60},locked:false,settled:false,result:null}
 ];
 
 server.listen(PORT, function() {
