@@ -912,14 +912,55 @@ function renderBets(){
   }).catch(function(){});
 }
 function loadShop(){
-  var el=document.getElementById("shop-list");
-  if(!user){el.innerHTML="<div class='empty'>Connecte-toi pour acceder a la boutique</div>";return;}
-  fetch("/api/shop").then(function(r){return r.json();}).then(function(items){
-    el.innerHTML=items.map(function(item){
+  var el=document.getElementById('shop-list');
+  if(!el)return;
+  if(!user){
+    el.innerHTML='<div class="empty">Connecte-toi pour acceder a la boutique</div>';
+    return;
+  }
+  fetch('/api/shop').then(function(r){return r.json();}).then(function(items){
+    var html='';
+    items.forEach(function(item){
       var canBuy=user.balance>=item.cost;
-      return "<div class='shop-item'><div><div class='shop-name'>"+item.name+"</div><div class='shop-desc'>"+item.description+"</div><div class='shop-cost'>"+item.cost.toLocaleString()+" Tall</div></div><button onclick='buyItem("+item.id+")' class='shop-btn "+(canBuy?"can":"cant")+"'>"+(canBuy?"ECHANGER":"SOLDE INSUFFISANT")+"</button></div>";
-    }).join("");
-  }).catch(function(){});
+      var icon=item.icon||'🎁';
+      var pct=Math.min(100,Math.round((user.balance/item.cost)*100));
+      var missing=(item.cost-user.balance).toLocaleString();
+      html+='<div style="background:var(--noir2);border:1px solid '+(canBuy?'rgba(245,166,35,0.35)':'var(--border)')+';border-radius:14px;padding:16px;margin-bottom:12px">';
+      // Top row: icon + name + desc
+      html+='<div style="display:flex;gap:12px;margin-bottom:12px">';
+      html+='<div style="font-size:32px;width:52px;height:52px;min-width:52px;background:var(--noir3);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center">'+icon+'</div>';
+      html+='<div style="flex:1;min-width:0">';
+      html+='<div style="font-family:Bebas Neue,sans-serif;font-size:15px;color:var(--blanc);letter-spacing:1px;margin-bottom:3px">'+item.name+'</div>';
+      html+='<div style="font-size:11px;color:var(--gris);line-height:1.6">'+item.description+'</div>';
+      html+='</div>';
+      html+='</div>';
+      // Progress bar si pas assez
+      if(!canBuy){
+        html+='<div style="margin-bottom:10px">';
+        html+='<div style="display:flex;justify-content:space-between;margin-bottom:5px">';
+        html+='<span style="font-size:10px;color:var(--gris);font-family:Bebas Neue,sans-serif">'+user.balance.toLocaleString()+' / '+item.cost.toLocaleString()+' TALL</span>';
+        html+='<span style="font-size:10px;color:var(--or);font-family:Bebas Neue,sans-serif">'+pct+'%</span>';
+        html+='</div>';
+        html+='<div style="height:5px;background:var(--noir3);border-radius:3px;overflow:hidden">';
+        html+='<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--or),#e8941a);border-radius:3px"></div>';
+        html+='</div>';
+        html+='</div>';
+      }
+      // Bottom row: prix + bouton
+      html+='<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">';
+      html+='<div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:var(--or)">'+item.cost.toLocaleString()+' <span style="font-size:11px;color:var(--gris)">TALL</span></div>';
+      if(canBuy){
+        html+='<button onclick="buyItem('+item.id+')" style="background:linear-gradient(135deg,#f5a623,#e8941a);border:none;color:#000;padding:10px 20px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:14px;cursor:pointer;letter-spacing:1px;white-space:nowrap">ECHANGER ✓</button>';
+      } else {
+        html+='<button disabled style="background:var(--noir3);border:1px solid var(--border);color:var(--gris);padding:10px 16px;border-radius:8px;font-family:Bebas Neue,sans-serif;font-size:12px;cursor:not-allowed;white-space:nowrap">MANQUE '+missing+' TALL</button>';
+      }
+      html+='</div>';
+      html+='</div>';
+    });
+    el.innerHTML=html||'<div class="empty">Boutique vide</div>';
+  }).catch(function(){
+    el.innerHTML='<div class="empty">Erreur chargement</div>';
+  });
 }
 function buyItem(itemId){
   if(!user)return;
