@@ -274,7 +274,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 .chat-send{background:var(--or);border:none;color:#000;padding:8px 12px;border-radius:7px;font-family:'Bebas Neue',sans-serif;font-size:12px;cursor:pointer}
 
 /* ===== MOBILE ===== */
-@media(max-width:600px){
+@media(max-width:900px){
   html,body{overflow-x:hidden}
   body{padding-bottom:60px}
   header{padding:0 10px}
@@ -333,7 +333,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
 }
 /* MOB BAR */
 .mob-bar{display:none}
-@media(max-width:600px){
+@media(max-width:900px){
   .mob-bar{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--noir2);border-top:2px solid var(--border);padding:10px 14px;align-items:center;justify-content:space-between;z-index:500;cursor:pointer}
   .mob-bar.on{background:var(--rouge);border-top-color:rgba(255,255,255,.15)}
   .mob-bar-l{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;display:flex;align-items:center;gap:10px;color:#fff}
@@ -347,6 +347,12 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
   .mob-ti{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;color:var(--blanc)}
   .mob-cl{background:none;border:none;color:var(--gris);font-size:22px;cursor:pointer;line-height:1;padding:4px}
 }
+
+@media(max-width:900px){
+  .lb-row img{width:28px!important;height:28px!important}
+  .ub img{width:26px!important;height:26px!important}
+}
+
 /* ===== FIN MOBILE ===== */
 </style>
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
@@ -873,7 +879,7 @@ function renderUB(){
     btn.textContent="ADMIN";
     nav.appendChild(btn);
   }
-  bar.innerHTML="<div style='display:flex;align-items:center;gap:6px'><div style='width:28px;height:28px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff'>"+initials+"</div><span style='font-size:12px;color:var(--gris)'>"+user.username+"</span>"+(user.streak>0?"<span class='streak-badge'>J"+user.streak+"</span>":"")+"</div><div class='bal'>Solde <b>"+Math.round(user.balance).toLocaleString()+" Tall</b></div><button class='btn-out' onclick='logout()'>Quitter</button>";
+  bar.innerHTML="<div style='display:flex;align-items:center;gap:6px'><div style='width:28px;height:28px;border-radius:50%;object-fit:cover;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:13px;color:#fff'>"+initials+"</div><span style='font-size:12px;color:var(--gris)'>"+user.username+"</span>"+(user.streak>0?"<span class='streak-badge'>J"+user.streak+"</span>":"")+"</div><div class='bal'>Solde <b>"+Math.round(user.balance).toLocaleString()+" Tall</b></div><button class='btn-out' onclick='logout()'>Quitter</button>";
 }
 function logout(){uid=null;user=null;coupon=[];localStorage.removeItem("b2r_uid");renderUB();refC();renderMatches();showToast("Deconnecte");}
 function renderMatches(){
@@ -942,7 +948,7 @@ function loadLB(){
     var medals=["1","2","3"];
     document.getElementById("lb").innerHTML=data.length?data.map(function(p,i){
       var initials=p.username.slice(0,2).toUpperCase();
-      var av=p.avatar?"<img src='"+p.avatar+"' style='width:34px;height:34px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
+      var av=p.avatar?"<img src='"+p.avatar+'?size=64'+"' style='width:32px;height:32px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;object-fit:cover'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
       var b=getBadge(p.balance);return "<div class='lb-row'><div class='lb-rank'>"+(medals[i]||i+1)+"</div>"+av+"<div style='flex:1'><div class='lb-name'>"+p.username+(user&&p.id===uid?" (toi)":"")+" <span style='font-size:12px'>"+b.icon+"</span></div><div class='lb-sub'>"+p.betsCount+" paris</div></div><div class='lb-bal'>"+p.balance.toLocaleString()+" Tall</div></div>";
     }).join(""):"<div class='empty'>Aucun membre</div>";
   }).catch(function(){});
@@ -954,7 +960,7 @@ function loadLB(){
     el.innerHTML=data.rankings.map(function(p,i){
       var medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
       var initials=p.username.slice(0,2).toUpperCase();
-      var av=p.avatar?"<img src='"+p.avatar+"' style='width:34px;height:34px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
+      var av=p.avatar?"<img src='"+p.avatar+'?size=64'+"' style='width:32px;height:32px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;object-fit:cover'>":"<div style='width:34px;height:34px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:14px;color:#fff;flex-shrink:0'>"+initials+"</div>";
       return "<div class='lb-row'><div class='lb-rank'>"+(medal||i+1)+"</div>"+av+"<div><div class='lb-name'>"+p.username+"</div><div class='lb-sub'>"+p.total+" paris</div></div><div class='lb-bal' style='font-size:14px'>"+p.wagered.toLocaleString()+" T</div></div>";
     }).join("");
   }).catch(function(){});
@@ -1296,7 +1302,7 @@ function loadTournoi(){
     data.rankings.forEach(function(p,i){
       var medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
       var initials=p.username.slice(0,2).toUpperCase();
-      var av=p.avatar?"<img src='"+p.avatar+"' style='width:38px;height:38px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:38px;height:38px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:15px;color:#fff;flex-shrink:0'>"+initials+"</div>";
+      var av=p.avatar?"<img src='"+p.avatar+'?size=64'+"' style='width:28px;height:28px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:38px;height:38px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:15px;color:#fff;flex-shrink:0'>"+initials+"</div>";
       var isTop=i===0;
       html+="<div style='background:"+(isTop?"linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))":"var(--noir2)")+";border:1px solid "+(isTop?"rgba(245,166,35,0.3)":"var(--border)")+";border-radius:10px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px'>";
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:20px;width:32px;text-align:center;color:var(--gris)'>"+( medal||i+1)+"</div>";
@@ -1331,7 +1337,7 @@ function loadFeed(){
     if(!data.length){el.innerHTML="<div class='empty'>Aucun pari pour l'instant</div>";return;}
     el.innerHTML=data.map(function(b){
       var initials=b.username.slice(0,2).toUpperCase();
-      var av=b.avatar?"<img src='"+b.avatar+"' style='width:36px;height:36px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:36px;height:36px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:15px;color:#fff;flex-shrink:0'>"+initials+"</div>";
+      var av=b.avatar?"<img src='"+b.avatar+'?size=64'+"' style='width:28px;height:28px;border-radius:50%;border:2px solid var(--border);flex-shrink:0'>":"<div style='width:36px;height:36px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:15px;color:#fff;flex-shrink:0'>"+initials+"</div>";
       var picks=b.picks?b.picks.map(function(p){return p.pick;}).join(" + "):b.label||b.type;
       var date=b.placedAt?new Date(b.placedAt).toLocaleString("fr-FR"):"";
       var statusColor=b.status==="win"?"#4ade80":b.status==="loss"?"#f87171":"#fbbf24";
@@ -2292,7 +2298,7 @@ init();
   var cl=document.getElementById("mc2");
   bar.innerHTML="<div class='mob-bar-l'>COUPON <span class='mob-bar-b' id='mbc'>0</span></div><div class='mob-bar-r' id='mbi'>Clique sur une cote</div>";
   cl.textContent="X";
-  function isMob(){return window.innerWidth<=600;}
+  function isMob(){return window.innerWidth<=900;}
   function openSheet(){if(!isMob())return;buildSheet();sh.classList.add("on");ov.classList.add("on");}
   function closeSheet(){sh.classList.remove("on");ov.classList.remove("on");}
   bar.addEventListener("click",openSheet);
@@ -2374,3 +2380,4 @@ init();
 
 </body>
 </html>
+
