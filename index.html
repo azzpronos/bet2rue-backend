@@ -740,7 +740,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
           DEPOT MINIMUM : 100€ — WAGER x40
         </div>
         <div style="background:rgba(232,19,42,0.1);border:1px solid rgba(232,19,42,0.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#f87171;font-family:'Bebas Neue',sans-serif;letter-spacing:1px">
-          VPN NECESSAIRE — VPN SECURE ou UrbanVPN — <a href="https://discord.gg/Tcap8UHsxM" target="_blank" style="color:#fff;text-decoration:underline">VOIR TUTO DISCORD</a>
+          VPN NECESSAIRE — VPN SECURE ou UrbanVPN — <a href="https://t.me/+R-YvEQJwz1VkNWU8" target="_blank" style="color:#fff;text-decoration:underline">VOIR TUTO ICI</a>
         </div>
         <div style="background:var(--noir3);border-radius:10px;padding:14px;margin-bottom:14px">
           <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--vert);letter-spacing:1px;margin-bottom:10px">EXEMPLES DE BONUS :</div>
@@ -788,7 +788,7 @@ main{max-width:1200px;margin:0 auto;padding:20px;display:grid;grid-template-colu
       <div style="font-size:52px;margin-bottom:12px">🃏</div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--or);letter-spacing:1px">OFFRE — 25€ OFFERTS</div><a href="https://discord.gg/Tcap8UHsxM" target="_blank" style="background:#5865F2;color:#fff;padding:5px 12px;border-radius:6px;font-family:'Bebas Neue',sans-serif;font-size:12px;text-decoration:none;letter-spacing:1px">TUTO DISCORD</a></div>
         <div style="background:rgba(232,19,42,0.1);border:1px solid rgba(232,19,42,0.3);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#f87171;font-family:'Bebas Neue',sans-serif;letter-spacing:1px">
-          VPN NECESSAIRE — VPN SECURE ou UrbanVPN — <a href="https://discord.gg/Tcap8UHsxM" target="_blank" style="color:#fff;text-decoration:underline">VOIR TUTO DISCORD</a>
+          VPN NECESSAIRE — VPN SECURE ou UrbanVPN — <a href="https://t.me/+R-YvEQJwz1VkNWU8" target="_blank" style="color:#fff;text-decoration:underline">VOIR TUTO ICI</a>
         </div>
         <div style="background:var(--noir3);border-radius:10px;padding:14px;margin-bottom:14px">
           <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--or);letter-spacing:1px;margin-bottom:10px">COMMENT OBTENIR TON BONUS :</div>
@@ -1049,7 +1049,7 @@ function renderBets(){
       var streakColor=streak>=3?"#4ade80":streak>=2?"#fbbf24":"var(--or)";
       streakHtml="<div style='background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between'><div><div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:"+streakColor+"'>🔥 STREAK : "+streak+" VICTOIRE"+(streak>1?"S":"")+" DE SUITE</div><div style='font-size:11px;color:var(--gris);margin-top:2px'>"+(streak>=3?"Bonus +500 Tall deja recu !":"Encore "+(3-streak)+" victoire"+(3-streak>1?"s":"")+" pour +500 Tall bonus !")+"</div></div><div style='font-family:Bebas Neue,sans-serif;font-size:28px;color:"+streakColor+"'>"+streak+"/3</div></div>";
     }
-    var allHistory=[];
+    el.innerHTML=streakHtml+data.bets.map
     // Merge bets + games
     var allHistory=[];
     if(data.bets){data.bets.forEach(function(b){allHistory.push({type:"sport",label:b.picks?b.picks.map(function(p){return p.pick;}).join(" + "):"Pari",stake:b.stake,odd:b.totalOdd,gain:b.potentialGain,status:b.status,date:b.placedAt});});}
@@ -1467,7 +1467,7 @@ function loadMarket(){
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:#4ade80'>"+m.optionA+"</div>";
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:22px;color:var(--or)'>x"+m.oddsA.toFixed(2)+"</div>";
       html+="<div style='font-size:11px;color:var(--gris)'>"+totalA+" Tall mises</div>";
-      if(isOpen&&!alreadyBet){html+="<div style='display:flex;gap:4px;margin-top:8px'><input id='sA"+m.id+"' type='number' min='10' placeholder='Mise' style='flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:5px;padding:5px;color:var(--or);font-size:13px'><button onclick='betMarket(this.dataset.mid,\"A\")' data-mid='"+m.id+"' style='background:#10b981;border:none;color:#fff;padding:5px 10px;border-radius:5px;font-family:Bebas Neue,sans-serif;font-size:12px;cursor:pointer'>MISER</button></div>";}
+      if(isOpen&&!alreadyBet){html+="<div style='display:flex;gap:4px;margin-top:8px'><input id='sA"+m.id+"' type='number' min='10' placeholder='Mise' style='flex:1;background:var(--noir3);border:1px solid var(--border);border-radius:5px;padding:5px;color:var(--or);font-size:13px'><button onclick='betMarket('+JSON.stringify(m.id)+',\"A\")' style='background:#10b981;border:none;color:#fff;padding:5px 10px;border-radius:5px;font-family:Bebas Neue,sans-serif;font-size:12px;cursor:pointer'>MISER</button></div>";}
       html+="</div>";
       html+="<div style='background:#3b0808;border:1px solid var(--rouge);border-radius:8px;padding:10px;text-align:center'>";
       html+="<div style='font-family:Bebas Neue,sans-serif;font-size:16px;color:#f87171'>"+m.optionB+"</div>";
@@ -1484,10 +1484,10 @@ function loadMarket(){
 
 function betMarket(btn,option){
   if(!user){showToast("Connecte-toi !","err");return;}
-  var marketId=btn;
+  var marketId=btn.dataset?btn.dataset.id:btn;
   var inputId=option==="A"?"sA"+marketId:"sB"+marketId;
   var inp=document.getElementById(inputId);
-  if(!inp){showToast("Entre une mise !","err");return;}
+  if(!inp)return;
   var stake=parseInt(inp.value)||0;
   if(stake<10){showToast("Mise minimum 10 Tall","err");return;}
   fetch("/api/market/bet?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({marketId:marketId,option:option,stake:stake,uid:uid})})
@@ -1527,7 +1527,7 @@ function loadAdminMarkets(){
 
 function closeMarket(btn){
   if(!confirm("Fermer les paris pour ce marche ?"))return;
-  var marketId=btn;
+  var marketId=btn.dataset?btn.dataset.id:btn;
   fetch("/api/market/close?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({marketId:marketId,uid:uid})})
     .then(function(r){return r.json();}).then(function(data){
       if(data.ok){showToast("Paris fermes !");loadAdminMarkets();loadMarket();}
@@ -1537,7 +1537,7 @@ function closeMarket(btn){
 
 function resolveMarket(btn,result){
   if(!confirm("Confirmer le resultat ?"))return;
-  var marketId=btn;
+  var marketId=btn.dataset?btn.dataset.id:btn;
   fetch("/api/market/resolve?uid="+uid,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({marketId:marketId,result:result,uid:uid})})
     .then(function(r){return r.json();}).then(function(data){
       if(data.ok){showToast("Pari resolu ! "+data.winners+" gagnants payes !");launchConfetti();loadAdminMarkets();loadMarket();}
@@ -1711,9 +1711,9 @@ var cSelectedCat=null, crRunning=false, crStakeVal=10, crHistory=[];
 
 
 var COQS=[
-  {name:"EL GALLO", odd:2.00, emoji:"🐓", power:50},
-  {name:"PEPITO", odd:2.50, emoji:"🐓", power:40},
-  {name:"ROCKY", odd:1.80, emoji:"🐓", power:55},
+  {name:"EL GALLO", odd:2.00, emoji:"🐓", power:70},
+  {name:"PEPITO", odd:2.50, emoji:"🐓", power:55},
+  {name:"ROCKY", odd:1.80, emoji:"🐓", power:80},
   {name:"TITOU", odd:3.50, emoji:"🐓", power:40}
 ];
 var cbSelected=null, cbRunning=false, cbStakeVal=10;
