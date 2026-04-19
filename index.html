@@ -2215,10 +2215,10 @@ function showToast(msg,type){
 setInterval(function(){fetch("/api/matches").then(function(r){return r.json();}).then(function(d){matches=d;renderMatches();}).catch(function(){});},60000);
 // ==================== TRAHISON ====================
 var TR_DIFF={
-  facile:{portes:3,traites:1,mult:1.20},
-  normal:{portes:3,traites:1,mult:1.40},
-  hard:{portes:2,traites:1,mult:1.80},
-  extreme:{portes:2,traites:1,mult:2.50}
+  facile:{portes:3,traites:1,mult:1.30},
+normal:{portes:3,traites:2,mult:1.60},
+hard:{portes:2,traites:1,mult:2.00},
+extreme:{portes:3,traites:2,mult:3.00}
 };
 var trDiff='facile',trFloor=0,trActive=false,trStakeVal=10,trGrid=[],trMaxFloors=8;
 
